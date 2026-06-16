@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Khaylub Thompson-Calvin — Computer Information Systems student building Khaylub.com as an interactive Blender + web portfolio." />
+  <title>Khaylub Thompson-Calvin | Portfolio</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav" aria-label="Primary">
+      <a class="nav__brand" href="#hero">Khaylub Thompson-Calvin</a>
+      <button class="nav__toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle navigation">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav__menu" id="nav-menu">
+        <li><a href="#about">About</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#learning">Learning Path</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section id="hero" class="hero">
+      <div class="container">
+        <p class="hero__eyebrow">Hello, I'm</p>
+        <h1 class="hero__name">Khaylub Thompson-Calvin</h1>
+        <p class="hero__title">Computer Information Systems Student | Blender + Web Portfolio</p>
+        <p class="hero__intro">
+          I'm building <strong>Khaylub.com</strong> as an interactive portfolio — a place to
+          bring together my work in 3D design and web development. This is the first milestone:
+          a clean, hand-coded homepage that I'll grow into a fully interactive experience over time.
+        </p>
+        <div class="hero__actions">
+          <a class="btn btn--primary" href="#projects">View Projects</a>
+          <a class="btn btn--ghost" href="https://github.com/KhaylubThompsonCalvin" target="_blank" rel="noopener">GitHub Portfolio</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="section">
+      <div class="container">
+        <h2 class="section__title">About</h2>
+        <p>
+          I'm a Computer Information Systems student based in Beaverton, Oregon, focused on turning
+          imagination into things people can actually use. My interests sit at the intersection of
+          <strong>3D design</strong> and <strong>the web</strong>: modeling and rendering in
+          <strong>Blender</strong>, and building interfaces with
+          <strong>HTML, CSS, and JavaScript</strong>.
+        </p>
+        <p>
+          Khaylub.com is my long-term project for combining those two worlds. I'm starting simple
+          and deployable, then layering in interactivity as my skills grow.
+        </p>
+      </div>
+    </section>
+
+    <!-- Projects -->
+    <section id="projects" class="section section--alt">
+      <div class="container">
+        <h2 class="section__title">Projects</h2>
+        <div class="cards">
+          <article class="card">
+            <h3 class="card__title">Khaylub.com — Interactive Portfolio</h3>
+            <p class="card__body">
+              The site you're on. Hand-coded with plain HTML, CSS, and JavaScript, designed to be
+              deployable on GitHub Pages and to evolve into an interactive 3D experience.
+            </p>
+            <p class="card__tags">HTML · CSS · JavaScript</p>
+          </article>
+          <article class="card">
+            <h3 class="card__title">Blender 3D Studies</h3>
+            <p class="card__body">
+              Ongoing modeling, lighting, and rendering practice in Blender — the source of the 3D
+              assets I plan to feature across the portfolio.
+            </p>
+            <p class="card__tags">Blender · 3D Modeling</p>
+          </article>
+          <article class="card">
+            <h3 class="card__title">Web Development Foundations</h3>
+            <p class="card__body">
+              Building a solid base in semantic HTML, responsive CSS, and vanilla JavaScript before
+              moving on to frameworks and 3D libraries.
+            </p>
+            <p class="card__tags">HTML · CSS · JavaScript</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Learning Path -->
+    <section id="learning" class="section">
+      <div class="container">
+        <h2 class="section__title">Learning Path</h2>
+        <ol class="timeline">
+          <li class="timeline__item">
+            <span class="timeline__phase">Now</span>
+            <h3>Web Fundamentals</h3>
+            <p>Mastering HTML, CSS, and JavaScript by hand-building this portfolio — no build tools, no shortcuts.</p>
+          </li>
+          <li class="timeline__item">
+            <span class="timeline__phase">In Progress</span>
+            <h3>Blender 3D</h3>
+            <p>Creating original 3D models and renders to feature as portfolio pieces.</p>
+          </li>
+          <li class="timeline__item">
+            <span class="timeline__phase">Future Goal</span>
+            <h3>Three.js Interactivity</h3>
+            <p>Bringing Blender models into the browser with Three.js to make Khaylub.com a fully interactive 3D experience.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="section section--alt">
+      <div class="container">
+        <h2 class="section__title">Contact</h2>
+        <p>I'm always open to connecting about web development, 3D design, and CIS.</p>
+        <ul class="contact__list">
+          <li><a href="mailto:Khaylubthompsoncalvin@gmail.com">Khaylubthompsoncalvin@gmail.com</a></li>
+          <li><a href="https://github.com/KhaylubThompsonCalvin" target="_blank" rel="noopener">github.com/KhaylubThompsonCalvin</a></li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>&copy; <span id="year"></span> Khaylub Thompson-Calvin · Built with HTML, CSS &amp; JavaScript</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

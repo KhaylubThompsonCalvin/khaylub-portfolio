@@ -1,0 +1,8 @@
+dist
+node_modules
+_archive
+website
+.claude
+public
+package-lock.json
+*.glb

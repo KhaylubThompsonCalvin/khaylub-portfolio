@@ -42,6 +42,7 @@ AI-generated code must conform to the existing project architecture — it does 
 - **No Tailwind, no second styling system** without explicit approval from Kt. One styling system in this repo: plain CSS + custom properties.
 - **Generated imports trigger the dependency rule.** Components often assume `framer-motion`, `lucide`, `clsx`, Radix, etc. Audit every import; strip what isn't needed and get approval (per "Ask before adding dependencies") for anything that stays. No transitive dependency arrives silently inside a pasted component.
 - **Inherits the repo's contracts.** Generated UI honors the same rules as hand-written UI: semantic HTML, WCAG AA, visible focus, 44px touch targets, `prefers-reduced-motion`, and the `getState()`-in-`useFrame` performance idiom (never subscribe a component to `scrollProgress`). No competing animation system alongside Lenis/GSAP.
+- **Usage posture — Mode A / Mode B, never Mode C.** For the Wanderer 3D experience and its signature overlay, 21st.dev is **inspiration/reference only** (Mode A): it cannot generate React Three Fiber and must not reshape the bespoke layer. For new, self-contained **utility widgets**, **Mode B** is allowed — generate as a reference, then adapt to our system per the rules above. **Never paste a generated component directly into the tree** (Mode C is prohibited), and **no Tailwind or new dependencies without Kt's approval**. The server is configured in `.mcp.json` via `${MAGIC_API_KEY}`; the key value lives in your OS/user environment, never the repo.
 
 ### Line-by-line review of generated code
 

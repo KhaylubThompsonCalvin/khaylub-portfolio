@@ -10,7 +10,12 @@ export default function Contact() {
         <p className="body">{contact.intro}</p>
         <div className="contact-links">
           {contact.links.map((l) => (
-            <a key={l.label} href={l.href} target={l.href.startsWith('http') ? '_blank' : undefined} rel="noreferrer">
+            <a
+              key={l.label}
+              href={l.href}
+              target={l.href.startsWith('http') ? '_blank' : undefined}
+              rel="noreferrer"
+            >
               {l.label}
             </a>
           ))}

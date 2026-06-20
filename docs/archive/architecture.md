@@ -29,18 +29,18 @@ Khaylub.com is an interactive portfolio website where the primary experience is 
 
 ## Tech Stack
 
-| Layer | Technology | Version (target) | Role |
-|-------|-----------|------------------|------|
-| Framework | Next.js | 15.x | Routing, SSR/SSG, metadata, deploy |
-| Language | TypeScript | 5.x | Type safety across app and content |
-| 3D runtime | React Three Fiber | 8.x | React renderer for Three.js |
-| 3D helpers | @react-three/drei | latest | OrbitControls, Environment, useGLTF, etc. |
-| 3D engine | Three.js | via R3F | WebGL rendering |
-| Model format | glTF 2.0 / GLB | — | Blender export target |
-| Compression | Draco (gltf-pipeline or Blender plugin) | — | Reduce transfer size |
-| Styling | Tailwind CSS | 4.x | Layout, typography, responsive UI |
-| Content | JSON + optional MDX | — | Project metadata and case study copy |
-| Deploy | Vercel | — | CDN, preview deploys, domain binding |
+| Layer        | Technology                              | Version (target) | Role                                      |
+| ------------ | --------------------------------------- | ---------------- | ----------------------------------------- |
+| Framework    | Next.js                                 | 15.x             | Routing, SSR/SSG, metadata, deploy        |
+| Language     | TypeScript                              | 5.x              | Type safety across app and content        |
+| 3D runtime   | React Three Fiber                       | 8.x              | React renderer for Three.js               |
+| 3D helpers   | @react-three/drei                       | latest           | OrbitControls, Environment, useGLTF, etc. |
+| 3D engine    | Three.js                                | via R3F          | WebGL rendering                           |
+| Model format | glTF 2.0 / GLB                          | —                | Blender export target                     |
+| Compression  | Draco (gltf-pipeline or Blender plugin) | —                | Reduce transfer size                      |
+| Styling      | Tailwind CSS                            | 4.x              | Layout, typography, responsive UI         |
+| Content      | JSON + optional MDX                     | —                | Project metadata and case study copy      |
+| Deploy       | Vercel                                  | —                | CDN, preview deploys, domain binding      |
 
 ## Repository Layout (target)
 
@@ -147,24 +147,25 @@ The `model` field is optional — only featured or case-study projects need an e
 
 ## Interaction Model
 
-| Surface | Desktop | Mobile |
-|---------|---------|--------|
-| Hero canvas | Mouse orbit + scroll | Touch drag + auto-rotate |
-| Project grid | Hover states on cards | Tap to open case study |
-| Case study 3D | Orbit if model present | Static fallback image |
-| Navigation | Fixed top nav | Hamburger or bottom bar |
+| Surface       | Desktop                | Mobile                   |
+| ------------- | ---------------------- | ------------------------ |
+| Hero canvas   | Mouse orbit + scroll   | Touch drag + auto-rotate |
+| Project grid  | Hover states on cards  | Tap to open case study   |
+| Case study 3D | Orbit if model present | Static fallback image    |
+| Navigation    | Fixed top nav          | Hamburger or bottom bar  |
 
 ## Performance Budget
 
-| Asset | Target |
-|-------|--------|
-| Hero GLB (Draco-compressed) | ≤ 5 MB |
-| Per-project GLB | ≤ 3 MB |
-| First Contentful Paint | < 2 s on broadband |
-| Time to interactive (hero) | < 3 s on broadband |
-| Lighthouse Performance | ≥ 80 (Phase 3 target) |
+| Asset                       | Target                |
+| --------------------------- | --------------------- |
+| Hero GLB (Draco-compressed) | ≤ 5 MB                |
+| Per-project GLB             | ≤ 3 MB                |
+| First Contentful Paint      | < 2 s on broadband    |
+| Time to interactive (hero)  | < 3 s on broadband    |
+| Lighthouse Performance      | ≥ 80 (Phase 3 target) |
 
 Strategies:
+
 - Draco-compress all GLBs before deploy
 - Lazy-load 3D viewers on case study pages (not the landing hero)
 - Serve models from Vercel CDN with long cache headers
@@ -193,12 +194,12 @@ No backend is required for Phase 1–3. A contact form (if added) can use a serv
 
 ## Open Decisions
 
-| Decision | Options | Resolve by |
-|----------|---------|------------|
-| Scroll-driven camera | Custom R3F hook vs. pre-baked animation clips | Phase 4 planning |
-| Contact form | mailto link vs. Formspree vs. serverless | Phase 3 |
-| Case study format | JSON only vs. MDX with components | Phase 2 start |
-| Model copy strategy | Manual copy vs. build script symlink | Phase 1 implementation |
+| Decision             | Options                                       | Resolve by             |
+| -------------------- | --------------------------------------------- | ---------------------- |
+| Scroll-driven camera | Custom R3F hook vs. pre-baked animation clips | Phase 4 planning       |
+| Contact form         | mailto link vs. Formspree vs. serverless      | Phase 3                |
+| Case study format    | JSON only vs. MDX with components             | Phase 2 start          |
+| Model copy strategy  | Manual copy vs. build script symlink          | Phase 1 implementation |
 
 ## Related Documents
 

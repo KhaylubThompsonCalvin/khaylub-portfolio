@@ -5,10 +5,10 @@
 
 ## The two stores
 
-| Store | Location | Owns |
-|-------|----------|------|
+| Store                  | Location                                                                           | Owns                                                                                                                                                |
+| ---------------------- | ---------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Repo** (this folder) | `Desktop\Projects\Khaylub.com\` + GitHub `KhaylubThompsonCalvin/khaylub-portfolio` | Code, build, deploy, and **operational truth**: `CURRENT_STATE.md`, `MVP_LAUNCH_ROADMAP.md`, `WANDERER_PRODUCTION_ROADMAP.md`, the `website/` files |
-| **Obsidian vault** | `01 Projects/Khaylub.com/` | **Design & narrative decisions**: voice/copy, the Wanderer story, portals, storyboard, security spec, risk register, the Engineering Constitution |
+| **Obsidian vault**     | `01 Projects/Khaylub.com/`                                                         | **Design & narrative decisions**: voice/copy, the Wanderer story, portals, storyboard, security spec, risk register, the Engineering Constitution   |
 
 ## Rules
 

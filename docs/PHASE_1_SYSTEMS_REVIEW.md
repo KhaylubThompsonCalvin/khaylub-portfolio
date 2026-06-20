@@ -23,40 +23,44 @@
 ## B. Missing Information Report
 
 **Content (blocks launch):**
+
 - Real project inventory — which projects are real, how many, and their details (see §D).
 - Canonical About/bio copy.
 - Real contact email + real social URLs (currently `#` placeholders).
 - Project media — do screenshots/thumbnails exist, and where?
 
 **Logistics (blocks launch):**
+
 - Is `khaylub.com` registered? Is DNS access available?
 - Chosen static host (none configured yet).
 - Contact method decision (mailto vs. form service).
 
 **Direction (shapes scope):**
+
 - Primary goal/audience of the site.
 - Any deadline (job applications, course milestone)?
 - Expected content cadence — projects added often (favors data-driven) or rarely (hardcoding is fine)?
 - Analytics desired at launch?
 
 **Provisional / unknown (do not block launch, must not be guessed):**
+
 - Actual state of the Blender Wanderer work: character, clothing, backpack, rigging, animation, Spring prototype. Pending a real inventory once the project folder is in an accessible path.
 
 ---
 
 ## C. Required Decisions (before further development)
 
-| # | Decision | Options | Recommendation |
-|---|----------|---------|----------------|
-| 1 | Definition of "launch" | (a) static site + real content live; (b) wait for 3D hero | (a) — ship the static site with real content |
-| 2 | Near-term stack | Stay static; or migrate to Next.js/R3F now | Stay static; defer R3F until its trigger condition (`FUTURE_VISION.md`) |
-| 3 | Page model | Single-page anchors; or multi-route | Single-page (matches live site; fine for a small portfolio) |
-| 4 | Project content storage | Hardcode in HTML; or `projects.json` + render loop | `projects.json` if ≥ ~5 projects or frequent updates; else hardcode (see §D) |
-| 5 | Domain | Register `khaylub.com`; or use a host subdomain to start | Register if available; subdomain is an acceptable interim |
-| 6 | Host | Netlify / Vercel / Cloudflare Pages / GitHub Pages | Any static host; pick one and document it |
-| 7 | Contact | `mailto:` only; or a form service (Formspree/Resend) | `mailto:` for launch; form later if spam/volume warrants |
-| 8 | SQLite | Use now; or not | **Not now** — no relational/queryable need exists yet (see §E) |
-| 9 | Primary goal/audience | hiring / freelance / school / personal brand | Decide explicitly; it reprioritizes content |
+| #   | Decision                | Options                                                   | Recommendation                                                               |
+| --- | ----------------------- | --------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| 1   | Definition of "launch"  | (a) static site + real content live; (b) wait for 3D hero | (a) — ship the static site with real content                                 |
+| 2   | Near-term stack         | Stay static; or migrate to Next.js/R3F now                | Stay static; defer R3F until its trigger condition (`FUTURE_VISION.md`)      |
+| 3   | Page model              | Single-page anchors; or multi-route                       | Single-page (matches live site; fine for a small portfolio)                  |
+| 4   | Project content storage | Hardcode in HTML; or `projects.json` + render loop        | `projects.json` if ≥ ~5 projects or frequent updates; else hardcode (see §D) |
+| 5   | Domain                  | Register `khaylub.com`; or use a host subdomain to start  | Register if available; subdomain is an acceptable interim                    |
+| 6   | Host                    | Netlify / Vercel / Cloudflare Pages / GitHub Pages        | Any static host; pick one and document it                                    |
+| 7   | Contact                 | `mailto:` only; or a form service (Formspree/Resend)      | `mailto:` for launch; form later if spam/volume warrants                     |
+| 8   | SQLite                  | Use now; or not                                           | **Not now** — no relational/queryable need exists yet (see §E)               |
+| 9   | Primary goal/audience   | hiring / freelance / school / personal brand              | Decide explicitly; it reprioritizes content                                  |
 
 ---
 
@@ -73,18 +77,20 @@ Collecting this once now serves the current static site, a future `projects.json
 
 **Asset register** — where renders/screenshots live and the naming convention used.
 
-**Blender asset register** *(once the real folder is accessible)* — map each `.blend` → purpose → export status, following the export-log template already in `blender-export-pipeline.md`.
+**Blender asset register** _(once the real folder is accessible)_ — map each `.blend` → purpose → export status, following the export-log template already in `blender-export-pipeline.md`.
 
 ---
 
 ## E. Data Model Recommendation
 
 **Obsidian / Markdown (the knowledge base — prose you read and edit):**
+
 - Planning, decisions, narrative. Your `docs/` folder already is this.
 - Project briefs and case-study drafts, the decision log, roadmaps, Blender production notes, references/mood boards.
 - Rule of thumb: if it's read as prose, it lives here.
 
 **JSON (`projects.json` — structured content the site renders):**
+
 - The canonical project inventory from §D, in one file the static page consumes (and a future Next.js app can reuse unchanged).
 - Removes per-project HTML editing; one schema, many cards.
 - Suggested schema (extends the one already in `architecture.md`):
@@ -106,6 +112,7 @@ Collecting this once now serves the current static site, a future `projects.json
   ```
 
 **SQLite — not now (decide explicitly to avoid over-engineering):**
+
 - A static portfolio with a handful of projects has no relational, high-volume, or queryable need that JSON cannot serve.
 - Adopt SQLite only when a real trigger appears: a blog/notes section needing tag search, stored-and-queried contact submissions, or analytics events. Until then it adds a backend, a build step, and maintenance for zero benefit.
 
@@ -113,15 +120,15 @@ Collecting this once now serves the current static site, a future `projects.json
 
 ## F. Reusable templates to establish
 
-| Template | Form | Purpose |
-|----------|------|---------|
-| Project entry | JSON schema (§E) + markdown brief | One definition feeds cards, case studies, future app |
-| Case study | Markdown: problem → approach → outcome → media | Consistent project write-ups |
-| Project card | The existing `.project-card` HTML/CSS pattern | Already reusable; document it as the canonical card |
-| Section block | The `.section / .section__inner / .section__header` pattern | Consistent new sections |
-| Journey milestone | The timeline-item pattern | Adding milestones without re-coding |
-| Decision-log entry | date / decision / options / rationale / status | Traceable choices in Obsidian |
-| Blender export log | The template already in `blender-export-pipeline.md` | Per-asset export record |
+| Template           | Form                                                        | Purpose                                              |
+| ------------------ | ----------------------------------------------------------- | ---------------------------------------------------- |
+| Project entry      | JSON schema (§E) + markdown brief                           | One definition feeds cards, case studies, future app |
+| Case study         | Markdown: problem → approach → outcome → media              | Consistent project write-ups                         |
+| Project card       | The existing `.project-card` HTML/CSS pattern               | Already reusable; document it as the canonical card  |
+| Section block      | The `.section / .section__inner / .section__header` pattern | Consistent new sections                              |
+| Journey milestone  | The timeline-item pattern                                   | Adding milestones without re-coding                  |
+| Decision-log entry | date / decision / options / rationale / status              | Traceable choices in Obsidian                        |
+| Blender export log | The template already in `blender-export-pipeline.md`        | Per-asset export record                              |
 
 ---
 
@@ -141,16 +148,16 @@ This revises `build-plan.md` by **deferring the R3F/GLB Phase 1** and sequencing
 
 **Step 5 — Blender Wanderer (parallel/after, provisional).** Advance `WANDERER_PRODUCTION_ROADMAP.md` once the real Blender files are inventoried. First payoff is a single static **render** dropped onto the site (e.g., behind the hero or the "Summit Render" card) — no framework change.
 
-**Step 6 — R3F migration (future trigger only).** Adopt Next.js/R3F per `FUTURE_VISION.md` *only* when there's animated 3D and an interaction a static image can't fake. Not before.
+**Step 6 — R3F migration (future trigger only).** Adopt Next.js/R3F per `FUTURE_VISION.md` _only_ when there's animated 3D and an interaction a static image can't fake. Not before.
 
 ---
 
 ## H. Top risks specific to this sequence
 
-| Risk | Mitigation |
-|------|------------|
+| Risk                                              | Mitigation                                             |
+| ------------------------------------------------- | ------------------------------------------------------ |
 | Plan/reality drift (docs say R3F, site is static) | This review + keeping `CURRENT_STATE.md` authoritative |
-| Launch stalls waiting on 3D that isn't required | Steps 0–4 have zero Blender dependency |
-| Placeholder content ships by accident | Step 2 gate: no launch with `#` links or lorem copy |
-| Over-engineering (premature JSON/SQLite/Next.js) | Decisions 4 and 8 default to the simplest option |
-| Blender assumptions baked in prematurely | All Blender items flagged provisional until inventory |
+| Launch stalls waiting on 3D that isn't required   | Steps 0–4 have zero Blender dependency                 |
+| Placeholder content ships by accident             | Step 2 gate: no launch with `#` links or lorem copy    |
+| Over-engineering (premature JSON/SQLite/Next.js)  | Decisions 4 and 8 default to the simplest option       |
+| Blender assumptions baked in prematurely          | All Blender items flagged provisional until inventory  |

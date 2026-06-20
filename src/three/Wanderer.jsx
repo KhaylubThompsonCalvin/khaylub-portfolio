@@ -8,7 +8,7 @@ useGLTF.preload(MODEL);
 
 // --- walk-scrub tuning ---
 const WALK_END = 0.66; // scroll fraction by which he has arrived and stops
-const CYCLES = 6;      // stride cycles taken across the journey
+const CYCLES = 6; // stride cycles taken across the journey
 
 // System 1 — Hero Character. Uses drei's useAnimations binding (correct pose), but the
 // walk is PAUSED and we set action.time from scrollProgress each frame — so scroll
@@ -25,7 +25,9 @@ export default function Wanderer(props) {
   useEffect(() => {
     console.log('%c[Wanderer] GLB animation clips:', 'color:#caa46f', names);
     const b = {};
-    scene.traverse((o) => { if (o.isBone && o.name === 'Root') b.Root = o; });
+    scene.traverse((o) => {
+      if (o.isBone && o.name === 'Root') b.Root = o;
+    });
     bonesRef.current = b;
     const walkName = names.find((n) => /walk/i.test(n)) || names[0];
     const action = walkName && actions[walkName];
@@ -47,7 +49,10 @@ export default function Wanderer(props) {
     // lock forward/lateral drift so he walks IN PLACE (treadmill). He is the constant
     // anchor; the world moves past him in Phase 3. Keeps leg cycle + vertical bob.
     const root = bonesRef.current.Root;
-    if (root) { root.position.x = 0; root.position.z = 0; }
+    if (root) {
+      root.position.x = 0;
+      root.position.z = 0;
+    }
 
     const p = useExperience.getState().scrollProgress;
     const walkT = Math.min(1, Math.max(0, p / WALK_END));

@@ -10,7 +10,13 @@ export default function ProjectCards() {
         <p className="kicker">Selected work</p>
         <div className="cards">
           {projects.map((p) => (
-            <a className="card" key={p.id} href={p.href} target={p.href.startsWith('http') ? '_blank' : undefined} rel="noreferrer">
+            <a
+              className="card"
+              key={p.id}
+              href={p.href}
+              target={p.href.startsWith('http') ? '_blank' : undefined}
+              rel="noreferrer"
+            >
               <h3>{p.name}</h3>
               <div className="theme">{p.theme.join(' \u00b7 ')}</div>
               <p className="concept">{p.concept}</p>

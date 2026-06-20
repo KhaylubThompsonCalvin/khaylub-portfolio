@@ -12,12 +12,12 @@ assets/blender/      assets/models/         glTF Viewer    optional step    webs
 
 ## Folder Conventions
 
-| Location | Contents | Deployed? |
-|----------|----------|-----------|
-| `assets/blender/{name}/` | Source `.blend` files + backup versions | No |
-| `assets/models/{name}/` | Exported `.glb` files (uncompressed or Draco) | Copied to `website/public/models/` |
-| `assets/textures/{name}/` | Standalone texture maps (if not embedded) | Only if referenced externally |
-| `website/public/models/{name}/` | Production GLBs served by Next.js | Yes |
+| Location                        | Contents                                      | Deployed?                          |
+| ------------------------------- | --------------------------------------------- | ---------------------------------- |
+| `assets/blender/{name}/`        | Source `.blend` files + backup versions       | No                                 |
+| `assets/models/{name}/`         | Exported `.glb` files (uncompressed or Draco) | Copied to `website/public/models/` |
+| `assets/textures/{name}/`       | Standalone texture maps (if not embedded)     | Only if referenced externally      |
+| `website/public/models/{name}/` | Production GLBs served by Next.js             | Yes                                |
 
 ### Naming rules
 
@@ -47,11 +47,11 @@ Follow these conventions **before** modeling to avoid export surprises.
 
 ### Geometry
 
-| Asset type | Poly budget (triangles) |
-|------------|------------------------|
-| Hero scene | ≤ 100,000 |
-| Per-project viewer | ≤ 50,000 |
-| Background prop | ≤ 10,000 |
+| Asset type         | Poly budget (triangles) |
+| ------------------ | ----------------------- |
+| Hero scene         | ≤ 100,000               |
+| Per-project viewer | ≤ 50,000                |
+| Background prop    | ≤ 10,000                |
 
 - Triangulate only if needed (glTF exporter handles quads)
 - Remove hidden geometry, duplicate vertices, and unused objects before export
@@ -78,19 +78,19 @@ Use Blender's built-in exporter: **File → Export → glTF 2.0 (.glb/.gltf)**
 
 ### Recommended settings
 
-| Setting | Value | Notes |
-|---------|-------|-------|
-| Format | **glTF Binary (.glb)** | Single file, easiest to serve |
-| Include | Selected Objects (or Visible Objects) | Export only what the scene needs |
-| Transform | +Y Up | Matches glTF/Three.js convention |
-| Geometry | Apply Modifiers: **ON** | Ensures mirror/array/etc. are baked |
-| Geometry | UVs: **ON** | Required for textures |
-| Geometry | Normals: **ON** | |
-| Geometry | Tangents: **ON** if using normal maps | |
-| Materials | Export: **ON** | |
-| Materials | Images: **Automatic** | Embeds textures in GLB |
+| Setting     | Value                                      | Notes                                   |
+| ----------- | ------------------------------------------ | --------------------------------------- |
+| Format      | **glTF Binary (.glb)**                     | Single file, easiest to serve           |
+| Include     | Selected Objects (or Visible Objects)      | Export only what the scene needs        |
+| Transform   | +Y Up                                      | Matches glTF/Three.js convention        |
+| Geometry    | Apply Modifiers: **ON**                    | Ensures mirror/array/etc. are baked     |
+| Geometry    | UVs: **ON**                                | Required for textures                   |
+| Geometry    | Normals: **ON**                            |                                         |
+| Geometry    | Tangents: **ON** if using normal maps      |                                         |
+| Materials   | Export: **ON**                             |                                         |
+| Materials   | Images: **Automatic**                      | Embeds textures in GLB                  |
 | Compression | Draco mesh compression: **OFF** in Blender | Compress in a separate step (see below) |
-| Animation | **OFF** for Phase 1 hero | Enable in Phase 4 when needed |
+| Animation   | **OFF** for Phase 1 hero                   | Enable in Phase 4 when needed           |
 
 ### Export checklist
 
@@ -148,22 +148,22 @@ A build script (`website/scripts/copy-models.mjs`) can automate this in Phase 2+
 
 ## Troubleshooting
 
-| Problem | Likely cause | Fix |
-|---------|-------------|-----|
-| Model is pink/magenta in browser | Missing textures or unsupported material | Bake textures; use Principled BSDF |
-| Model is enormous or tiny | Unapplied scale | Apply transforms; check unit scale |
-| Model is rotated wrong | Axis mismatch | Re-export with +Y Up; adjust in R3F if needed |
-| File size too large | High-poly mesh or 4K textures | Decimate mesh; resize textures to 1024 or 2048 |
-| Normals look faceted | Shade Smooth not applied | Select mesh → Right-click → Shade Smooth |
-| Transparency looks wrong | Blend mode issue | Use Alpha Clip in Principled BSDF; avoid true glass |
-| Missing objects in export | Objects not visible/selected | Check export scope (Visible vs Selected) |
+| Problem                          | Likely cause                             | Fix                                                 |
+| -------------------------------- | ---------------------------------------- | --------------------------------------------------- |
+| Model is pink/magenta in browser | Missing textures or unsupported material | Bake textures; use Principled BSDF                  |
+| Model is enormous or tiny        | Unapplied scale                          | Apply transforms; check unit scale                  |
+| Model is rotated wrong           | Axis mismatch                            | Re-export with +Y Up; adjust in R3F if needed       |
+| File size too large              | High-poly mesh or 4K textures            | Decimate mesh; resize textures to 1024 or 2048      |
+| Normals look faceted             | Shade Smooth not applied                 | Select mesh → Right-click → Shade Smooth            |
+| Transparency looks wrong         | Blend mode issue                         | Use Alpha Clip in Principled BSDF; avoid true glass |
+| Missing objects in export        | Objects not visible/selected             | Check export scope (Visible vs Selected)            |
 
 ## Phase 1 Minimum Asset
 
 For the first shippable page, only one asset is required:
 
-| Asset | Blender path | Export path | Notes |
-|-------|-------------|-------------|-------|
+| Asset      | Blender path                           | Export path                         | Notes                                      |
+| ---------- | -------------------------------------- | ----------------------------------- | ------------------------------------------ |
 | Hero scene | `assets/blender/hero/hero-scene.blend` | `assets/models/hero/hero-scene.glb` | Single object or small group; no animation |
 
 The hero does not need to be final portfolio work — it can be a placeholder sculpt or logo object. The goal is to validate the pipeline, not to ship final art.
@@ -175,17 +175,17 @@ Create `assets/models/{name}/export-log.md` per asset:
 ```markdown
 # Export Log — hero-scene
 
-| Field | Value |
-|-------|-------|
-| Date | YYYY-MM-DD |
-| Blender version | 4.x |
-| Source file | assets/blender/hero/hero-scene.blend |
-| Output file | assets/models/hero/hero-scene.glb |
-| File size | X.X MB |
-| Triangle count | XX,XXX |
-| Draco compressed | No / Yes |
-| Validated in glTF viewer | Yes / No |
-| Notes | ... |
+| Field                    | Value                                |
+| ------------------------ | ------------------------------------ |
+| Date                     | YYYY-MM-DD                           |
+| Blender version          | 4.x                                  |
+| Source file              | assets/blender/hero/hero-scene.blend |
+| Output file              | assets/models/hero/hero-scene.glb    |
+| File size                | X.X MB                               |
+| Triangle count           | XX,XXX                               |
+| Draco compressed         | No / Yes                             |
+| Validated in glTF viewer | Yes / No                             |
+| Notes                    | ...                                  |
 ```
 
 ## Related Documents

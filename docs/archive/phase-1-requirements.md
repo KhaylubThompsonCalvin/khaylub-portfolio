@@ -35,46 +35,46 @@ Deliver a single landing page that loads one Blender-exported GLB model in an in
 
 These must be complete **before** initializing the Next.js project.
 
-| # | Deliverable | Location | Status |
-|---|-------------|----------|--------|
-| 1 | Architecture document | `docs/architecture.md` | Done |
-| 2 | Build plan | `docs/build-plan.md` | Done |
-| 3 | Blender export pipeline | `docs/blender-export-pipeline.md` | Done |
-| 4 | Phase 1 requirements (this file) | `docs/phase-1-requirements.md` | Done |
-| 5 | Updated README | `README.md` | Done |
-| 6 | Hero Blender scene | `assets/blender/hero/hero-scene.blend` | **Not started** |
-| 7 | Hero GLB export | `assets/models/hero/hero-scene.glb` | **Not started** |
-| 8 | Export validation | glTF viewer — zero errors | **Not started** |
-| 9 | Export log | `assets/models/hero/export-log.md` | **Not started** |
+| #   | Deliverable                      | Location                               | Status          |
+| --- | -------------------------------- | -------------------------------------- | --------------- |
+| 1   | Architecture document            | `docs/architecture.md`                 | Done            |
+| 2   | Build plan                       | `docs/build-plan.md`                   | Done            |
+| 3   | Blender export pipeline          | `docs/blender-export-pipeline.md`      | Done            |
+| 4   | Phase 1 requirements (this file) | `docs/phase-1-requirements.md`         | Done            |
+| 5   | Updated README                   | `README.md`                            | Done            |
+| 6   | Hero Blender scene               | `assets/blender/hero/hero-scene.blend` | **Not started** |
+| 7   | Hero GLB export                  | `assets/models/hero/hero-scene.glb`    | **Not started** |
+| 8   | Export validation                | glTF viewer — zero errors              | **Not started** |
+| 9   | Export log                       | `assets/models/hero/export-log.md`     | **Not started** |
 
 ### Hero asset requirements
 
-| Requirement | Target |
-|-------------|--------|
-| Format | GLB (glTF 2.0 binary) |
-| File size | ≤ 5 MB (uncompressed) |
-| Triangle count | ≤ 100,000 |
-| Materials | Principled BSDF with baked textures |
-| Animation | None |
-| Lighting in file | None — lighting handled in code |
-| Naming | `hero-scene.glb` in `assets/models/hero/` |
+| Requirement      | Target                                    |
+| ---------------- | ----------------------------------------- |
+| Format           | GLB (glTF 2.0 binary)                     |
+| File size        | ≤ 5 MB (uncompressed)                     |
+| Triangle count   | ≤ 100,000                                 |
+| Materials        | Principled BSDF with baked textures       |
+| Animation        | None                                      |
+| Lighting in file | None — lighting handled in code           |
+| Naming           | `hero-scene.glb` in `assets/models/hero/` |
 
 ## Implementation Deliverables
 
 These are built **after** pre-code items 6–9 are complete.
 
-| # | Deliverable | Details |
-|---|-------------|---------|
-| 1 | Next.js project scaffold | TypeScript, App Router, Tailwind CSS |
-| 2 | R3F dependencies | `three`, `@react-three/fiber`, `@react-three/drei` |
-| 3 | Hero model in public dir | `website/public/models/hero/hero-scene.glb` |
-| 4 | Canvas scene component | Loads GLB via `useGLTF`, renders with lighting |
-| 5 | Landing page | Full-viewport canvas + HTML overlay |
-| 6 | Orbit controls | `OrbitControls` from drei — enable rotate and zoom, disable pan |
-| 7 | Responsive canvas | Canvas fills viewport on 1920×1080 and 390×844 |
-| 8 | Placeholder nav | Links to `#` for Work, About, Contact |
-| 9 | `.gitignore` | Excludes `node_modules/`, `.next/`, `.env*` |
-| 10 | README status update | Mark Phase 1 implementation complete |
+| #   | Deliverable              | Details                                                         |
+| --- | ------------------------ | --------------------------------------------------------------- |
+| 1   | Next.js project scaffold | TypeScript, App Router, Tailwind CSS                            |
+| 2   | R3F dependencies         | `three`, `@react-three/fiber`, `@react-three/drei`              |
+| 3   | Hero model in public dir | `website/public/models/hero/hero-scene.glb`                     |
+| 4   | Canvas scene component   | Loads GLB via `useGLTF`, renders with lighting                  |
+| 5   | Landing page             | Full-viewport canvas + HTML overlay                             |
+| 6   | Orbit controls           | `OrbitControls` from drei — enable rotate and zoom, disable pan |
+| 7   | Responsive canvas        | Canvas fills viewport on 1920×1080 and 390×844                  |
+| 8   | Placeholder nav          | Links to `#` for Work, About, Contact                           |
+| 9   | `.gitignore`             | Excludes `node_modules/`, `.next/`, `.env*`                     |
+| 10  | README status update     | Mark Phase 1 implementation complete                            |
 
 ## Acceptance Criteria
 
@@ -124,14 +124,14 @@ All must pass before Phase 1 is considered complete.
 
 ## Technical Constraints
 
-| Constraint | Value |
-|------------|-------|
-| Node.js | ≥ 18 |
-| Package manager | npm (default; pnpm acceptable if noted in README) |
-| Browser targets | Latest Chrome, Firefox, Safari, Edge |
-| Canvas renderer | WebGL via React Three Fiber |
-| No external APIs | Phase 1 has no backend or third-party services |
-| No environment variables | Nothing requiring `.env` in Phase 1 |
+| Constraint               | Value                                             |
+| ------------------------ | ------------------------------------------------- |
+| Node.js                  | ≥ 18                                              |
+| Package manager          | npm (default; pnpm acceptable if noted in README) |
+| Browser targets          | Latest Chrome, Firefox, Safari, Edge              |
+| Canvas renderer          | WebGL via React Three Fiber                       |
+| No external APIs         | Phase 1 has no backend or third-party services    |
+| No environment variables | Nothing requiring `.env` in Phase 1               |
 
 ## Suggested Implementation Order
 

@@ -12,12 +12,12 @@
 
 A complete, working **single-page static website** in `website/`, plain web tech:
 
-| File | Role |
-|------|------|
-| `website/index.html` | Markup for the whole page |
-| `website/styles.css` | All visuals, color progression, scroll-reveal, responsive + reduced-motion |
-| `website/script.js` | Footer year + scroll-reveal (IntersectionObserver, staggered) |
-| `website/favicon.svg` | Inline SVG summit favicon |
+| File                  | Role                                                                       |
+| --------------------- | -------------------------------------------------------------------------- |
+| `website/index.html`  | Markup for the whole page                                                  |
+| `website/styles.css`  | All visuals, color progression, scroll-reveal, responsive + reduced-motion |
+| `website/script.js`   | Footer year + scroll-reveal (IntersectionObserver, staggered)              |
+| `website/favicon.svg` | Inline SVG summit favicon                                                  |
 
 No build step, no framework, no dependencies. Open `index.html` and it runs.
 

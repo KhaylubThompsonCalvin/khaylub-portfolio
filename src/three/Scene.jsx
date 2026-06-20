@@ -6,7 +6,6 @@ import Atmosphere from './Atmosphere.jsx';
 
 // The fixed, full-viewport 3D stage. Sits behind the DOM overlays.
 export default function Scene() {
-
   return (
     <Canvas
       style={{ position: 'fixed', inset: 0, zIndex: 0 }}

@@ -1,0 +1,216 @@
+/* ============================================================
+   Khaylub.com — Phase 1
+   Color progression: Dawn -> Alpine -> Summit
+   Type: serif display + geometric sans
+   Tone: cinematic, reflective, restrained (not motivational)
+   Inspiration: Noomo storytelling (scroll-driven narrative)
+   ============================================================ */
+
+/* ---------- Design Tokens ---------- */
+:root {
+  /* Dawn */
+  --dawn-bg-light:#FFFAF0; --dawn-bg-dark:#F5E6D3; --dawn-text:#2C2C2C; --dawn-accent:#D4A574;
+  /* Alpine */
+  --alpine-bg-light:#E8EDF5; --alpine-bg-dark:#D1D5E0; --alpine-text:#3A3A52; --alpine-accent:#4A7BA7;
+  /* Summit */
+  --summit-bg:#F0F4F8; --summit-text:#1F2937; --summit-accent:#2563EB; --summit-highlight:#FFFFFF;
+
+  /* Type */
+  --font-display:Georgia, 'Times New Roman', serif;
+  --font-body:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --size-h1:clamp(2.5rem, 6vw, 4.5rem);
+  --size-h2:clamp(1.9rem, 4vw, 2.75rem);
+  --size-h3:1.4rem;
+  --size-body:1.125rem;
+  --size-small:0.875rem;
+  --weight-regular:400; --weight-medium:500; --weight-bold:700;
+
+  /* Spacing / layout */
+  --spacing-sm:1rem; --spacing-md:2rem; --spacing-lg:3rem; --spacing-xl:6rem;
+  --container-width:1100px; --gutter:1.5rem;
+}
+
+/* ---------- Reset / base ---------- */
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  font-family:var(--font-body);
+  font-size:var(--size-body);
+  line-height:1.65;
+  color:var(--dawn-text);
+  background:var(--dawn-bg-light);
+  -webkit-font-smoothing:antialiased;
+}
+a { color:inherit; text-decoration:none; }
+.container { max-width:var(--container-width); margin:0 auto; padding:0 var(--gutter); }
+
+/* ---------- Reserved Phase 3 canvas (inert) ---------- */
+#canvas-root {
+  position:fixed; inset:0; z-index:-1; pointer-events:none;
+  /* Empty in Phase 1. A future Three.js scene renders here. */
+}
+/* When the Phase 3 WebGL scene is active, the static hero image yields to it. */
+body.webgl-active .hero__scene { opacity:0; transition:opacity 1s ease; }
+
+/* ---------- Navigation ---------- */
+.site-nav {
+  position:fixed; top:0; left:0; right:0; z-index:10;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:1.1rem var(--gutter);
+  backdrop-filter:saturate(120%) blur(6px);
+  background:rgba(255,250,240,0.55);
+}
+.site-nav__brand { font-family:var(--font-display); font-size:1rem; letter-spacing:0.01em; }
+.site-nav__links { display:flex; gap:1.5rem; }
+.site-nav__links a { font-size:var(--size-small); color:#5a5a5a; transition:color .25s ease; }
+.site-nav__links a:hover { color:var(--dawn-text); }
+
+/* ---------- Section scaffolding ---------- */
+.section {
+  min-height:100vh;
+  display:flex; align-items:center;
+  padding:var(--spacing-xl) 0;
+  transition:background-color 1.2s ease, color 1.2s ease;
+}
+.section__title { font-family:var(--font-display); font-weight:var(--weight-regular);
+  font-size:var(--size-h2); letter-spacing:-0.02em; line-height:1.1; margin-bottom:1rem; }
+
+/* Palette per section (the journey told in color) */
+.section[data-palette="dawn"]   { background:var(--dawn-bg-light);  color:var(--dawn-text); }
+.section--about                 { background:var(--dawn-bg-dark); }
+.section[data-palette="alpine"] { background:var(--alpine-bg-light); color:var(--alpine-text); }
+.section--projects              { background:var(--alpine-bg-dark); }
+.section[data-palette="summit"] { background:var(--summit-bg); color:var(--summit-text); }
+
+/* ---------- Shared type ---------- */
+.eyebrow {
+  font-size:var(--size-small); letter-spacing:0.18em; text-transform:uppercase;
+  color:var(--dawn-accent); margin-bottom:1.25rem;
+}
+.section[data-palette="alpine"] .eyebrow { color:var(--alpine-accent); }
+.section[data-palette="summit"] .eyebrow { color:var(--summit-accent); }
+.lede { font-size:1.35rem; max-width:38ch; margin-bottom:0.5rem; }
+.about__body { font-size:var(--size-body); max-width:60ch; margin:0.75rem 0 1.25rem; color:#4a4a4a; }
+.sub-line, .roles { color:#6a6a6a; margin-bottom:1.5rem; }
+.section[data-palette="alpine"] .sub-line { color:#5c6479; }
+.closing-line { font-family:var(--font-display); font-style:italic; font-size:1.2rem; margin-top:2rem; opacity:0.85; }
+
+/* ---------- Hero ---------- */
+.section--hero { position:relative; }
+
+/* Hero scene — the Blender render (assets/wanderer-hero.png).
+   Falls back to the dawn color if the image is ever missing, so the hero never looks broken. */
+.hero__scene {
+  position:absolute; inset:0; z-index:0;
+  background:var(--dawn-bg-dark) url("assets/wanderer-hero.png") center/cover no-repeat;
+}
+.hero__scene::after {
+  content:""; position:absolute; inset:0;
+  background:linear-gradient(180deg, rgba(255,250,240,0.55) 0%, rgba(255,250,240,0.22) 42%, rgba(245,230,211,0.66) 100%);
+}
+.hero__inner { position:relative; z-index:1; }
+.section--hero .scroll-hint { z-index:1; }
+.hero__title { font-family:var(--font-display); font-weight:var(--weight-regular);
+  font-size:var(--size-h1); line-height:1.02; letter-spacing:-0.03em; margin:0.5rem 0 1.5rem; }
+.hero__line { font-size:1.4rem; max-width:30ch; margin-bottom:2.5rem; }
+.cta {
+  display:inline-block; font-size:var(--size-small); letter-spacing:0.08em; text-transform:uppercase;
+  padding:0.85rem 1.75rem; border:1px solid var(--dawn-accent); border-radius:999px;
+  color:var(--dawn-text); transition:background-color .3s ease, color .3s ease;
+}
+.cta:hover { background:var(--dawn-accent); color:#fff; }
+.scroll-hint {
+  position:absolute; bottom:2rem; left:50%; transform:translateX(-50%);
+  font-size:0.78rem; letter-spacing:0.18em; text-transform:uppercase; color:#9a8c78;
+  animation:floaty 2.4s ease-in-out infinite;
+}
+@keyframes floaty { 0%,100%{ transform:translate(-50%,0); opacity:.7;} 50%{ transform:translate(-50%,6px); opacity:1;} }
+
+/* ---------- About ---------- */
+.climbing { margin-top:2rem; }
+.climbing__label { font-size:var(--size-small); letter-spacing:0.12em; text-transform:uppercase; color:#8a8170; margin-bottom:0.75rem; }
+.climbing__list { list-style:none; display:grid; gap:0.6rem; max-width:46ch; }
+.climbing__list li { padding-left:1.25rem; position:relative; }
+.climbing__list li::before { content:""; position:absolute; left:0; top:0.65em; width:6px; height:6px; border-radius:50%; background:var(--dawn-accent); }
+
+/* ---------- Journey / waypoints ---------- */
+.waypoints { list-style:none; margin-top:2.5rem; display:grid; gap:0; max-width:30ch; }
+.waypoint { position:relative; padding:1rem 0 1rem 2rem; border-left:1px solid #b9c1d2; }
+.waypoint__marker { position:absolute; left:-5px; top:1.35rem; width:10px; height:10px; border-radius:50%;
+  background:var(--alpine-accent); box-shadow:0 0 0 4px var(--alpine-bg-light); }
+.waypoint:last-child { border-left-color:transparent; }
+.waypoint .disclosure { margin-top:0; }
+.waypoint .disclosure > summary { color:var(--alpine-text); font-size:var(--size-body); letter-spacing:0; }
+.waypoint .disclosure > summary::after { color:var(--alpine-accent); }
+.waypoint .disclosure__body { max-width:34ch; }
+
+/* ---------- Projects / cards ---------- */
+.cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1.5rem; margin-top:2.5rem; }
+.card {
+  position:relative;
+  background:linear-gradient(180deg, rgba(255,255,255,0.55), rgba(255,255,255,0.32));
+  border:1px solid rgba(255,255,255,0.5);
+  box-shadow:0 8px 24px rgba(58,58,82,0.10), inset 0 1px 0 rgba(255,255,255,0.6);
+  -webkit-backdrop-filter:blur(10px) saturate(120%); backdrop-filter:blur(10px) saturate(120%);
+  border-radius:16px; padding:1.6rem 1.6rem 1.4rem; transition:transform .35s ease, box-shadow .35s ease;
+}
+.card:hover { transform:translateY(-5px); box-shadow:0 18px 40px rgba(58,58,82,0.16), inset 0 1px 0 rgba(255,255,255,0.7); }
+.card__head { display:flex; align-items:center; justify-content:space-between; gap:0.75rem; margin-bottom:0.6rem; }
+.card__title { font-family:var(--font-display); font-weight:var(--weight-regular); font-size:var(--size-h3); }
+.card__desc { font-size:0.98rem; color:#5c6479; }
+.badge { font-size:0.68rem; letter-spacing:0.08em; text-transform:uppercase; padding:0.25rem 0.6rem; border-radius:999px; white-space:nowrap; }
+.badge--progress { background:rgba(74,123,167,0.16); color:#356593; }
+.badge--concept { background:rgba(58,58,82,0.1); color:#5c6479; }
+
+/* ---------- Disclosure (click-to-expand: case studies, bio, waypoints) ---------- */
+.disclosure { margin-top:1rem; }
+.disclosure > summary {
+  cursor:pointer; list-style:none; display:inline-flex; align-items:center; gap:0.4rem;
+  font-size:var(--size-small); letter-spacing:0.04em; color:var(--alpine-accent);
+  font-family:var(--font-body); transition:opacity .2s ease;
+}
+.disclosure > summary::-webkit-details-marker { display:none; }
+.disclosure > summary::after { content:"\203A"; transition:transform .25s ease; font-size:1.15em; line-height:1; }
+.disclosure[open] > summary::after { transform:rotate(90deg); }
+.disclosure > summary:hover { opacity:0.7; }
+.disclosure > summary:focus-visible { outline:2px solid var(--alpine-accent); outline-offset:3px; border-radius:3px; }
+.disclosure__body { margin-top:0.85rem; font-size:0.97rem; color:#5c6479; display:grid; gap:0.55rem; }
+.disclosure__body h4 { font-size:0.7rem; letter-spacing:0.12em; text-transform:uppercase; color:#8a8170; font-weight:var(--weight-medium); margin-bottom:0.05rem; }
+.section[data-palette="dawn"] .disclosure > summary { color:var(--dawn-accent); }
+.section[data-palette="dawn"] .disclosure > summary:focus-visible { outline-color:var(--dawn-accent); }
+
+/* ---------- Hero actions (CTA + skip-to-work) ---------- */
+.hero__actions { display:flex; align-items:center; gap:1.5rem; flex-wrap:wrap; }
+.link-arrow { font-size:var(--size-small); letter-spacing:0.04em; color:#7a6f5c;
+  display:inline-flex; align-items:center; gap:0.35rem; transition:color .25s ease; }
+.link-arrow::after { content:"\2192"; transition:transform .25s ease; }
+.link-arrow:hover { color:var(--dawn-text); }
+.link-arrow:hover::after { transform:translateX(4px); }
+
+/* ---------- Contact ---------- */
+.contact__inner { text-align:center; }
+.contact__email { display:inline-block; font-family:var(--font-display); font-size:clamp(1.5rem,4vw,2.4rem);
+  margin:1rem 0 1.5rem; border-bottom:1px solid var(--summit-accent); padding-bottom:0.15rem; }
+.contact__email:hover { color:var(--summit-accent); }
+
+/* ---------- Footer ---------- */
+.site-footer { padding:2.5rem 0; background:var(--summit-bg); color:#8a93a3; font-size:var(--size-small); text-align:center; }
+
+/* ---------- Scroll reveal ---------- */
+.reveal { opacity:0; transform:translateY(24px); transition:opacity .8s ease, transform .8s ease; }
+.reveal.is-visible { opacity:1; transform:none; }
+
+/* ---------- Responsive ---------- */
+@media (max-width:640px) {
+  .site-nav__links { gap:1rem; }
+  .site-nav__brand { font-size:0.85rem; }
+  .section { padding:var(--spacing-lg) 0; min-height:auto; }
+  .hero__title { margin-top:1rem; }
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion:reduce) {
+  .reveal { opacity:1; transform:none; transition:none; }
+  .scroll-hint { animation:none; }
+  html { scroll-behavior:auto; }
+}

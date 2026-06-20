@@ -1,0 +1,40 @@
+// All site copy in Kt's own words. Single place to edit voice.
+// Sources: Experience Architect Master Prompt + Narrative Source (Lock-In / Letter to Time).
+
+export const identity = {
+  name: 'Khaylub Thompson-Calvin',
+  role: 'Computer Information Systems Student \u00b7 Builder \u00b7 Lifelong Learner',
+  statement:
+    'Currently focused on web development, interactive 3D, and creating digital experiences that combine technology, storytelling, and continuous growth.',
+};
+
+// Phase 02 — Philosophy (verbatim from the master prompt)
+export const philosophy = {
+  lead: 'The best systems are built one layer at a time.',
+  body:
+    'This portfolio documents that process: learning in public, building practical skills, and steadily expanding into new areas of technology.',
+};
+
+// Phase 03 — Areas of Focus
+export const areasOfFocus = [
+  'Web Development',
+  'Interactive 3D',
+  'Linux & Systems',
+  'Python & SQL',
+  'Creative Technology',
+  'Future Cybersecurity Path',
+];
+
+// Closing principle (used near contact)
+export const closingPrinciple =
+  'The experience is not about reaching the summit. The experience is about continuing the climb.';
+
+export const contact = {
+  intro: 'Continuing the climb \u2014 let\u2019s build something.',
+  links: [
+    { label: 'GitHub', href: 'https://github.com/KhaylubThompsonCalvin' },
+    { label: 'LinkedIn', href: '#' },
+    { label: 'Email', href: 'mailto:hello@khaylub.com' },
+    { label: 'Resume', href: '#' },
+  ],
+};

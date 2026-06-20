@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Khaylub Thompson-Calvin | Toward the Summit</title>
+  <meta name="description" content="Khaylub Thompson-Calvin — CIS student, web developer, and Blender artist. A portfolio shaped as a journey toward the summit." />
+  <meta name="author" content="Khaylub Thompson-Calvin" />
+  <meta name="theme-color" content="#F5E6D3" />
+
+  <!-- Open Graph (social preview) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Khaylub Thompson-Calvin | Toward the Summit" />
+  <meta property="og:description" content="A portfolio shaped as a journey toward the summit — web development, 3D art, and the work that documents the ascent." />
+  <meta property="og:url" content="https://khaylub.com/" />
+  <!-- PLACEHOLDER: add a 1200x630 share image at assets/og-cover.jpg before launch -->
+  <meta property="og:image" content="https://khaylub.com/assets/og-cover.jpg" />
+
+  <!-- Favicon placeholder (inline SVG summit mark; swap for .ico/.png before launch) -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+
+  <link rel="stylesheet" href="styles.css" />
+
+  <noscript>
+    <!-- If JS fails, scroll-reveal never fires — force all content visible. -->
+    <style>.reveal{opacity:1 !important;transform:none !important;}</style>
+  </noscript>
+</head>
+<body>
+
+  <!-- =========================================================
+       RESERVED FOR PHASE 3: Three.js canvas mounts here.
+       Intentionally empty and inert in Phase 1. Fixed behind
+       content so a future scroll-driven 3D scene can slot in
+       without restructuring the document.
+       ========================================================= -->
+  <div id="canvas-root" aria-hidden="true"></div>
+
+  <!-- Navigation -->
+  <header class="site-nav">
+    <a class="site-nav__brand" href="#hero">Khaylub Thompson-Calvin</a>
+    <nav class="site-nav__links" aria-label="Primary">
+      <a href="#about">About</a>
+      <a href="#journey">Journey</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- SECTION 1 — HERO / ARRIVAL (Shot 0) -->
+    <section id="hero" class="section section--hero" data-palette="dawn" data-scene="hero">
+      <!-- Blender scene: the Wanderer on the trail. Place the render at assets/wanderer-hero.jpg -->
+      <div class="hero__scene" aria-hidden="true"></div>
+      <div class="container hero__inner">
+        <p class="eyebrow reveal">Khaylub Thompson-Calvin</p>
+        <h1 class="hero__title reveal">Toward the Summit</h1>
+        <p class="hero__line reveal">The climbing is the part that lasts.</p>
+        <div class="hero__actions reveal">
+          <a class="cta" href="#about">Follow the trail</a>
+          <a class="link-arrow" href="#projects">Skip to the work</a>
+        </div>
+      </div>
+      <span class="scroll-hint" aria-hidden="true">Scroll to begin</span>
+    </section>
+
+    <!-- SECTION 2 — ABOUT / THE TRAVELER -->
+    <section id="about" class="section section--about" data-palette="dawn" data-scene="about">
+      <div class="container">
+        <p class="eyebrow reveal">The Traveler</p>
+        <h2 class="section__title reveal">A journey in progress</h2>
+        <p class="lede reveal">A mountain isn't somewhere you arrive. It's the walking — the same stretch of trail crossed enough times that you're not quite the person who started it.</p>
+        <p class="about__body reveal">I'm a CIS student documenting the climb from curiosity to craft — learning the web now, with Blender and cybersecurity further up the trail. I'd rather show the climb than stage the summit, so this is the honest record: what's finished, what's still rough, and what's only a shape in the distance.</p>
+        <p class="roles reveal">CIS Student &middot; Web Developer &middot; Blender Artist &middot; Toward Cybersecurity</p>
+
+        <details class="disclosure more reveal">
+          <summary>Read the full story</summary>
+          <div class="disclosure__body">
+            <p>I came to code the way you reach a trailhead — not certain of the summit, only sure I wanted to walk. This site is the trailhead of a longer Wanderer journey I haven't built yet: something made slowly, in the open, long before the climb is finished.</p>
+            <p>I'd rather a visitor see the rough switchbacks than a staged photo at the top — so everything here is marked honestly: finished, still rough, or only a shape in the distance.</p>
+          </div>
+        </details>
+
+        <div class="climbing reveal">
+          <p class="climbing__label">Currently climbing</p>
+          <ul class="climbing__list">
+            <li>Web development — HTML, CSS, JavaScript</li>
+            <li>3D art and animation — Blender</li>
+            <li>Cybersecurity — fundamentals, and a hardened build of this site</li>
+          </ul>
+        </div>
+
+        <p class="closing-line reveal">Delayed is not defeated. The work that follows documents the ascent.</p>
+      </div>
+    </section>
+
+    <!-- SECTION 3 — JOURNEY / THE ASCENT (Shot 2) -->
+    <section id="journey" class="section section--journey" data-palette="alpine" data-scene="ascent">
+      <div class="container">
+        <p class="eyebrow reveal">The Ascent</p>
+        <h2 class="section__title reveal">Elevation gained</h2>
+        <p class="lede reveal">Each project is a camp. Each skill, a trail marked.</p>
+        <p class="sub-line reveal">The journey is cumulative, never linear.</p>
+
+        <ol class="waypoints">
+          <li class="waypoint reveal"><span class="waypoint__marker"></span>
+            <details class="disclosure"><summary>Math 65 Test-Out</summary>
+              <div class="disclosure__body"><p>Testing out of the prerequisite to keep the CIS path moving — clearing the gate, not skipping the ground.</p></div>
+            </details>
+          </li>
+          <li class="waypoint reveal"><span class="waypoint__marker"></span>
+            <details class="disclosure"><summary>Web Fundamentals</summary>
+              <div class="disclosure__body"><p>HTML, CSS, and JavaScript — learned by building this site by hand. No framework, no shortcuts.</p></div>
+            </details>
+          </li>
+          <li class="waypoint reveal"><span class="waypoint__marker"></span>
+            <details class="disclosure"><summary>Blender Basics</summary>
+              <div class="disclosure__body"><p>Modeling, rigging, and rendering the Wanderer — the character this whole site is being built around.</p></div>
+            </details>
+          </li>
+          <li class="waypoint reveal"><span class="waypoint__marker"></span>
+            <details class="disclosure"><summary>CIS Coursework</summary>
+              <div class="disclosure__body"><p>The degree underneath it all at Portland Community College, heading toward cybersecurity.</p></div>
+            </details>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- SECTION 4 — PROJECTS / WHAT I'VE CARRIED (Shot 4) -->
+    <section id="projects" class="section section--projects" data-palette="alpine" data-scene="projects">
+      <div class="container">
+        <p class="eyebrow reveal">What I've Carried</p>
+        <h2 class="section__title reveal">The work, so far</h2>
+        <p class="lede reveal">Each reflects a season of learning.</p>
+
+        <div class="cards">
+          <article class="card reveal" data-project="khaylub">
+            <div class="card__head">
+              <h3 class="card__title">Khaylub.com</h3>
+              <span class="badge badge--progress">In progress</span>
+            </div>
+            <p class="card__desc">Personal portfolio and 3D storytelling — the journey you are on now.</p>
+            <details class="disclosure"><summary>Open case study</summary>
+              <div class="disclosure__body">
+                <div><h4>Problem</h4><p>Most junior portfolios look the same and say little. I wanted a home that proves I finish things and tells the story behind them.</p></div>
+                <div><h4>Approach</h4><p>Hand-built static site — no framework — designed as a scroll-driven climb, with a reserved canvas for a Three.js Wanderer scene to mount into later.</p></div>
+                <div><h4>Where it stands</h4><p>Phase 1 live build; the Blender Wanderer and dynamic scroll layers are in progress.</p></div>
+              </div>
+            </details>
+          </article>
+
+          <article class="card reveal" data-project="eyesunclouded">
+            <div class="card__head">
+              <h3 class="card__title">EyesUnclouded.ai</h3>
+              <span class="badge badge--concept">Concept</span>
+            </div>
+            <p class="card__desc">An AI-guided approach to perception and clearer thinking.</p>
+            <details class="disclosure"><summary>Open case study</summary>
+              <div class="disclosure__body">
+                <div><h4>The idea</h4><p>A guide for seeing situations more clearly — cutting through noise toward honest perception.</p></div>
+                <div><h4>Where it stands</h4><p>Concept stage; earlier work runs as a separate live prototype while the direction settles.</p></div>
+              </div>
+            </details>
+          </article>
+
+          <article class="card reveal" data-project="cloelia">
+            <div class="card__head">
+              <h3 class="card__title">Cloelia.ai</h3>
+              <span class="badge badge--concept">Concept</span>
+            </div>
+            <p class="card__desc">Exploring classical texts through a modern, interactive lens.</p>
+            <details class="disclosure"><summary>Open case study</summary>
+              <div class="disclosure__body">
+                <div><h4>The idea</h4><p>Bring classical texts within reach — a companion for finding footing through learning and hard choices. Named for Cloelia, who crossed the river anyway.</p></div>
+                <div><h4>Where it stands</h4><p>Concept stage — a marker on the ridge, not yet built.</p></div>
+              </div>
+            </details>
+          </article>
+
+          <article class="card reveal" data-project="manors">
+            <div class="card__head">
+              <h3 class="card__title">Manors.ai</h3>
+              <span class="badge badge--concept">Concept</span>
+            </div>
+            <p class="card__desc">A property management concept built around intelligent assistance.</p>
+            <details class="disclosure"><summary>Open case study</summary>
+              <div class="disclosure__body">
+                <div><h4>The idea</h4><p>Skilled-trade craft meeting newer tools — intelligent assistance for managing property and the work around it.</p></div>
+                <div><h4>Where it stands</h4><p>Concept stage — far off, barely in view. Still a line on the map.</p></div>
+              </div>
+            </details>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 5 — CONTACT / THE SUMMIT (Shot 6) -->
+    <section id="contact" class="section section--contact" data-palette="summit" data-scene="summit">
+      <div class="container contact__inner">
+        <p class="eyebrow reveal">Reach Out</p>
+        <h2 class="section__title reveal">The journey is open to collaboration</h2>
+        <a class="contact__email reveal" href="mailto:hello@khaylub.com">hello@khaylub.com</a>
+        <p class="closing-line reveal">Continue the story &rarr;</p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>&copy; <span id="year"></span> Khaylub Thompson-Calvin</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

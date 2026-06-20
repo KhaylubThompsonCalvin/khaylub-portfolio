@@ -1,0 +1,26 @@
+{
+  "name": "khaylub-com",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Khaylub.com — the Wanderer experience. One hero character, one continuous scroll-driven 3D timeline.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@react-three/drei": "^9.114.0",
+    "@react-three/fiber": "^8.17.10",
+    "gsap": "^3.12.5",
+    "lenis": "^1.1.14",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "three": "^0.160.1",
+    "zustand": "^4.5.5"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.2",
+    "vite": "^5.4.21"
+  }
+}

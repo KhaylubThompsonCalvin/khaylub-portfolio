@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Khaylub.com — The Climb</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  :root{--font-display:Georgia,'Times New Roman',serif;
+        --font-body:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;}
+  html,body{background:#0b0b0d;color:#241c12;}
+  .track{height:820vh;position:relative;}          /* scroll distance */
+  .stage{position:fixed;inset:0;overflow:hidden;background:#0b0b0d;}
+  #frame{position:absolute;inset:0;width:100%;height:100%;display:block;}
+  .fog{position:absolute;inset:0;pointer-events:none;background:transparent;}
+  .narration{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+             pointer-events:none;padding:0 8vw;text-align:center;}
+  .beat{position:absolute;max-width:18ch;opacity:0;transform:translateY(14px);
+        transition:opacity .5s ease,transform .5s ease;font-family:var(--font-display);
+        line-height:1.18;letter-spacing:-0.01em;color:#241c12;
+        font-size:clamp(1.7rem,4.2vw,3.2rem);text-shadow:0 1px 30px rgba(255,250,240,.6);}
+  .beat.light{color:#f3efe8;text-shadow:0 1px 34px rgba(0,0,0,.55);}
+  .beat.small{font-size:clamp(1.1rem,2.4vw,1.55rem);max-width:26ch;}
+  .beat.on{opacity:1;transform:none;}
+  .beat .who{display:block;font-family:var(--font-body);letter-spacing:.18em;text-transform:uppercase;
+             font-size:clamp(.62rem,1.3vw,.8rem);opacity:.7;margin-bottom:1rem;}
+  /* portals */
+  .portals{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;gap:clamp(1rem,4vw,3rem);
+           opacity:0;transition:opacity .7s;pointer-events:none;z-index:4;flex-wrap:wrap;padding:0 6vw;}
+  .portals.on{opacity:1;pointer-events:auto;}
+  .portal{font-family:var(--font-body);font-size:clamp(.8rem,1.4vw,1rem);letter-spacing:.04em;
+          color:#f3efe8;text-decoration:none;padding:.9rem 1.6rem;border-radius:999px;
+          border:1px solid rgba(243,239,232,.45);background:rgba(20,18,24,.35);backdrop-filter:blur(6px);
+          transition:transform .25s,background .25s;}
+  .portal:hover{transform:translateY(-3px);background:rgba(40,36,48,.55);}
+  /* chrome */
+  .topbar{position:fixed;top:0;left:0;right:0;height:3px;z-index:6;background:rgba(0,0,0,.08);}
+  .topbar i{display:block;height:100%;width:0;background:#caa46f;}
+  .brand{position:fixed;top:1.1rem;left:1.3rem;z-index:6;font-family:var(--font-display);
+         font-size:1rem;color:#2c2419;mix-blend-mode:multiply;}
+  .cue{position:fixed;bottom:1.3rem;left:50%;transform:translateX(-50%);z-index:6;
+       font-family:var(--font-body);font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;
+       color:#5b513f;opacity:0;transition:opacity .4s;animation:bob 2.2s ease-in-out infinite;}
+  .cue.on{opacity:.85;}
+  @keyframes bob{0%,100%{transform:translate(-50%,0);}50%{transform:translate(-50%,6px);}}
+  .loading{position:fixed;right:1rem;bottom:1rem;z-index:6;font-family:var(--font-body);
+           font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;color:#6b6253;
+           background:rgba(255,250,240,.6);border:1px solid rgba(120,104,84,.25);
+           padding:.3rem .6rem;border-radius:999px;opacity:.85;}
+  @media(prefers-reduced-motion:reduce){.cue{animation:none;}}
+</style>
+</head>
+<body>
+<div class="topbar"><i id="bar"></i></div>
+<div class="brand">Khaylub Thompson-Calvin</div>
+
+<div class="track">
+  <div class="stage" aria-hidden="true">
+    <canvas id="frame"></canvas>
+    <div class="fog" id="fog"></div>
+    <div class="narration" id="narration"></div>
+  </div>
+</div>
+
+<nav class="portals" id="portals" aria-label="Sections">
+  <a class="portal" href="#about">About</a>
+  <a class="portal" href="#projects">Projects</a>
+  <a class="portal" href="#blender">Blender Journey</a>
+  <a class="portal" href="#contact">Contact</a>
+</nav>
+
+<div class="cue" id="cue">Scroll</div>
+<div class="loading" id="loading">scene: drawn fallback</div>
+
+<script>
+(() => {
+  // ---- CONFIG: update frameCount to whatever you actually render ----
+  const CONFIG = {
+    framePath: 'assets/sequence/frame_',  // -> assets/sequence/frame_0001.jpg
+    pad: 4, ext: '.jpg',
+    frameCount: 12,    // 12 real verification frames rendered from Blender (frames 1..820). Re-render denser later.
+  };
+  // ---- BEATS: keyed to scroll fraction (0..1), independent of frame count ----
+  // Text is Kt's own — from the approved quote bank (Letter to Time / Lock-In).
+  const BEATS = [
+    {p:0.00, w:0.09, who:'Khaylub.com', text:'This site documents the climb, not the arrival.'},
+    {p:0.11, w:0.09, text:'Growth follows its own timeline.'},
+    {p:0.22, w:0.07, text:'How far?'},
+    {p:0.34, w:0.09, small:true, text:'Human potential does not follow a universal timeline.'},
+    {p:0.44, w:0.08, text:'Feeling behind is not the same as failing.'},
+    {p:0.57, w:0.09, text:'A single loss does not mean you have lost forever.'},
+    {p:0.68, w:0.08, text:'Success is not racing against time.'},
+    {p:0.79, w:0.09, text:'Delayed is not defeated.'},
+    {p:0.89, w:0.11, small:true, text:'The summit was never the point. The climb changed the traveler.'},
+  ];
+  const SEAMS = [0.22, 0.44, 0.68];      // fog crossfade points
+  const PORTAL_FROM = 0.92;              // portals fade in near the REVEAL
+
+  const clamp=(n,a=0,b=1)=>Math.min(b,Math.max(a,n));
+  const lerp=(a,b,t)=>a+(b-a)*t;
+  const pad=(n)=>String(n).padStart(CONFIG.pad,'0');
+
+  // build narration DOM
+  const narration=document.getElementById('narration');
+  BEATS.forEach(b=>{
+    const el=document.createElement('div');
+    el.className='beat'+(b.small?' small':'');
+    el.innerHTML=(b.who?`<span class="who">${b.who}</span>`:'')+b.text;
+    b.el=el; narration.appendChild(el);
+  });
+
+  const cv=document.getElementById('frame'), ctx=cv.getContext('2d');
+  const fog=document.getElementById('fog'), bar=document.getElementById('bar'),
+        cue=document.getElementById('cue'), portals=document.getElementById('portals'),
+        loading=document.getElementById('loading');
+
+  let dpr=Math.min(2,window.devicePixelRatio||1);
+  function size(){ dpr=Math.min(2,window.devicePixelRatio||1);
+    cv.width=innerWidth*dpr; cv.height=innerHeight*dpr; render(); }
+
+  // ---------- frame sequence (real Blender frames) ----------
+  const frames=new Array(CONFIG.frameCount).fill(null);
+  let loadedCount=0, REAL=false;
+
+  function coverDraw(img){
+    const cw=cv.width, ch=cv.height, iw=img.width, ih=img.height;
+    const s=Math.max(cw/iw, ch/ih), w=iw*s, h=ih*s;
+    ctx.drawImage(img,(cw-w)/2,(ch-h)/2,w,h);
+  }
+  function nearestLoaded(idx){
+    if(frames[idx]) return frames[idx];
+    for(let d=1;d<CONFIG.frameCount;d++){
+      if(frames[idx-d]) return frames[idx-d];
+      if(frames[idx+d]) return frames[idx+d];
+    }
+    return null;
+  }
+  function preloadSequence(){
+    let i=0;
+    const next=()=>{
+      if(i>=CONFIG.frameCount) return;
+      const k=i++, img=new Image();
+      img.onload=()=>{ frames[k]=img; loadedCount++;
+        loading.textContent=`frames ${loadedCount}/${CONFIG.frameCount}`;
+        if(loadedCount===CONFIG.frameCount) loading.style.opacity=0;
+        render(); next(); };
+      img.onerror=()=>{ next(); };
+      img.src=CONFIG.framePath+pad(k+1)+CONFIG.ext;
+    };
+    // a few parallel loaders
+    for(let p=0;p<4;p++) next();
+  }
+
+  // ---------- procedural fallback scene (until frames exist) ----------
+  const STOPS=[
+    {p:0.00,top:[245,221,196],bot:[255,250,240]},
+    {p:0.30,top:[222,210,200],bot:[245,232,214]},
+    {p:0.55,top:[197,206,224],bot:[225,231,240]},
+    {p:1.00,top:[224,234,246],bot:[247,250,253]},
+  ];
+  const mix=(a,b,t)=>a.map((v,i)=>Math.round(lerp(v,b[i],t)));
+  function palette(p){let a=STOPS[0],b=STOPS[STOPS.length-1];
+    for(let i=0;i<STOPS.length-1;i++){if(p>=STOPS[i].p&&p<=STOPS[i+1].p){a=STOPS[i];b=STOPS[i+1];break;}}
+    const t=(p-a.p)/((b.p-a.p)||1);return{top:mix(a.top,b.top,t),bot:mix(a.bot,b.bot,t)};}
+  const ridge=(pts)=>{const path=new Path2D();path.moveTo(pts[0][0],pts[0][1]);
+    for(let i=1;i<pts.length;i++)path.lineTo(pts[i][0],pts[i][1]);path.closePath();return path;};
+  function drawFallback(p){
+    const w=cv.width,h=cv.height,pal=palette(p);
+    const g=ctx.createLinearGradient(0,0,0,h);
+    g.addColorStop(0,`rgb(${pal.top})`);g.addColorStop(.8,`rgb(${pal.bot})`);
+    ctx.fillStyle=g;ctx.fillRect(0,0,w,h);
+    // sun glow
+    const gx=lerp(.38,.6,p)*w, gy=lerp(.26,.12,p)*h, r=Math.max(w,h)*.4;
+    const rg=ctx.createRadialGradient(gx,gy,0,gx,gy,r);
+    rg.addColorStop(0,'rgba(255,255,255,.85)');rg.addColorStop(.6,'rgba(255,255,255,0)');
+    ctx.fillStyle=rg;ctx.fillRect(0,0,w,h);
+    // ridges (parallax)
+    const layers=[
+      {ty:lerp(.10,.5,p),sc:lerp(1,1.5,p),col:`rgba(150,150,165,.5)`,pts:[[-.05,.55],[.15,.38],[.3,.54],[.47,.32],[.63,.53],[.8,.36],[1.05,.53],[1.05,1],[-.05,1]]},
+      {ty:lerp(.2,.85,p),sc:lerp(1,1.7,p),col:`rgba(110,108,124,.6)`,pts:[[-.05,.62],[.2,.7],[.39,.5],[.58,.68],[.78,.52],[1.05,.66],[1.05,1],[-.05,1]]},
+      {ty:lerp(.3,1.2,p),sc:lerp(1,2,p),col:`rgba(70,66,78,.75)`,pts:[[-.05,.72],[.22,.78],[.43,.62],[.65,.8],[.87,.66],[1.05,.78],[1.05,1],[-.05,1]]},
+    ];
+    layers.forEach(L=>{ctx.save();ctx.translate(0,L.ty*h*.2);ctx.fillStyle=L.col;
+      ctx.fill(ridge(L.pts.map(pt=>[pt[0]*w,pt[1]*h])));ctx.restore();});
+    // wanderer climbing
+    const wx=(.5+.1*Math.sin(p*Math.PI*1.2))*w, wy=lerp(.74,.34,p)*h, ws=lerp(1.1,.32,p)*dpr;
+    const step=Math.sin(p*Math.PI*2*26);
+    ctx.save();ctx.translate(wx,wy);ctx.scale(ws,ws);ctx.fillStyle='#2b2218';
+    ctx.beginPath();ctx.ellipse(0,-34,7,8,0,0,7);ctx.fill();      // head
+    ctx.fillRect(-8,-26,16,26);                                   // torso
+    ctx.fillRect(8,-24,9,20);                                     // pack
+    ctx.save();ctx.rotate(step*.25);ctx.fillRect(-7,0,5,22);ctx.restore();
+    ctx.save();ctx.rotate(-step*.25);ctx.fillRect(2,0,5,22);ctx.restore();
+    ctx.restore();
+  }
+
+  // ---------- master render on scroll ----------
+  function render(){
+    const max=document.documentElement.scrollHeight-innerHeight;
+    const p=clamp(scrollY/(max||1));
+    if(REAL){ const idx=clamp(Math.round(p*(CONFIG.frameCount-1)),0,CONFIG.frameCount-1);
+      const img=nearestLoaded(idx); if(img){ctx.clearRect(0,0,cv.width,cv.height);coverDraw(img);} }
+    else drawFallback(p);
+
+    // fog seams (crossfade) — rides on top in both modes
+    let f=0; SEAMS.forEach(s=>{f=Math.max(f,1-Math.min(1,Math.abs(p-s)/0.045));});
+    fog.style.background=`radial-gradient(130% 80% at 50% 58%, rgba(248,247,244,${0.9*f}), rgba(248,247,244,0) 72%)`;
+
+    // beats
+    BEATS.forEach(b=>{const on=Math.abs(p-b.p)<b.w/2;b.el.classList.toggle('on',on);
+      b.el.classList.toggle('light', REAL && p>0.55);});  // switch to light text on darker frames
+    // chrome + portals
+    bar.style.width=(p*100)+'%';
+    cue.classList.toggle('on',p<0.06);
+    portals.classList.toggle('on',p>PORTAL_FROM);
+  }
+
+  let ticking=false;
+  addEventListener('scroll',()=>{if(!ticking){ticking=true;requestAnimationFrame(()=>{render();ticking=false;});}},{passive:true});
+  addEventListener('resize',size,{passive:true});
+
+  // probe for real frames; if frame 1 loads, switch to sequence mode
+  const probe=new Image();
+  probe.onload=()=>{REAL=true;frames[0]=probe;loadedCount=1;loading.textContent='loading frames…';preloadSequence();size();};
+  probe.onerror=()=>{REAL=false;loading.textContent='scene: drawn fallback (render frames to replace)';size();};
+  probe.src=CONFIG.framePath+pad(1)+CONFIG.ext;
+  size();
+})();
+</script>
+</body>
+</html>

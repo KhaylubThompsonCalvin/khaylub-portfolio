@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Khaylub.com — The Climb (Live 3D)</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  :root{--font-display:Georgia,'Times New Roman',serif;
+        --font-body:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;}
+  html,body{background:#efe7dc;color:#241c12;}
+  .track{height:760vh;position:relative;}
+  #sky{position:fixed;inset:0;z-index:0;}
+  #c{position:fixed;inset:0;z-index:1;display:block;}
+  .overlay{position:fixed;inset:0;z-index:2;pointer-events:none;}
+  .narration{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+             padding:0 8vw;text-align:center;}
+  .beat{position:absolute;max-width:18ch;opacity:0;transform:translateY(14px);
+        transition:opacity .5s ease,transform .5s ease;font-family:var(--font-display);
+        line-height:1.18;letter-spacing:-0.01em;color:#241c12;
+        font-size:clamp(1.7rem,4.2vw,3.2rem);text-shadow:0 1px 30px rgba(255,250,240,.6);}
+  .beat.small{font-size:clamp(1.1rem,2.4vw,1.55rem);max-width:26ch;}
+  .beat.on{opacity:1;transform:none;}
+  .beat .who{display:block;font-family:var(--font-body);letter-spacing:.18em;text-transform:uppercase;
+             font-size:clamp(.62rem,1.3vw,.8rem);opacity:.7;margin-bottom:1rem;}
+  .portals{position:fixed;inset:0;z-index:3;display:flex;align-items:center;justify-content:center;
+           gap:clamp(1rem,4vw,3rem);opacity:0;transition:opacity .7s;pointer-events:none;flex-wrap:wrap;padding:0 6vw;}
+  .portals.on{opacity:1;pointer-events:auto;}
+  .portal{font-family:var(--font-body);font-size:clamp(.8rem,1.4vw,1rem);letter-spacing:.04em;
+          color:#241c12;text-decoration:none;padding:.9rem 1.6rem;border-radius:999px;
+          border:1px solid rgba(40,32,20,.35);background:rgba(255,250,240,.4);backdrop-filter:blur(6px);
+          transition:transform .25s,background .25s;}
+  .portal:hover{transform:translateY(-3px);background:rgba(255,250,240,.7);}
+  .topbar{position:fixed;top:0;left:0;right:0;height:3px;z-index:5;background:rgba(0,0,0,.06);}
+  .topbar i{display:block;height:100%;width:0;background:#caa46f;}
+  .brand{position:fixed;top:1.1rem;left:1.3rem;z-index:5;font-family:var(--font-display);font-size:1rem;color:#2c2419;}
+  .cue{position:fixed;bottom:1.3rem;left:50%;transform:translateX(-50%);z-index:5;
+       font-family:var(--font-body);font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;
+       color:#5b513f;opacity:0;transition:opacity .4s;animation:bob 2.2s ease-in-out infinite;}
+  .cue.on{opacity:.85;}
+  @keyframes bob{0%,100%{transform:translate(-50%,0);}50%{transform:translate(-50%,6px);}}
+  .loader{position:fixed;inset:0;z-index:8;display:flex;align-items:center;justify-content:center;
+          flex-direction:column;gap:1rem;background:#efe7dc;font-family:var(--font-body);color:#5b513f;
+          transition:opacity .6s;}
+  .loader.hide{opacity:0;pointer-events:none;}
+  .loader .ring{width:42px;height:42px;border-radius:50%;border:3px solid rgba(120,104,84,.25);
+                border-top-color:#caa46f;animation:spin 1s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .err{max-width:30ch;text-align:center;font-size:.85rem;line-height:1.5;}
+  @media(prefers-reduced-motion:reduce){.cue{animation:none;}}
+</style>
+</head>
+<body>
+<div class="topbar"><i id="bar"></i></div>
+<div class="brand">Khaylub Thompson-Calvin</div>
+
+<canvas id="sky"></canvas>
+<div class="track"><canvas id="c"></canvas></div>
+
+<div class="overlay">
+  <div class="narration" id="narration"></div>
+</div>
+<nav class="portals" id="portals" aria-label="Sections">
+  <a class="portal" href="#about">About</a>
+  <a class="portal" href="#projects">Projects</a>
+  <a class="portal" href="#blender">Blender Journey</a>
+  <a class="portal" href="#contact">Contact</a>
+</nav>
+<div class="cue" id="cue">Scroll</div>
+<div class="loader" id="loader"><div class="ring"></div><div id="loadtext">Loading the Wanderer…</div></div>
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+}}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
+import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
+
+// ---------- config ----------
+const GLB = 'assets/wanderer-web.glb';
+const MODEL_YAW_DEG = 0;     // rotate model if it faces the wrong way (try 90/180/-90)
+const TARGET_HEIGHT = 1.75;  // metres; model is auto-scaled to this
+
+// narration beats — Kt's own lines, keyed to scroll fraction
+const BEATS = [
+  {p:0.00,w:0.09,who:'Khaylub.com',text:'This site documents the climb, not the arrival.'},
+  {p:0.12,w:0.09,text:'Growth follows its own timeline.'},
+  {p:0.24,w:0.07,text:'How far?'},
+  {p:0.37,w:0.09,small:true,text:'Human potential does not follow a universal timeline.'},
+  {p:0.50,w:0.08,text:'A single loss does not mean you have lost forever.'},
+  {p:0.64,w:0.08,text:'Success is not racing against time.'},
+  {p:0.78,w:0.09,text:'Delayed is not defeated.'},
+  {p:0.90,w:0.11,small:true,text:'The summit was never the point. The climb changed the traveler.'},
+];
+const SEAMS=[0.24,0.50,0.64];
+const PORTAL_FROM=0.9;
+
+// camera path keyframes (after model normalized: feet at y=0, centred at x/z=0)
+const CAM=[
+  {p:0.00,pos:[0.0,1.30,3.4],tgt:[0,1.05,0]},
+  {p:0.50,pos:[2.3,1.95,2.4],tgt:[0,1.15,0]},
+  {p:0.88,pos:[0.7,1.55,1.9],tgt:[0,1.25,0]},
+  {p:1.00,pos:[-0.95,1.5,1.0],tgt:[0,1.4,0]},
+];
+
+const clamp=(n,a=0,b=1)=>Math.min(b,Math.max(a,n));
+const lerp=(a,b,t)=>a+(b-a)*t;
+
+// ---------- narration DOM ----------
+const narration=document.getElementById('narration');
+BEATS.forEach(b=>{const el=document.createElement('div');el.className='beat'+(b.small?' small':'');
+  el.innerHTML=(b.who?`<span class="who">${b.who}</span>`:'')+b.text;b.el=el;narration.appendChild(el);});
+const bar=document.getElementById('bar'),cue=document.getElementById('cue'),
+      portals=document.getElementById('portals'),loader=document.getElementById('loader'),
+      loadtext=document.getElementById('loadtext');
+
+// ---------- CSS-ish sky gradient on its own canvas (shifts by scroll) ----------
+const sky=document.getElementById('sky'),sx=sky.getContext('2d');
+const SKY=[ {p:0,top:[238,225,205],bot:[247,240,228]},
+           {p:.5,top:[214,214,222],bot:[236,232,224]},
+           {p:1,top:[222,230,242],bot:[245,248,250]} ];
+const mix=(a,b,t)=>a.map((v,i)=>Math.round(lerp(v,b[i],t)));
+function skyAt(p){let a=SKY[0],b=SKY[SKY.length-1];
+  for(let i=0;i<SKY.length-1;i++){if(p>=SKY[i].p&&p<=SKY[i+1].p){a=SKY[i];b=SKY[i+1];break;}}
+  const t=(p-a.p)/((b.p-a.p)||1);return{top:mix(a.top,b.top,t),bot:mix(a.bot,b.bot,t)};}
+function drawSky(p){const w=sky.width,h=sky.height,c=skyAt(p);
+  const g=sx.createLinearGradient(0,0,0,h);g.addColorStop(0,`rgb(${c.top})`);g.addColorStop(1,`rgb(${c.bot})`);
+  sx.fillStyle=g;sx.fillRect(0,0,w,h);
+  // soft fog band
+  let f=0;SEAMS.forEach(s=>{f=Math.max(f,1-Math.min(1,Math.abs(p-s)/0.05));});
+  if(f>0){sx.fillStyle=`rgba(248,247,244,${0.85*f})`;sx.fillRect(0,0,w,h);} }
+
+// ---------- three.js ----------
+const canvas=document.getElementById('c');
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
+renderer.outputColorSpace=THREE.SRGBColorSpace;
+renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.05;
+renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+
+const scene=new THREE.Scene();
+scene.fog=new THREE.FogExp2(0xe8ded0,0.085);
+const camera=new THREE.PerspectiveCamera(38,1,0.1,100);
+
+const hemi=new THREE.HemisphereLight(0xf3e8d4,0xb09a7e,1.1);scene.add(hemi);
+const sun=new THREE.DirectionalLight(0xfff1dc,2.1);sun.position.set(3,6,4);
+sun.castShadow=true;sun.shadow.mapSize.set(1024,1024);
+sun.shadow.camera.near=0.5;sun.shadow.camera.far=30;
+sun.shadow.camera.left=-6;sun.shadow.camera.right=6;sun.shadow.camera.top=6;sun.shadow.camera.bottom=-6;
+scene.add(sun);
+scene.add(new THREE.AmbientLight(0xffffff,0.25));
+
+// ground
+const ground=new THREE.Mesh(new THREE.CircleGeometry(40,48),
+  new THREE.MeshStandardMaterial({color:0xc8b79a,roughness:1}));
+ground.rotation.x=-Math.PI/2;ground.receiveShadow=true;scene.add(ground);
+
+let mixer=null,clipDur=0,model=null;
+const loaderGLTF=new GLTFLoader();
+const draco=new DRACOLoader();draco.setDecoderPath('https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/libs/draco/');
+loaderGLTF.setDRACOLoader(draco);loaderGLTF.setMeshoptDecoder(MeshoptDecoder);
+
+loaderGLTF.load(GLB,(gltf)=>{
+  model=gltf.scene;
+  // normalize: centre on x/z, feet to y=0, scale to TARGET_HEIGHT
+  model.rotation.y=THREE.MathUtils.degToRad(MODEL_YAW_DEG);
+  let box=new THREE.Box3().setFromObject(model);
+  const size=new THREE.Vector3();box.getSize(size);
+  const s=TARGET_HEIGHT/(size.y||1);model.scale.setScalar(s);
+  box=new THREE.Box3().setFromObject(model);
+  const c=new THREE.Vector3();box.getCenter(c);
+  model.position.x-=c.x;model.position.z-=c.z;model.position.y-=box.min.y;
+  model.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true;}});
+  scene.add(model);
+  if(gltf.animations&&gltf.animations.length){
+    mixer=new THREE.AnimationMixer(model);
+    gltf.animations.forEach(cl=>{const a=mixer.clipAction(cl);a.play();clipDur=Math.max(clipDur,cl.duration);});
+  }
+  loader.classList.add('hide');
+  resize();render();
+},
+(ev)=>{ if(ev.total){loadtext.textContent=`Loading the Wanderer… ${Math.round(ev.loaded/ev.total*100)}%`;} },
+(err)=>{ loader.innerHTML='<div class="err">Could not load the 3D model.<br>Check that <b>assets/wanderer-web.glb</b> sits next to this file, and open via a local server (not file://) so the browser allows it.</div>'; console.error(err); });
+
+// ---------- scroll-driven update ----------
+function camAt(p){
+  let a=CAM[0],b=CAM[CAM.length-1];
+  for(let i=0;i<CAM.length-1;i++){if(p>=CAM[i].p&&p<=CAM[i+1].p){a=CAM[i];b=CAM[i+1];break;}}
+  const t=(p-a.p)/((b.p-a.p)||1);
+  camera.position.set(lerp(a.pos[0],b.pos[0],t),lerp(a.pos[1],b.pos[1],t),lerp(a.pos[2],b.pos[2],t));
+  camera.lookAt(lerp(a.tgt[0],b.tgt[0],t),lerp(a.tgt[1],b.tgt[1],t),lerp(a.tgt[2],b.tgt[2],t));
+}
+function progress(){const max=document.documentElement.scrollHeight-innerHeight;return clamp(scrollY/(max||1));}
+function render(){
+  const p=progress();
+  drawSky(p);
+  camAt(p);
+  if(mixer&&clipDur) mixer.setTime(p*clipDur);   // scroll scrubs the walk
+  renderer.render(scene,camera);
+  BEATS.forEach(b=>b.el.classList.toggle('on',Math.abs(p-b.p)<b.w/2));
+  bar.style.width=(p*100)+'%';cue.classList.toggle('on',p<0.06);
+  portals.classList.toggle('on',p>PORTAL_FROM);
+}
+function loop(){render();requestAnimationFrame(loop);}
+
+function resize(){
+  const w=innerWidth,h=innerHeight,dpr=Math.min(2,devicePixelRatio||1);
+  renderer.setPixelRatio(dpr);renderer.setSize(w,h,false);
+  camera.aspect=w/h;camera.updateProjectionMatrix();
+  sky.width=w*dpr;sky.height=h*dpr;
+}
+addEventListener('resize',resize,{passive:true});
+resize();drawSky(0);loop();
+</script>
+</body>
+</html>

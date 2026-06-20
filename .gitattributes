@@ -1,0 +1,14 @@
+# Normalize all text files to LF in the repository (consistent across Windows/macOS/Linux,
+# matches how the initial commit was stored). Working-tree checkout stays LF too.
+* text=auto eol=lf
+
+# Treat binary assets as binary — never normalize line endings, never diff as text.
+*.glb  binary
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.webp binary
+*.ico  binary
+*.woff  binary
+*.woff2 binary

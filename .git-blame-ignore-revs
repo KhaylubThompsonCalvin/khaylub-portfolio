@@ -1,0 +1,6 @@
+# Revisions to ignore in `git blame` (bulk, non-semantic reformatting).
+# Enable locally with:  git config blame.ignoreRevsFile .git-blame-ignore-revs
+# Add one full 40-char commit SHA per line, with a comment.
+
+# style: apply prettier formatting baseline
+b8771161881ed819d9c99defaa893388d00e7272

@@ -39,7 +39,7 @@ export default function Wanderer(props) {
       durRef.current = action.getClip().duration;
     }
     setReady(true);
-  }, [actions, names, setReady]);
+  }, [scene, actions, names, setReady]);
 
   // scrub: scrollProgress -> action.time (manual modulo loop, clamped after WALK_END)
   useFrame(() => {

@@ -200,6 +200,17 @@ a {
   background: var(--bg);
   cursor: pointer;
   transition: opacity 0.6s ease;
+  /* reset native <button> UA styles so the gate keeps its prior appearance */
+  appearance: none;
+  -webkit-appearance: none;
+  border: none;
+  width: 100%;
+  font: inherit;
+  color: inherit;
+}
+.gate:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: -6px;
 }
 .gate.hidden {
   opacity: 0;

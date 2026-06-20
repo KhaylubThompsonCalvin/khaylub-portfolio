@@ -8,14 +8,14 @@
 
 The Blender workspace at `Desktop/Blender/Wanderer/` is **fully scaffolded but empty**:
 
-| Folder | Contents |
-|--------|----------|
-| `blend-files/` | empty — no `.blend` files |
-| `renders/` | empty |
-| `references/` | empty |
-| `textures/` | empty |
-| `exports/` | empty |
-| `documentation/` | empty |
+| Folder           | Contents                  |
+| ---------------- | ------------------------- |
+| `blend-files/`   | empty — no `.blend` files |
+| `renders/`       | empty                     |
+| `references/`    | empty                     |
+| `textures/`      | empty                     |
+| `exports/`       | empty                     |
+| `documentation/` | empty                     |
 
 The project `assets/` folder is also empty. So against the roadmap, **Stage 1 (Character) has not started** — there is no body mesh to "finish," and no reference gathered yet.
 
@@ -47,7 +47,7 @@ A realistic, shippable week. Each day ends at a save point.
 
 Resist these — all are blocked or premature, and touching them now creates rework:
 
-- **Topology cleanup / retopo / detail sculpting.** This week is blockout only. Clean edge flow comes *after* proportions are locked — doing it now means redoing it when proportions shift.
+- **Topology cleanup / retopo / detail sculpting.** This week is blockout only. Clean edge flow comes _after_ proportions are locked — doing it now means redoing it when proportions shift.
 - **Clothing, backpack** (Stages 2–3) — need a finished body first.
 - **Rigging** (Stage 4) — rigging an unfinished mesh guarantees re-weighting.
 - **Animation** (Stage 5) — nothing to animate.
@@ -73,7 +73,7 @@ Downstream (not this week):
    Spring (6) needs 1–5 done; Summer/Fall/Winter (7–9) reuse Spring as template
 ```
 
-The critical-path truth: **Stage 1 is the only thing standing between you and the entire rest of the roadmap.** This week starts it. It will take more than one week to *finish* (the roadmap budgets ~3 weeks for Stage 1) — the blockout is the first third of it.
+The critical-path truth: **Stage 1 is the only thing standing between you and the entire rest of the roadmap.** This week starts it. It will take more than one week to _finish_ (the roadmap budgets ~3 weeks for Stage 1) — the blockout is the first third of it.
 
 ## Pacing notes for the week
 

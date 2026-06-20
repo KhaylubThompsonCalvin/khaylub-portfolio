@@ -11,8 +11,7 @@ export const identity = {
 // Phase 02 — Philosophy (verbatim from the master prompt)
 export const philosophy = {
   lead: 'The best systems are built one layer at a time.',
-  body:
-    'This portfolio documents that process: learning in public, building practical skills, and steadily expanding into new areas of technology.',
+  body: 'This portfolio documents that process: learning in public, building practical skills, and steadily expanding into new areas of technology.',
 };
 
 // Phase 03 — Areas of Focus

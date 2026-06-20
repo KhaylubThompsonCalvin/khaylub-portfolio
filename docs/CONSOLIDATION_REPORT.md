@@ -15,12 +15,12 @@ Per your decision, the static site wins as the present truth. The R3F documents 
 
 ## 1. Documents that reflect the current website
 
-| Document | Relationship to live site | Action |
-|----------|---------------------------|--------|
-| `website/index.html` | The site itself | Maintain |
-| `website/styles.css` | The site itself | Maintain |
-| `website/script.js` | The site itself | Maintain |
-| `README.md` | Mostly accurate intent, but "Current Status" and "Tech Stack" describe the R3F plan, not the static build | Keep, but treat `CURRENT_STATE.md` as the authority on what exists today |
+| Document             | Relationship to live site                                                                                 | Action                                                                   |
+| -------------------- | --------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| `website/index.html` | The site itself                                                                                           | Maintain                                                                 |
+| `website/styles.css` | The site itself                                                                                           | Maintain                                                                 |
+| `website/script.js`  | The site itself                                                                                           | Maintain                                                                 |
+| `README.md`          | Mostly accurate intent, but "Current Status" and "Tech Stack" describe the R3F plan, not the static build | Keep, but treat `CURRENT_STATE.md` as the authority on what exists today |
 
 There is currently **no prose document** that accurately describes the static site. `CURRENT_STATE.md` (new, created alongside this report) fills that gap.
 
@@ -28,11 +28,11 @@ There is currently **no prose document** that accurately describes the static si
 
 These remain valuable as a roadmap. They are reference material, not a description of today.
 
-| Document | Why it's future, not current |
-|----------|------------------------------|
-| `docs/architecture.md` | Specifies Next.js + R3F + GLB + Vercel + Tailwind. None of this is in the live site. This is the long-term migration target. |
-| `docs/build-plan.md` | Phase 2–4 content (project JSON schema, case studies, scroll cameras, hotspots) is genuine future scope. Its Phase 1 section is obsolete — Phase 1 already shipped as a static site by a different route. |
-| `docs/blender-export-pipeline.md` | The GLB export workflow only matters once R3F is adopted. Valuable for the Blender roadmap, but not needed by the current site. |
+| Document                          | Why it's future, not current                                                                                                                                                                              |
+| --------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `docs/architecture.md`            | Specifies Next.js + R3F + GLB + Vercel + Tailwind. None of this is in the live site. This is the long-term migration target.                                                                              |
+| `docs/build-plan.md`              | Phase 2–4 content (project JSON schema, case studies, scroll cameras, hotspots) is genuine future scope. Its Phase 1 section is obsolete — Phase 1 already shipped as a static site by a different route. |
+| `docs/blender-export-pipeline.md` | The GLB export workflow only matters once R3F is adopted. Valuable for the Blender roadmap, but not needed by the current site.                                                                           |
 
 `FUTURE_VISION.md` (new) gathers the genuinely forward-looking ideas into one place so these source docs can be read as background.
 
@@ -40,10 +40,10 @@ These remain valuable as a roadmap. They are reference material, not a descripti
 
 Nothing is deleted, but these contain claims that are factually untrue of the project as it stands:
 
-| Document | Obsolete element |
-|----------|------------------|
+| Document                       | Obsolete element                                                                                                                                                                                                                               |
+| ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `docs/phase-1-requirements.md` | Entire premise — "no website code until pre-code items complete," "hero is a GLB in a WebGL canvas," "website/ contains only the Next.js project." A static Phase 1 already exists. This document describes a Phase 1 that was never executed. |
-| `README.md` (sections only) | "Website code: Not started — `website/` intentionally empty" and the planned Next.js/Vercel/Tailwind stack table. The status line is the obsolete part; the vision and roadmap framing are still fine. |
+| `README.md` (sections only)    | "Website code: Not started — `website/` intentionally empty" and the planned Next.js/Vercel/Tailwind stack table. The status line is the obsolete part; the vision and roadmap framing are still fine.                                         |
 
 `phase-1-requirements.md` is the one document that is wholly superseded. Archived.
 
@@ -51,8 +51,8 @@ Nothing is deleted, but these contain claims that are factually untrue of the pr
 
 Moved to `docs/archive/`. Kept verbatim for historical reference and possible future revival, but pulled out of the active `docs/` reading path so they stop competing with the live site as "truth."
 
-| Document | Destination | Reason |
-|----------|-------------|--------|
+| Document                       | Destination                            | Reason                                                                                  |
+| ------------------------------ | -------------------------------------- | --------------------------------------------------------------------------------------- |
 | `docs/phase-1-requirements.md` | `docs/archive/phase-1-requirements.md` | Describes an unexecuted GLB-based Phase 1; fully superseded by the shipped static site. |
 
 `architecture.md`, `build-plan.md`, and `blender-export-pipeline.md` are **not** archived — they stay in `docs/` as the cited reference behind `FUTURE_VISION.md`, since their content is still the intended long-term direction.

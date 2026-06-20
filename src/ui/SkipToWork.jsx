@@ -5,6 +5,8 @@ export default function SkipToWork() {
     document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' });
   };
   return (
-    <button className="skip" onClick={go}>Skip to the work {'\u2193'}</button>
+    <button className="skip" onClick={go}>
+      Skip to the work {'\u2193'}
+    </button>
   );
 }

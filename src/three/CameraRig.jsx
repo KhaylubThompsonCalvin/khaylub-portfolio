@@ -19,8 +19,16 @@ const _b = new THREE.Vector3();
 function sample(p, outPos, outLook) {
   const first = SHOTS[0];
   const last = SHOTS[SHOTS.length - 1];
-  if (p <= first.at) { outPos.fromArray(first.pos); outLook.fromArray(first.look); return; }
-  if (p >= last.at) { outPos.fromArray(last.pos); outLook.fromArray(last.look); return; }
+  if (p <= first.at) {
+    outPos.fromArray(first.pos);
+    outLook.fromArray(first.look);
+    return;
+  }
+  if (p >= last.at) {
+    outPos.fromArray(last.pos);
+    outLook.fromArray(last.look);
+    return;
+  }
 
   let i = 0;
   while (i < SHOTS.length - 1 && p >= SHOTS[i + 1].at) i++;

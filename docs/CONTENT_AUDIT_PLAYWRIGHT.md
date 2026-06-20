@@ -1,16 +1,16 @@
 # Khaylub.com — Content Audit
 
 > Goal: identify every weak, fake, placeholder, unclear, or launch-damaging piece of content, so the site can launch **honest, professional, and launchable without Blender or R3F**.
-> Method note: this audit was performed against the **current source files** (`website/index.html`, `website/styles.css`), because the Playwright `file://` load is blocked in this environment (only `http(s)` URLs are allowed). All text, links, and claims below are quoted verbatim from source. A true *rendered* pass (for visual/contrast/layout defects) still needs a local server — `python -m http.server 8000` in `website/`, then a `localhost` inspection. Content findings do not depend on rendering.
+> Method note: this audit was performed against the **current source files** (`website/index.html`, `website/styles.css`), because the Playwright `file://` load is blocked in this environment (only `http(s)` URLs are allowed). All text, links, and claims below are quoted verbatim from source. A true _rendered_ pass (for visual/contrast/layout defects) still needs a local server — `python -m http.server 8000` in `website/`, then a `localhost` inspection. Content findings do not depend on rendering.
 > No site files were modified. This is an audit only.
 
 ---
 
 ## Cross-cutting findings (apply site-wide)
 
-1. **The site never says who "Khaylub" is or what the person does.** No name, no role, no location, no discipline stated plainly anywhere. For a portfolio, a first-time visitor (or employer) cannot answer "who is this and what do they do" — the dominant clarity problem. *Launch-relevant.*
-2. **"Eyes Unclouded" is overloaded.** The phrase is used as the loader title, a **project name** (an "AI-powered platform"), and the final **journey milestone**. Three different meanings for one phrase is confusing. *Polish, but fix before launch if projects are reworked anyway.*
-3. **Heavy on mountain-metaphor poetry, light on concrete facts.** The writing is polished but rarely says anything specific or verifiable. Combined with no project links and gradient (non-photo) thumbnails, the site risks reading as a beautiful **template with placeholder substance**. *Launch-relevant.*
+1. **The site never says who "Khaylub" is or what the person does.** No name, no role, no location, no discipline stated plainly anywhere. For a portfolio, a first-time visitor (or employer) cannot answer "who is this and what do they do" — the dominant clarity problem. _Launch-relevant._
+2. **"Eyes Unclouded" is overloaded.** The phrase is used as the loader title, a **project name** (an "AI-powered platform"), and the final **journey milestone**. Three different meanings for one phrase is confusing. _Polish, but fix before launch if projects are reworked anyway._
+3. **Heavy on mountain-metaphor poetry, light on concrete facts.** The writing is polished but rarely says anything specific or verifiable. Combined with no project links and gradient (non-photo) thumbnails, the site risks reading as a beautiful **template with placeholder substance**. _Launch-relevant._
 
 ---
 
@@ -57,7 +57,7 @@
   4. **Horizon Brand** (tag: Design) — "Visual identity system inspired by dawn light on distant ridges."
 - **Weak/fake:** This is the **highest-risk section**. The descriptions make concrete product claims — an "AI-powered platform," a "framework," a "3D" body of work, a "visual identity system." If any of these are not real, shipped, and showable, they are **fake project claims**, which is the most launch-damaging thing on the site. "Summit Render (3D)" is the Blender promise with no asset behind it. None of the cards link anywhere, so even real work can't be opened or verified — every card is a dead end.
 - **Rewrite before launch:** Reconcile to truth. For each card decide: real & showable (add a real link + accurate copy), real but WIP (label honestly, e.g., "In progress"), or concept/aspirational (either cut it or clearly mark it as a concept). Do not present unbuilt ideas as finished products. Add links for anything real; if a project has no destination, say why (case study coming, private, etc.).
-- **Status:** **Launch-blocking** (honesty). Real thumbnails and clickable case studies are post-launch polish, but the *truthfulness of the claims* is a hard gate.
+- **Status:** **Launch-blocking** (honesty). Real thumbnails and clickable case studies are post-launch polish, but the _truthfulness of the claims_ is a hard gate.
 
 ## Section 7 — Journey ("Elevation Gained")
 
@@ -83,17 +83,17 @@
 
 ## Link & button check (complete)
 
-| Element | Target | Verdict |
-|---------|--------|---------|
-| Nav: Home/About/Projects/Journey/Contact | `#hero`/`#about`/`#projects`/`#journey`/`#contact` | OK — all sections exist |
-| Logo "Khaylub" | `#hero` | OK |
-| Hero CTA "Explore the trail" | `#projects` | OK |
-| Mobile nav toggle | (JS) | OK — toggles menu |
-| Project cards ×4 | none (not links) | Weak — not clickable, no destination |
-| Contact email | `mailto:hello@khaylub.com` | Conditional — only valid if mailbox is real |
-| Social: GitHub | `#` | **BROKEN — dead link** |
-| Social: LinkedIn | `#` | **BROKEN — dead link** |
-| Social: Instagram | `#` | **BROKEN — dead link** |
+| Element                                  | Target                                             | Verdict                                     |
+| ---------------------------------------- | -------------------------------------------------- | ------------------------------------------- |
+| Nav: Home/About/Projects/Journey/Contact | `#hero`/`#about`/`#projects`/`#journey`/`#contact` | OK — all sections exist                     |
+| Logo "Khaylub"                           | `#hero`                                            | OK                                          |
+| Hero CTA "Explore the trail"             | `#projects`                                        | OK                                          |
+| Mobile nav toggle                        | (JS)                                               | OK — toggles menu                           |
+| Project cards ×4                         | none (not links)                                   | Weak — not clickable, no destination        |
+| Contact email                            | `mailto:hello@khaylub.com`                         | Conditional — only valid if mailbox is real |
+| Social: GitHub                           | `#`                                                | **BROKEN — dead link**                      |
+| Social: LinkedIn                         | `#`                                                | **BROKEN — dead link**                      |
+| Social: Instagram                        | `#`                                                | **BROKEN — dead link**                      |
 
 Empty buttons: none (the nav toggle is functional). Broken/`#` links: the three social links. Fake-claim risk: the four project descriptions. Contact problem: email validity unverified.
 
@@ -102,6 +102,7 @@ Empty buttons: none (the nav toggle is functional). Broken/`#` links: the three 
 ## Launch gate summary
 
 **Launch-blocking (must resolve for an honest, professional launch):**
+
 - Three dead social links (`href="#"`).
 - Project cards' truthfulness (no fake/overstated claims; real work links where possible).
 - Contact email must be a real, monitored mailbox.
@@ -109,6 +110,7 @@ Empty buttons: none (the nav toggle is functional). Broken/`#` links: the three 
 - Hero/`<title>` should state who the person is and what they do.
 
 **Post-launch polish (does not block):**
+
 - OG/Twitter meta tags, real project thumbnails, clickable case studies, loader duration, "Eyes Unclouded" disambiguation, journey-copy tightening, trait-chip specificity.
 
 **Note:** none of the launch-blocking items require Blender, R3F, or any new technology — they are content and link fixes within the existing static site.

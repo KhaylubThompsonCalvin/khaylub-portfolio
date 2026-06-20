@@ -4,7 +4,7 @@
 
 ## 1. Current copy direction (locked)
 
-Wanderer **trailhead / mountain journey / honest learning in public**. The site reads as *a traveler documenting the journey*, not *a student building a portfolio*. Tone: cinematic, reflective, patient, understated — not motivational, corporate, or startup-y. The mountain is symbolic (growth through repetition, mastery through effort, becoming through the climb, a journey that never truly ends), never literal. The future cinematic Wanderer experience is named as **not built yet** — the current static site is the trailhead/foundation, and we do not fake the 3D experience.
+Wanderer **trailhead / mountain journey / honest learning in public**. The site reads as _a traveler documenting the journey_, not _a student building a portfolio_. Tone: cinematic, reflective, patient, understated — not motivational, corporate, or startup-y. The mountain is symbolic (growth through repetition, mastery through effort, becoming through the climb, a journey that never truly ends), never literal. The future cinematic Wanderer experience is named as **not built yet** — the current static site is the trailhead/foundation, and we do not fake the 3D experience.
 
 ## 2. Confirmed resolved
 
@@ -28,4 +28,4 @@ Wanderer **trailhead / mountain journey / honest learning in public**. The site 
 
 ---
 
-*Static site only. No Blender, R3F, database, or framework is required for launch.*
+_Static site only. No Blender, R3F, database, or framework is required for launch._

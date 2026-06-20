@@ -3,12 +3,12 @@
 // All systems (camera, character, atmosphere, UI) read from these ranges.
 
 export const STAGES = [
-  { id: 'arrival',     label: 'Arrival',           from: 0.00, to: 0.12 },
-  { id: 'philosophy',  label: 'Philosophy',        from: 0.12, to: 0.30 },
-  { id: 'focus',       label: 'Areas of Focus',    from: 0.30, to: 0.48 },
-  { id: 'discovery',   label: 'Project Discovery', from: 0.48, to: 0.66 },
-  { id: 'exploration', label: 'Project Exploration',from: 0.66, to: 0.88 },
-  { id: 'contact',     label: 'Contact',           from: 0.88, to: 1.00 },
+  { id: 'arrival', label: 'Arrival', from: 0.0, to: 0.12 },
+  { id: 'philosophy', label: 'Philosophy', from: 0.12, to: 0.3 },
+  { id: 'focus', label: 'Areas of Focus', from: 0.3, to: 0.48 },
+  { id: 'discovery', label: 'Project Discovery', from: 0.48, to: 0.66 },
+  { id: 'exploration', label: 'Project Exploration', from: 0.66, to: 0.88 },
+  { id: 'contact', label: 'Contact', from: 0.88, to: 1.0 },
 ];
 
 // total scroll height of the experience, in viewport-heights

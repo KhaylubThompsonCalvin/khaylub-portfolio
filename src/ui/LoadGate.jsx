@@ -9,7 +9,12 @@ export default function LoadGate() {
   const start = useExperience((s) => s.start);
 
   return (
-    <div className={`gate${started ? ' hidden' : ''}`} onClick={start} role="button" aria-label="Enter the experience">
+    <div
+      className={`gate${started ? ' hidden' : ''}`}
+      onClick={start}
+      role="button"
+      aria-label="Enter the experience"
+    >
       <div className="title">{identity.name}</div>
       <div className="hint">{ready ? 'Tap to explore' : 'Loading\u2026'}</div>
     </div>

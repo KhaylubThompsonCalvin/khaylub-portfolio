@@ -10,13 +10,13 @@ These are non-negotiable for any change in this repo. They override convenience 
 - **Prioritize security, accessibility, maintainability, and performance** — in that order when they conflict. A change that trades any of these for a quicker implementation needs an explicit reason.
 - **No placeholder `href="#"` links.** Every link points to a real destination. If a destination doesn't exist yet, render the item as a non-link element (e.g. `<span>` / disabled control) with an honest "coming soon" state — never a dead anchor that jumps to the top of the page.
 - **No fake functionality.** Don't ship buttons, forms, or features that look interactive but do nothing. If it isn't wired, don't render it as if it is. Honest status badges (as in `data/projects.js`) are the model.
-- **No secrets in code.** No API keys, tokens, or credentials in source, config, or commits. Use environment variables and document the required names. (Full handling — `.env`, `.env.example`, MCP keys — under *AI Tooling Guardrails → MCP / API key handling*.)
+- **No secrets in code.** No API keys, tokens, or credentials in source, config, or commits. Use environment variables and document the required names. (Full handling — `.env`, `.env.example`, MCP keys — under _AI Tooling Guardrails → MCP / API key handling_.)
 - **Explain architectural decisions.** When you introduce a pattern, restructure, or pick one approach over an alternative, say why — in the PR description and, where it aids future readers, an inline comment. The existing `data/` choreography and the `getState()`-in-`useFrame` idiom are documented this way; keep that standard.
 - **Ask before adding dependencies.** Do not add an npm package without approval. Prefer the platform and what's already installed (React, R3F, drei, three, gsap, lenis, zustand). When proposing one, state what it costs in bundle size and what it replaces.
 - **Keep React components focused.** One job per component. Lift shared state to the store, push choreography/config into `data/`, and split a component before it grows multiple responsibilities (the `ui/` and `three/` split is the pattern).
 - **Use semantic HTML.** Real `<nav>`, `<main>`, `<section>`, `<button>`, headings in order. Don't make a `<div>` do a button's job (the current `LoadGate` `div[role=button]` is a known violation to fix, not to copy).
 - **Maintain WCAG AA accessibility.** 4.5:1 contrast for text, visible focus states on every interactive element, keyboard operability with no traps, labels on inputs, and `prefers-reduced-motion` honored. AA is the floor, not the goal.
-- **CodeRabbit findings are blockers.** Every review issue is resolved before merge; ignoring one needs Kt's explicit approval, recorded in the thread. (See *AI Tooling Guardrails → CodeRabbit* for the full workflow.)
+- **CodeRabbit findings are blockers.** Every review issue is resolved before merge; ignoring one needs Kt's explicit approval, recorded in the thread. (See _AI Tooling Guardrails → CodeRabbit_ for the full workflow.)
 
 ## AI Tooling Guardrails
 
@@ -30,9 +30,9 @@ Tools assist; a human owns the result. Whoever opens the PR is accountable for e
 
 AI-generated code must conform to the existing project architecture — it does not reshape it. The patterns documented in this file (the `scrollProgress` single source of truth, `getState()`-in-`useFrame`, choreography-as-data in `data/`, the `ui/`–`three/` split, plain CSS + tokens) are the target to fit into, not suggestions to improve on.
 
-- **Do not replace major systems without explicit approval from Kt** — frameworks, state management (Zustand), the scrolling system (Lenis), the styling system (plain CSS + custom properties), or the rendering pipeline (React Three Fiber / Three.js). This extends *Future Architecture Direction* to AI output.
+- **Do not replace major systems without explicit approval from Kt** — frameworks, state management (Zustand), the scrolling system (Lenis), the styling system (plain CSS + custom properties), or the rendering pipeline (React Three Fiber / Three.js). This extends _Future Architecture Direction_ to AI output.
 - **Prefer extension over replacement.** Add to and compose with what exists before refactoring it away. A generated component that assumes a different state, styling, or animation model gets adapted to ours — not merged with its own.
-- **Surface the conflict; don't resolve it unilaterally.** If a task seems to *require* an architectural change to do well, stop and raise it with the reasoning (per "Explain architectural decisions") rather than quietly restructuring inside a feature PR.
+- **Surface the conflict; don't resolve it unilaterally.** If a task seems to _require_ an architectural change to do well, stop and raise it with the reasoning (per "Explain architectural decisions") rather than quietly restructuring inside a feature PR.
 
 ### 21st.dev (generated components)
 
@@ -45,7 +45,7 @@ AI-generated code must conform to the existing project architecture — it does 
 
 ### Line-by-line review of generated code
 
-No generated code merges as-emitted. Before commit, read every line, confirm you understand what it does, verify provenance/license for any vendored community component, and delete anything speculative or unused. Generated code gets *more* scrutiny than hand-written code, not less — it looks finished before it is.
+No generated code merges as-emitted. Before commit, read every line, confirm you understand what it does, verify provenance/license for any vendored community component, and delete anything speculative or unused. Generated code gets _more_ scrutiny than hand-written code, not less — it looks finished before it is.
 
 ### CodeRabbit (AI review)
 
@@ -67,12 +67,12 @@ No AI tool merges to `main`. `main` is branch-protected; merges require passing 
 
 ## Setup checklist (run before requesting a CodeRabbit review)
 
-Work through this before pushing a branch for review. CodeRabbit is the gate *after* this, not a substitute for it.
+Work through this before pushing a branch for review. CodeRabbit is the gate _after_ this, not a substitute for it.
 
 1. **Git status.** `git status` is clean of stray files; only intended changes are staged. Confirm you're not on `main` (see branch workflow). Review your own `git diff` first — read every hunk.
-2. **Lint / format.** There is no configured linter or formatter yet (only `dev`/`build`/`preview` exist). *Recommendation:* add ESLint (`eslint-plugin-react`, `eslint-plugin-react-hooks`, `eslint-plugin-jsx-a11y`) + Prettier and a `lint` script before the codebase grows — propose this rather than silently adding it (see dependency rule). Until then, manually verify formatting matches surrounding files and `npm run build` passes with no warnings.
+2. **Lint / format.** There is no configured linter or formatter yet (only `dev`/`build`/`preview` exist). _Recommendation:_ add ESLint (`eslint-plugin-react`, `eslint-plugin-react-hooks`, `eslint-plugin-jsx-a11y`) + Prettier and a `lint` script before the codebase grows — propose this rather than silently adding it (see dependency rule). Until then, manually verify formatting matches surrounding files and `npm run build` passes with no warnings.
 3. **Security review.** No secrets, keys, or tokens in the diff. External links use `rel="noreferrer"` (and `noopener`) with `target="_blank"`. No `dangerouslySetInnerHTML` with unsanitized input. New dependencies vetted and approved. No `console.log` or debug globals shipping to production (gate behind `import.meta.env.DEV`, as `window.__seek` is).
-4. **Accessibility review.** Keyboard-only pass: every interactive element reachable, operable, and visibly focused, with no traps (especially the entry gate). Text contrast ≥ 4.5:1 against its *actual* backdrop — including text floating over the 3D canvas. Interactive elements are semantic and ≥ 44×44px touch targets on mobile. Images have alt text; icon-only controls have `aria-label`. `prefers-reduced-motion` still degrades gracefully.
+4. **Accessibility review.** Keyboard-only pass: every interactive element reachable, operable, and visibly focused, with no traps (especially the entry gate). Text contrast ≥ 4.5:1 against its _actual_ backdrop — including text floating over the 3D canvas. Interactive elements are semantic and ≥ 44×44px touch targets on mobile. Images have alt text; icon-only controls have `aria-label`. `prefers-reduced-motion` still degrades gracefully.
 5. **Branch workflow.** Never commit directly to `main`. Branch per unit of work (`feat/…`, `fix/…`, `chore/…`), keep commits scoped with clear messages, open a PR, and let CodeRabbit review it. Address findings (rule above) before merge.
 
 ## Commands
@@ -87,22 +87,23 @@ npm run preview  # serve the production build
 There is no test runner, linter, formatter, or typecheck step — the only scripts are the three above. This is plain JS + JSX (no TypeScript). When verifying a change, run `npm run dev` and confirm in-browser; there is no `npm test`.
 
 Dev aids:
+
 - On load the Wanderer loader prints the GLB's animation clip names to the console (`[Wanderer] GLB animation clips: [...]`) — this is the self-check that Walk/Idle survived the Blender export.
 - `window.__seek(frac)` (DEV only) jumps to an exact scroll fraction, e.g. `window.__seek(0.57)`, for tuning camera shots without scrolling.
 
 ## Two codebases in one repo — do not confuse them
 
-| Path | What it is | Status |
-|------|-----------|--------|
+| Path                       | What it is                                                                                            | Status               |
+| -------------------------- | ----------------------------------------------------------------------------------------------------- | -------------------- |
 | root `index.html` + `src/` | **The active app** — the React + R3F "Wanderer" experience. This is what `npm run dev/build` targets. | Live, in development |
-| `website/` | Standalone static site (plain HTML/CSS/JS, no build). Retained as the **no-WebGL fallback**. | Frozen reference |
-| `_archive/` | Old skeletons and cinematic experiments. | Dead |
+| `website/`                 | Standalone static site (plain HTML/CSS/JS, no build). Retained as the **no-WebGL fallback**.          | Frozen reference     |
+| `_archive/`                | Old skeletons and cinematic experiments.                                                              | Dead                 |
 
 Note a documentation hazard: `docs/CURRENT_STATE.md` is written about the **`website/` static site**, not the React app — its "what exists today" describes the fallback. For the live app, trust `README.md` and the `src/` code over that doc. Default all work to the React app unless explicitly asked about the fallback.
 
 ## Architecture — scroll-driven 3D
 
-One continuous timeline. The Wanderer (a rigged GLB hero) walks *in place* at the world origin while the camera moves around him; scroll position is the master clock that drives every system.
+One continuous timeline. The Wanderer (a rigged GLB hero) walks _in place_ at the world origin while the camera moves around him; scroll position is the master clock that drives every system.
 
 **The spine — one source of truth.** Everything hangs off a single normalized `scrollProgress` (0→1):
 
@@ -115,11 +116,12 @@ Lenis (smooth scroll)
 ```
 
 - `store/useExperience.js` is the single source of truth: lifecycle flags (`started`, `ready`, `reducedMotion`) + `scrollProgress` + `stageId`. Keep it lean — derived values are computed by consumers, not stored.
-- The DOM overlay (`<main className="overlay">` in `App.jsx`) is a tall stacked column; its height (`SCROLL_VH` = 700vh, from `data/stages.js`) *is* the scroll track. The 3D `<Canvas>` is `position: fixed` behind it (`zIndex: 0`); text sections sit on top with `pointer-events` selectively re-enabled on `.inner`.
+- The DOM overlay (`<main className="overlay">` in `App.jsx`) is a tall stacked column; its height (`SCROLL_VH` = 700vh, from `data/stages.js`) _is_ the scroll track. The 3D `<Canvas>` is `position: fixed` behind it (`zIndex: 0`); text sections sit on top with `pointer-events` selectively re-enabled on `.inner`.
 
-**Critical performance idiom — never break this.** Systems that animate every frame read scroll via `useExperience.getState().scrollProgress` *inside* `useFrame` (see `CameraRig.jsx:41`, `Wanderer.jsx:52`). They do **not** subscribe with a selector. Subscribing to `scrollProgress` (e.g. `useExperience(s => s.scrollProgress)`) would re-render that React component ~60fps, because the store writes a new float on every Lenis tick. Use `getState()` in the frame loop; use selector subscriptions only for discrete state that changes rarely (`started`, `ready`, `reducedMotion`, `stageId`).
+**Critical performance idiom — never break this.** Systems that animate every frame read scroll via `useExperience.getState().scrollProgress` _inside_ `useFrame` (see `CameraRig.jsx:41`, `Wanderer.jsx:52`). They do **not** subscribe with a selector. Subscribing to `scrollProgress` (e.g. `useExperience(s => s.scrollProgress)`) would re-render that React component ~60fps, because the store writes a new float on every Lenis tick. Use `getState()` in the frame loop; use selector subscriptions only for discrete state that changes rarely (`started`, `ready`, `reducedMotion`, `stageId`).
 
 **Choreography lives in `data/`, not in components.** Edit these files to retune the experience; the `three/` components are generic samplers:
+
 - `data/stages.js` — the six phases and their `scrollProgress` ranges (unequal weighting), plus `stageAt()` / `localProgress()` helpers and `SCROLL_VH`.
 - `data/camera.js` — `SHOTS`: one keyframed camera pose (`pos` + `look`, world metres) per stage. `CameraRig` interpolates between them with `smoothstep` + frame-rate-independent exponential smoothing (`k = 1 - exp(-FOLLOW*dt)`).
 - `data/copy.js` — all site text in Kt's voice (single place to edit wording).
@@ -142,6 +144,7 @@ The build is staged (`README.md` has the checklist). `data/`, the store, scroll 
 **Planned upgrades** (additive, in roughly this order): TypeScript · ESLint · Prettier · GitHub Actions CI · CodeRabbit · Cloudflare Pages deployment.
 
 Guardrails on getting there:
+
 - **Do not migrate frameworks** (Next.js, Astro, Remix, etc.) without explicit approval from Kt. The current Vite SPA is the chosen baseline.
 - **Do not begin the TypeScript migration without a dedicated, approved migration plan.** TS is on the roadmap, but it lands as a deliberate, staged effort — not ad-hoc `.ts` files or a one-shot conversion.
 - **Favor incremental improvements over large rewrites.** Each upgrade above should land on its own branch as a self-contained, reviewable change, not bundled into a sweeping refactor.

@@ -2,20 +2,20 @@
 # CodeRabbit configuration — scopes AI review to live source only.
 # Docs: https://docs.coderabbit.ai/getting-started/configure-coderabbit
 
-language: "en-US"
+language: 'en-US'
 early_access: false
 
 reviews:
   # Review live application code only; skip dead, fallback, generated, and tooling paths.
   path_filters:
-    - "!_archive/**"      # archived skeletons + experiments (dead)
-    - "!website/**"       # static no-WebGL fallback (frozen)
-    - "!dist/**"          # build output
-    - "!node_modules/**"  # dependencies
-    - "!.claude/**"       # local Claude Code tooling / skill cache
+    - '!_archive/**' # archived skeletons + experiments (dead)
+    - '!website/**' # static no-WebGL fallback (frozen)
+    - '!dist/**' # build output
+    - '!node_modules/**' # dependencies
+    - '!.claude/**' # local Claude Code tooling / skill cache
   auto_review:
     enabled: true
-    drafts: false   # don't review draft PRs
+    drafts: false # don't review draft PRs
 
 chat:
   auto_reply: true

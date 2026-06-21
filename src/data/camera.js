@@ -14,3 +14,9 @@ export const SHOTS = [
   { id: 'exploration', at: 0.77, pos: [2.6, 1.05, -1.5], look: [0.0, 0.7, 0.3] },
   { id: 'contact', at: 0.94, pos: [2.05, 2.05, -0.25], look: [0.0, 0.62, 0.0] },
 ];
+
+// Subtle pointer counter-drift during the phoenix beat (Noomo-style parallax). The camera offsets
+// OPPOSITE the cursor by up to these world metres, so the scene gains a little depth as the mouse
+// moves. Ramped by the phoenix engagement and gated by reduced motion (see CameraRig). Kept tiny
+// on purpose — this is a whisper of parallax, not a free-look camera.
+export const POINTER_PARALLAX = { x: 0.18, y: 0.12, ease: 3.0 };

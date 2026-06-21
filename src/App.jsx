@@ -14,6 +14,7 @@ import Contact from './ui/Contact.jsx';
 
 export default function App() {
   const setReducedMotion = useExperience((s) => s.setReducedMotion);
+  const setPointer = useExperience((s) => s.setPointer);
   // discrete (~6 changes total), never per-frame — safe to subscribe; drives reveal-and-stay
   const reachedStageIndex = useExperience((s) => s.reachedStageIndex);
 
@@ -28,6 +29,26 @@ export default function App() {
     mq.addEventListener('change', apply);
     return () => mq.removeEventListener('change', apply);
   }, [setReducedMotion]);
+
+  // mirror the pointer into the store (-1..1) for the phoenix parallax. Frame loops read it via
+  // getState() and gate it by reduced motion, so the listener stays unconditional and cheap.
+  useEffect(() => {
+    const onMove = (e) => {
+      setPointer(
+        (e.clientX / window.innerWidth) * 2 - 1,
+        -((e.clientY / window.innerHeight) * 2 - 1)
+      );
+    };
+    const recenter = () => setPointer(0, 0);
+    window.addEventListener('pointermove', onMove, { passive: true });
+    window.addEventListener('blur', recenter);
+    document.addEventListener('pointerleave', recenter);
+    return () => {
+      window.removeEventListener('pointermove', onMove);
+      window.removeEventListener('blur', recenter);
+      document.removeEventListener('pointerleave', recenter);
+    };
+  }, [setPointer]);
 
   return (
     <>

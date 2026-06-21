@@ -3,6 +3,7 @@ import { useFrame } from '@react-three/fiber';
 import { useGLTF, useAnimations } from '@react-three/drei';
 import * as THREE from 'three';
 import { useExperience } from '../store/useExperience.js';
+import { BLOOM_LAYER } from './SelectiveBloom.jsx';
 import {
   PHOENIX,
   FLIGHT,
@@ -13,6 +14,8 @@ import {
   SCALE_MIN,
   SCALE_MAX,
   HEADING_OFFSET,
+  POINTER,
+  SCROLL_FLAIR,
 } from '../data/phoenix.js';
 
 // Source GLB lives in /public, served from the site root (matches wanderer-web.glb).
@@ -72,6 +75,11 @@ export default function PhoenixFlap(props) {
   const pos = useMemo(() => new THREE.Vector3(), []);
   const ahead = useMemo(() => new THREE.Vector3(), []);
 
+  // Smoothed interaction inputs (eased toward the store each frame so the bird never snaps).
+  const px = useRef(0); // pointer x, smoothed
+  const py = useRef(0); // pointer y, smoothed
+  const flair = useRef(0); // normalized |scroll velocity|, smoothed
+
   // The feather material(s) carry the baked ember emission; the body material is matte
   // (emissive black). Collect just the emissive ones so the ramp leaves the body alone.
   const emissiveMats = useMemo(() => {
@@ -79,9 +87,15 @@ export default function PhoenixFlap(props) {
     scene.traverse((o) => {
       if (!o.isMesh) return;
       const mats = Array.isArray(o.material) ? o.material : [o.material];
+      let emissive = false;
       for (const m of mats) {
-        if (m?.emissive && (m.emissive.r || m.emissive.g || m.emissive.b)) found.add(m);
+        if (m?.emissive && (m.emissive.r || m.emissive.g || m.emissive.b)) {
+          found.add(m);
+          emissive = true;
+        }
       }
+      // Opt only the ember/fire feather meshes into selective bloom, so the body stays solid.
+      if (emissive) o.layers.enable(BLOOM_LAYER);
     });
     return [...found];
   }, [scene]);
@@ -107,10 +121,11 @@ export default function PhoenixFlap(props) {
     }
   }, [actions, names, scene]);
 
-  useFrame((state) => {
+  useFrame((state, dt) => {
     const g = group.current;
     if (!g) return;
-    const p = useExperience.getState().scrollProgress;
+    const store = useExperience.getState();
+    const p = store.scrollProgress;
 
     // Dormant before the spark — keep it out of the early Wanderer-establishing beats.
     if (p < PHOENIX.spark) {
@@ -123,7 +138,16 @@ export default function PhoenixFlap(props) {
     const emerge = smoothstep(clamp01((p - PHOENIX.spark) / PHOENIX.emergeSpan));
     const ramp = smoothstep(clamp01((p - PHOENIX.rampFrom) / (PHOENIX.rampTo - PHOENIX.rampFrom)));
 
-    // Position along the Catmull-Rom path; heading banks toward the path tangent.
+    // Interaction is gated by reduced motion and scaled by the ramp, so it's barely-there at the
+    // spark and fully responsive at the fire/contact beat. Inputs are eased toward the store.
+    const live = reducedMotion ? 0 : ramp;
+    const kP = 1 - Math.exp(-POINTER.ease * dt);
+    px.current += ((live ? store.pointerX : 0) - px.current) * kP;
+    py.current += ((live ? store.pointerY : 0) - py.current) * kP;
+    const target = live ? clamp01(Math.abs(store.scrollVelocity) / SCROLL_FLAIR.ref) : 0;
+    flair.current += (target - flair.current) * (1 - Math.exp(-SCROLL_FLAIR.ease * dt));
+
+    // Position along the Catmull-Rom path; heading follows the path tangent.
     sampleFlight(p, pos);
     g.position.copy(pos);
     sampleFlight(Math.min(1, p + 0.01), ahead);
@@ -131,17 +155,28 @@ export default function PhoenixFlap(props) {
     const dz = ahead.z - pos.z;
     if (dx || dz) g.rotation.y = Math.atan2(dx, dz) + HEADING_OFFSET;
 
+    // Pointer parallax: drift toward the cursor and bank into it (position stays scroll-anchored;
+    // this is a small offset/tilt on top of the path).
+    g.position.x += px.current * POINTER.drift[0] * live;
+    g.position.y += py.current * POINTER.drift[1] * live;
+    g.rotation.y += px.current * POINTER.yaw * live;
+    g.rotation.z = -px.current * POINTER.bank * live;
+
     // Small/distant -> modest growth, with the quick scale-in as it ignites.
     g.scale.setScalar(lerp(SCALE_MIN, SCALE_MAX, ramp) * emerge);
 
-    // Ember glow -> fire on the feather material.
-    const intensity = lerp(EMBER_INTENSITY, FIRE_INTENSITY, ramp) * emerge;
+    // Ember glow -> fire, plus the scroll-velocity flare (only while the bird is visible).
+    const intensity =
+      (lerp(EMBER_INTENSITY, FIRE_INTENSITY, ramp) + SCROLL_FLAIR.emberBoost * flair.current) *
+      emerge;
     for (const m of emissiveMats) m.emissiveIntensity = intensity;
 
-    // Wingbeat quickens as it ignites; calmed (not frozen) under reduced motion, and the
-    // autonomous bob is dropped there so only the scroll-driven flight remains.
+    // Wingbeat quickens as it ignites and flares with scroll speed; calmed (not frozen) under
+    // reduced motion, where the autonomous bob is also dropped so only the scroll flight remains.
     if (flapAction.current) {
-      flapAction.current.timeScale = reducedMotion ? FLAP_SLOW : lerp(FLAP_SLOW, FLAP_FAST, ramp);
+      flapAction.current.timeScale = reducedMotion
+        ? FLAP_SLOW
+        : lerp(FLAP_SLOW, FLAP_FAST, ramp) + SCROLL_FLAIR.flapBoost * flair.current;
     }
     if (!reducedMotion) {
       const t = state.clock.elapsedTime;

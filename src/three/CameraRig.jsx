@@ -2,7 +2,8 @@ import { useRef } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { useExperience } from '../store/useExperience.js';
-import { SHOTS } from '../data/camera.js';
+import { SHOTS, POINTER_PARALLAX } from '../data/camera.js';
+import { PHOENIX } from '../data/phoenix.js';
 
 // System 3 — Camera. Keyframed shots interpolated by scrollProgress, so the camera moves
 // around the in-place Wanderer and the journey reads as composition. scrollProgress
@@ -11,6 +12,7 @@ import { SHOTS } from '../data/camera.js';
 
 const FOLLOW = 3.0; // settle smoothing (higher = snappier)
 const smoothstep = (t) => t * t * (3 - 2 * t);
+const clamp01 = (t) => Math.min(1, Math.max(0, t));
 
 const _pos = new THREE.Vector3();
 const _look = new THREE.Vector3();
@@ -45,9 +47,12 @@ export default function CameraRig() {
   const { camera } = useThree();
   const reducedMotion = useExperience((s) => s.reducedMotion);
   const lookRef = useRef(new THREE.Vector3().fromArray(SHOTS[0].look));
+  const ppx = useRef(0); // smoothed pointer for parallax
+  const ppy = useRef(0);
 
   useFrame((state, dt) => {
-    const p = useExperience.getState().scrollProgress;
+    const store = useExperience.getState();
+    const p = store.scrollProgress;
     sample(p, _pos, _look);
 
     // gentle breathing drift for life (skip for reduced motion)
@@ -55,6 +60,15 @@ export default function CameraRig() {
       const t = state.clock.elapsedTime;
       _pos.x += Math.sin(t * 0.5) * 0.04;
       _pos.y += Math.sin(t * 0.37) * 0.03;
+
+      // Pointer counter-drift — a whisper of parallax during the phoenix beat. Engagement ramps
+      // from the spark to the fire peak so the camera only "wakes" to the cursor as the bird does.
+      const eng = smoothstep(clamp01((p - PHOENIX.spark) / (PHOENIX.rampTo - PHOENIX.spark)));
+      const kP = 1 - Math.exp(-POINTER_PARALLAX.ease * dt);
+      ppx.current += (store.pointerX - ppx.current) * kP;
+      ppy.current += (store.pointerY - ppy.current) * kP;
+      _pos.x -= ppx.current * POINTER_PARALLAX.x * eng;
+      _pos.y -= ppy.current * POINTER_PARALLAX.y * eng;
     }
 
     const k = 1 - Math.exp(-FOLLOW * dt);

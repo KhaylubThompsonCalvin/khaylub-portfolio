@@ -4,6 +4,8 @@ import Wanderer from './Wanderer.jsx';
 import PhoenixFlap from './PhoenixFlap.jsx';
 import CameraRig from './CameraRig.jsx';
 import Atmosphere from './Atmosphere.jsx';
+import SelectiveBloom from './SelectiveBloom.jsx';
+import { BLOOM } from '../data/phoenix.js';
 
 // The fixed, full-viewport 3D stage. Sits behind the DOM overlays.
 export default function Scene() {
@@ -32,6 +34,9 @@ export default function Scene() {
       </Suspense>
 
       <CameraRig />
+      {/* Selective bloom so only the phoenix's ember/fire feathers glow (the light cream
+          background must never bloom). Takes over the render loop — keep it last in the tree. */}
+      <SelectiveBloom strength={BLOOM.strength} radius={BLOOM.radius} threshold={BLOOM.threshold} />
     </Canvas>
   );
 }

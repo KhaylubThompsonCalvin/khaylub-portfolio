@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { useGLTF, useAnimations } from '@react-three/drei';
+import * as THREE from 'three';
 import { useExperience } from '../store/useExperience.js';
 
 const MODEL = '/assets/models/wanderer-web.glb';
@@ -24,6 +25,16 @@ export default function Wanderer(props) {
 
   useEffect(() => {
     console.log('%c[Wanderer] GLB animation clips:', 'color:#caa46f', names);
+    if (import.meta.env.DEV) {
+      // Self-check the export scale (he should stand ~1.0 m). Mirrors the Phoenix readout so the
+      // two can be sized against each other in the scene.
+      const size = new THREE.Box3().setFromObject(scene).getSize(new THREE.Vector3());
+      console.log('%c[Wanderer] rendered bbox @scale 1 (units≈m):', 'color:#caa46f', {
+        x: +size.x.toFixed(3),
+        y: +size.y.toFixed(3),
+        z: +size.z.toFixed(3),
+      });
+    }
     const b = {};
     scene.traverse((o) => {
       if (o.isBone && o.name === 'Root') b.Root = o;

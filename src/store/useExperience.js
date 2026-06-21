@@ -14,10 +14,20 @@ export const useExperience = create((set, get) => ({
   stageId: STAGES[0].id, // current phase id, derived on write
   reachedStageIndex: 0, // furthest stage index ever reached; monotonic, drives reveal-and-stay
 
+  // input — pointer parallax + scroll-velocity flair (the phoenix interaction). Written by
+  // listeners; read via getState() in frame loops, never subscribed (same idiom as scrollProgress).
+  pointerX: 0, // -1 (left) .. 1 (right), viewport-normalized
+  pointerY: 0, // -1 (bottom) .. 1 (top)
+  scrollVelocity: 0, // signed Lenis velocity; decays to 0 when idle
+
   // actions
   start: () => set({ started: true }),
   setReady: (ready) => set({ ready }),
   setReducedMotion: (reducedMotion) => set({ reducedMotion }),
+  setPointer: (x, y) => set({ pointerX: x, pointerY: y }),
+  setScrollVelocity: (v) => {
+    if (v !== get().scrollVelocity) set({ scrollVelocity: v });
+  },
   setScrollProgress: (p) => {
     const clamped = Math.min(1, Math.max(0, p));
     const stage = stageAt(clamped);

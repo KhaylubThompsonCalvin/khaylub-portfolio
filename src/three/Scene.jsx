@@ -4,6 +4,7 @@ import Wanderer from './Wanderer.jsx';
 import PhoenixFlap from './PhoenixFlap.jsx';
 import CameraRig from './CameraRig.jsx';
 import Atmosphere from './Atmosphere.jsx';
+import Ground from './Ground.jsx';
 import SelectiveBloom from './SelectiveBloom.jsx';
 import { BLOOM } from '../data/phoenix.js';
 
@@ -23,14 +24,19 @@ export default function Scene() {
       <directionalLight position={[3, 6, 4]} intensity={2.1} color="#fff1dc" castShadow />
       <ambientLight intensity={0.25} />
 
+      {/* Tonal sky (dawn→alpine→summit) — drives scene background + fog colour from scroll.
+          Outside Suspense so it runs even while the GLBs load. */}
+      <Atmosphere />
+
       <Suspense fallback={null}>
+        {/* Grounding slope so he stands on the trail, fog-blended into the tonal sky. */}
+        <Ground />
         <Wanderer position={[0, 0, 0]} />
         {/* "Spark of the Summit": a secondary phoenix accent — dormant until ~0.50, then an
             ember rises through the far background behind the Wanderer and ignites to fire by
             the summit. Flight + emission are scroll-driven inside PhoenixFlap (choreography in
             data/phoenix.js); no transform props here. */}
         <PhoenixFlap />
-        <Atmosphere />
       </Suspense>
 
       <CameraRig />

@@ -12,7 +12,7 @@ export const SHOTS = [
   { id: 'focus', at: 0.39, pos: [-1.4, 1.2, 1.9], look: [0.2, 0.7, -0.3] },
   { id: 'discovery', at: 0.57, pos: [2.4, 1.15, 1.2], look: [0.0, 0.72, 0.0] },
   { id: 'exploration', at: 0.77, pos: [2.6, 1.05, -1.5], look: [0.0, 0.7, 0.3] },
-  { id: 'contact', at: 0.94, pos: [2.05, 2.05, -0.25], look: [0.0, 0.62, 0.0] },
+  { id: 'contact', at: 0.94, pos: [2.3, 1.6, -0.3], look: [0.0, 1.0, 0.0] },
 ];
 
 // Subtle pointer counter-drift during the phoenix beat (Noomo-style parallax). The camera offsets

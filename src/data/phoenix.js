@@ -39,9 +39,9 @@ export const FLIGHT = [
   { at: 0.5, pos: [-9.6, 0.7, -1.0] }, // spark: entering far/low, near-invisible (scale ~0)
   { at: 0.57, pos: [-9.46, 1.0, -0.58] }, // discovery — distant ember, upper-left
   { at: 0.77, pos: [-8.89, 2.29, 1.96] }, // exploration — arc peak, upper-right
-  { at: 0.88, pos: [-9.99, -0.63, 0.84] }, // settling as the contact camera cranes up
-  { at: 0.94, pos: [-10.09, -2.69, -0.35] }, // contact — framed upper-right
-  { at: 1.0, pos: [-10.46, -3.11, -0.55] }, // fire at the summit
+  { at: 0.88, pos: [-10.13, 1.21, 0.1] }, // drifting toward the summit sky
+  { at: 0.94, pos: [-10.71, 1.16, -0.9] }, // contact — upper-right against the cool sky
+  { at: 1.0, pos: [-11.21, 1.21, -1.05] }, // fire at the summit, framed in open sky
 ];
 
 // Emission ramp: ember glow -> fire. Scales emissiveIntensity on the feather material.

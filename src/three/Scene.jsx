@@ -1,6 +1,7 @@
 import { Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import Wanderer from './Wanderer.jsx';
+import PhoenixFlap from './PhoenixFlap.jsx';
 import CameraRig from './CameraRig.jsx';
 import Atmosphere from './Atmosphere.jsx';
 
@@ -22,6 +23,11 @@ export default function Scene() {
 
       <Suspense fallback={null}>
         <Wanderer position={[0, 0, 0]} />
+        {/* "Spark of the Summit": a secondary phoenix accent — dormant until ~0.50, then an
+            ember rises through the far background behind the Wanderer and ignites to fire by
+            the summit. Flight + emission are scroll-driven inside PhoenixFlap (choreography in
+            data/phoenix.js); no transform props here. */}
+        <PhoenixFlap />
         <Atmosphere />
       </Suspense>
 

@@ -1,6 +1,6 @@
 # ADR-001: Drop GSAP; drive Phase 3 from the existing scroll store
 
-**Status:** Proposed (analysis only — no code changed)
+**Status:** Accepted (implemented in `chore/drop-gsap`)
 **Date:** 2026-06-20
 **Author:** Senior Systems Analyst review
 **Affected files:** `package.json`, `src/scroll/useScrollSetup.js`, `src/three/CameraRig.jsx`, `src/store/useExperience.js`, `src/data/stages.js`, `src/data/camera.js`

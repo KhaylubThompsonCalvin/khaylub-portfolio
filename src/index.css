@@ -109,6 +109,20 @@ a {
   font-size: clamp(1.6rem, 4vw, 2.6rem);
   line-height: 1.15;
 }
+
+/* Cinematic per-word reveal (RevealText). The word is inline-block so it can blur/lift; the
+   wrapping <span> keeps natural spacing. Styles are written imperatively from scroll. */
+.reveal-word {
+  display: inline-block;
+  will-change: opacity, filter, transform;
+}
+/* A beat that drives its own per-word reveal opts out of the block reveal-and-stay so the two
+   don't compound — RevealText alone controls visibility here. */
+.section .inner.inner--reveal {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
 .body {
   margin-top: 1.2rem;
   font-size: clamp(1rem, 1.8vw, 1.2rem);

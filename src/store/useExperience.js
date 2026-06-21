@@ -12,6 +12,7 @@ export const useExperience = create((set, get) => ({
   // the spine
   scrollProgress: 0, // 0 -> 1 across the whole experience
   stageId: STAGES[0].id, // current phase id, derived on write
+  reachedStageIndex: 0, // furthest stage index ever reached; monotonic, drives reveal-and-stay
 
   // actions
   start: () => set({ started: true }),
@@ -20,8 +21,13 @@ export const useExperience = create((set, get) => ({
   setScrollProgress: (p) => {
     const clamped = Math.min(1, Math.max(0, p));
     const stage = stageAt(clamped);
-    if (clamped !== get().scrollProgress || stage.id !== get().stageId) {
-      set({ scrollProgress: clamped, stageId: stage.id });
+    const reached = Math.max(get().reachedStageIndex, STAGES.indexOf(stage));
+    if (
+      clamped !== get().scrollProgress ||
+      stage.id !== get().stageId ||
+      reached !== get().reachedStageIndex
+    ) {
+      set({ scrollProgress: clamped, stageId: stage.id, reachedStageIndex: reached });
     }
   },
 }));

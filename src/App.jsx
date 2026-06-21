@@ -14,8 +14,10 @@ import Contact from './ui/Contact.jsx';
 
 export default function App() {
   const setReducedMotion = useExperience((s) => s.setReducedMotion);
+  // discrete (~6 changes total), never per-frame — safe to subscribe; drives reveal-and-stay
+  const reachedStageIndex = useExperience((s) => s.reachedStageIndex);
 
-  // wire scroll -> store (Lenis); Phase 3 adds GSAP timeline on top
+  // wire scroll -> store (Lenis); stageId drives DOM reveals, no GSAP (see ADR-001)
   useScrollSetup();
 
   // mirror the OS reduced-motion preference into the store
@@ -36,7 +38,11 @@ export default function App() {
       <Scene />
 
       {/* scrollable DOM overlay column — its height creates the scroll track */}
-      <main className="overlay" style={{ ['--scroll-vh']: `${SCROLL_VH}vh` }}>
+      <main
+        className="overlay"
+        data-reached={reachedStageIndex}
+        style={{ ['--scroll-vh']: `${SCROLL_VH}vh` }}
+      >
         <Hero />
         <Philosophy />
         <AreasOfFocus />

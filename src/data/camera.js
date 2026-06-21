@@ -7,7 +7,7 @@
 // All values in metres/world space. He is ~1.0m tall (head 0.98). Tuned live in-browser.
 
 export const SHOTS = [
-  { id: 'arrival', at: 0.0, pos: [-1.55, 1.05, 0.15], look: [6.0, 0.75, -1.6] },
+  { id: 'arrival', at: 0.0, pos: [-2.5, 1.35, 0.3], look: [2.4, 0.55, -0.7] },
   { id: 'philosophy', at: 0.21, pos: [-2.3, 1.35, 0.5], look: [2.0, 0.75, -1.0] },
   { id: 'focus', at: 0.39, pos: [-1.4, 1.2, 1.9], look: [0.2, 0.7, -0.3] },
   { id: 'discovery', at: 0.57, pos: [2.4, 1.15, 1.2], look: [0.0, 0.72, 0.0] },

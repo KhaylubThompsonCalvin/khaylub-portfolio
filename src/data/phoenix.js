@@ -31,27 +31,36 @@ export const PHOENIX = {
 // exploration, then settles as the camera tilts down — keeping the fire framed in the upper
 // background at the summit instead of sailing off the top of the frame. Verified live (Playwright
 // projection probe) at the discovery/exploration/contact shots.
+// At the ~3 m scale the bird flies ~10 m out (far -X) so it reads as a large bird far away, not a
+// giant beside him; positions were solved live (unproject of the target screen point at the chosen
+// distance, per camera shot) to hold on-screen height ~20%→33% spark→summit. World Y goes negative
+// at the back because the contact camera cranes up and tilts down (screen comp, not world height).
 export const FLIGHT = [
-  { at: 0.5, pos: [-4.6, 0.6, 0.1] }, // faint ember: low, far, just behind him
-  { at: 0.62, pos: [-4.0, 1.0, 0.5] }, // lifts and drifts +Z into the discovery view
-  { at: 0.74, pos: [-3.4, 1.3, 0.3] }, // arc peak through exploration (kept off the top edge)
-  { at: 0.88, pos: [-3.0, 0.65, 0.0] }, // settling as the contact camera cranes up and tilts down
-  { at: 1.0, pos: [-2.6, 0.2, -0.3] }, // fire at the summit — framed in the upper background
+  { at: 0.5, pos: [-9.6, 0.7, -1.0] }, // spark: entering far/low, near-invisible (scale ~0)
+  { at: 0.57, pos: [-9.46, 1.0, -0.58] }, // discovery — distant ember, upper-left
+  { at: 0.77, pos: [-8.89, 2.29, 1.96] }, // exploration — arc peak, upper-right
+  { at: 0.88, pos: [-9.99, -0.63, 0.84] }, // settling as the contact camera cranes up
+  { at: 0.94, pos: [-10.09, -2.69, -0.35] }, // contact — framed upper-right
+  { at: 1.0, pos: [-10.46, -3.11, -0.55] }, // fire at the summit
 ];
 
 // Emission ramp: ember glow -> fire. Scales emissiveIntensity on the feather material.
 // (Body material has no emission, so it is left untouched.)
 export const EMBER_INTENSITY = 0.8;
-export const FIRE_INTENSITY = 3.2;
+// Lower than you'd expect because the ~3 m bird has 3x the emissive area of the old 1 m one — at
+// the peak that much glowing surface blooms to white, so the per-pixel fire intensity comes down.
+export const FIRE_INTENSITY = 2.3;
 
 // Flap speed (AnimationAction.timeScale): a slow ember wingbeat that quickens as it ignites.
 export const FLAP_SLOW = 0.6;
 export const FLAP_FAST = 1.6;
 
-// Scale: small/distant -> modest growth as it ascends, so it always reads as a far bird
-// rather than a foreground prop.
-export const SCALE_MIN = 0.55;
-export const SCALE_MAX = 1.0;
+// Scale: the GLB is ~0.98 m at its largest dim (Wanderer is ~0.98 m tall), so these multipliers
+// set the real-world size of the bird. ~3.0 at the fire peak = a ~3 m firebird (3x the Wanderer);
+// it stays distant (far -X in FLIGHT) so on screen it reads as a large bird far away, not a giant
+// looming over him. Grows from a smaller, fainter ember as it ascends.
+export const SCALE_MIN = 1.5;
+export const SCALE_MAX = 3.0;
 
 // Yaw applied so the bird banks along the path tangent. HEADING_OFFSET corrects for the
 // model's neutral facing in its own space (0 = its forward already matches +scroll travel);

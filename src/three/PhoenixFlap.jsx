@@ -89,7 +89,12 @@ export default function PhoenixFlap(props) {
       const mats = Array.isArray(o.material) ? o.material : [o.material];
       let emissive = false;
       for (const m of mats) {
-        if (m?.emissive && (m.emissive.r || m.emissive.g || m.emissive.b)) {
+        if (!m) continue;
+        // The bird flies ~10 m out (far -X) to read as a distant 3 m firebird, which puts it deep
+        // in the scene fog (7–26 m). Exempt it: a glowing phoenix shouldn't haze out like terrain,
+        // and the bloom pass already renders fog-free. Keeps the form crisp at any distance.
+        m.fog = false;
+        if (m.emissive && (m.emissive.r || m.emissive.g || m.emissive.b)) {
           found.add(m);
           emissive = true;
         }

@@ -2,9 +2,9 @@ import { useEffect } from 'react';
 import Lenis from 'lenis';
 import { useExperience } from '../store/useExperience.js';
 
-// Phase 0: Lenis smooth scroll -> normalized scrollProgress in the store.
-// Phase 3 will add GSAP ScrollTrigger on top for the authored camera/reveal timeline,
-// still writing into the same scrollProgress (one source of truth).
+// Lenis smooth scroll -> normalized scrollProgress in the store: the single scroll
+// authority. Every system (camera, character, future DOM reveals) reads from this one
+// value; there is no second scroll/timeline library (see docs/adr/ADR-001-drop-gsap.md).
 export function useScrollSetup() {
   const setScrollProgress = useExperience((s) => s.setScrollProgress);
 

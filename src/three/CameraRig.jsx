@@ -4,9 +4,10 @@ import * as THREE from 'three';
 import { useExperience } from '../store/useExperience.js';
 import { SHOTS } from '../data/camera.js';
 
-// System 3 — Camera. Phase 3: keyframed shots interpolated by scrollProgress, so the
-// camera moves around the in-place Wanderer and the journey reads as composition.
-// scrollProgress (Lenis -> store) is the single scroll authority; this just samples it.
+// System 3 — Camera. Keyframed shots interpolated by scrollProgress, so the camera moves
+// around the in-place Wanderer and the journey reads as composition. scrollProgress
+// (Lenis -> store) is the single scroll authority; this samples it each frame via
+// getState() — no GSAP/ScrollTrigger (see docs/adr/ADR-001-drop-gsap.md).
 
 const FOLLOW = 3.0; // settle smoothing (higher = snappier)
 const smoothstep = (t) => t * t * (3 - 2 * t);

@@ -26,3 +26,6 @@ yarn-error.log*
 
 # claude code tooling (local skill cache)
 .claude/
+
+# playwright mcp session artifacts (screenshots, snapshots, console logs)
+.playwright-mcp/

@@ -22,10 +22,24 @@ a {
   color: inherit;
 }
 
-/* DOM overlays sit above the fixed 3D canvas */
+/* grass/wind video atmosphere — over the 3D canvas (z 0), under the DOM content (z 2). Soft-light
+   blend washes its grass motion into the scene without replacing the tonal sky; opacity is driven
+   by scroll in VideoAtmosphere. Non-interactive. */
+.video-atmosphere {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* DOM overlays sit above the fixed 3D canvas and the video atmosphere */
 .overlay {
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 
 /* each phase is a full-height block; stacked, they create the scroll track */
@@ -109,6 +123,20 @@ a {
   font-size: clamp(1.6rem, 4vw, 2.6rem);
   line-height: 1.15;
 }
+
+/* Cinematic per-word reveal (RevealText). The word is inline-block so it can blur/lift; the
+   wrapping <span> keeps natural spacing. Styles are written imperatively from scroll. */
+.reveal-word {
+  display: inline-block;
+  will-change: opacity, filter, transform;
+}
+/* A beat that drives its own per-word reveal opts out of the block reveal-and-stay so the two
+   don't compound — RevealText alone controls visibility here. */
+.section .inner.inner--reveal {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
 .body {
   margin-top: 1.2rem;
   font-size: clamp(1rem, 1.8vw, 1.2rem);
@@ -150,28 +178,67 @@ a {
 }
 .nav .links {
   display: flex;
+  align-items: center;
   gap: 1.2rem;
   font-size: 0.85rem;
   pointer-events: auto;
 }
+/* sound toggle — reuses nav type; honest button, visible focus, ≥44px touch target via padding */
+.audio-toggle {
+  appearance: none;
+  -webkit-appearance: none;
+  border: 1px solid rgba(40, 32, 20, 0.3);
+  background: rgba(255, 250, 240, 0.4);
+  color: inherit;
+  font: inherit;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-radius: 999px;
+  padding: 0.5rem 0.9rem;
+  cursor: pointer;
+}
+.audio-toggle:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
 
-/* skip to work */
-.skip {
+/* bottom nav cue — Work · Contact */
+.bottom-nav {
   position: fixed;
   bottom: 1.3rem;
   left: 50%;
   transform: translateX(-50%);
   z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(255, 250, 240, 0.5);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(40, 32, 20, 0.35);
+  border-radius: 999px;
+  padding: 0.35rem 0.7rem;
+}
+.bottom-nav button {
+  appearance: none;
+  -webkit-appearance: none;
+  border: none;
+  background: none;
+  color: var(--ink);
+  font: inherit;
   font-size: 0.72rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--ink);
-  border: 1px solid rgba(40, 32, 20, 0.35);
-  background: rgba(255, 250, 240, 0.5);
-  backdrop-filter: blur(6px);
-  padding: 0.6rem 1.2rem;
+  padding: 0.35rem 0.7rem;
   border-radius: 999px;
   cursor: pointer;
+}
+.bottom-nav button:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+.bottom-nav-sep {
+  color: var(--muted);
 }
 
 /* project cards */
@@ -226,34 +293,49 @@ a {
   text-decoration: none;
 }
 
-/* load gate */
-.gate {
+/* load gate — a living dawn-grass scene behind the entry, fading away on start */
+.gate-scene {
   position: fixed;
   inset: 0;
   z-index: 10;
+  transition: opacity 0.8s ease;
+}
+.gate-scene.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+.gate-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.gate {
+  position: absolute;
+  inset: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 1.2rem;
-  background: var(--bg);
   cursor: pointer;
-  transition: opacity 0.6s ease;
-  /* reset native <button> UA styles so the gate keeps its prior appearance */
+  /* soft centre scrim so the dark title keeps AA contrast over the bright grass */
+  background: radial-gradient(
+    ellipse 65% 55% at center,
+    rgba(245, 240, 230, 0.62),
+    rgba(245, 240, 230, 0.12)
+  );
   appearance: none;
   -webkit-appearance: none;
   border: none;
   width: 100%;
   font: inherit;
-  color: inherit;
+  color: var(--ink);
 }
 .gate:focus-visible {
   outline: 2px solid var(--ink);
   outline-offset: -6px;
-}
-.gate.hidden {
-  opacity: 0;
-  pointer-events: none;
 }
 .gate .title {
   font-family: var(--font-display);

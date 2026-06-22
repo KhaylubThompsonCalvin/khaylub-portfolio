@@ -7,6 +7,7 @@ import { useExperience } from '../store/useExperience.js';
 // value; there is no second scroll/timeline library (see docs/adr/ADR-001-drop-gsap.md).
 export function useScrollSetup() {
   const setScrollProgress = useExperience((s) => s.setScrollProgress);
+  const setScrollVelocity = useExperience((s) => s.setScrollVelocity);
 
   useEffect(() => {
     const lenis = new Lenis({ smoothWheel: true, lerp: 0.1 });
@@ -18,6 +19,9 @@ export function useScrollSetup() {
     let raf;
     const loop = (t) => {
       lenis.raf(t);
+      // Velocity drives the phoenix's scroll-flair. Read from the RAF loop (not the scroll
+      // event) so it decays to 0 on its own when scrolling stops, rather than freezing.
+      setScrollVelocity(lenis.velocity);
       raf = requestAnimationFrame(loop);
     };
     raf = requestAnimationFrame(loop);
@@ -34,5 +38,5 @@ export function useScrollSetup() {
       cancelAnimationFrame(raf);
       lenis.destroy();
     };
-  }, [setScrollProgress]);
+  }, [setScrollProgress, setScrollVelocity]);
 }

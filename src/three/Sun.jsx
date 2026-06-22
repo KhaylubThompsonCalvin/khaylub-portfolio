@@ -28,9 +28,10 @@ export default function Sun() {
     const g = group.current;
     if (!g) return;
     const p = useExperience.getState().scrollProgress;
-    // Ignites across the final approach and stays bright through the summit — the warm disc the
-    // firebird flies into, against the sunny blue sky.
-    const e = smoothstep(clamp01((p - 0.8) / 0.14));
+    // Ignites LATE on the final approach and stays bright through the summit — the warm disc the
+    // firebird flies toward. Pushed from 0.80 to 0.84 so it no longer blooms into a white wash that
+    // swallows the bird around 0.85; by 1.0 it's still at full brightness for the locked summit.
+    const e = smoothstep(clamp01((p - 0.84) / 0.16));
     if (e < 0.01) {
       g.visible = false;
       return;

@@ -6,10 +6,11 @@
 // scrollProgress and never re-renders (the getState()-in-useFrame idiom).
 //
 // World frame (matches camera.js): the Wanderer is fixed at the origin, ~1 m tall, facing
-// +X (the summit gaze direction). Through the back beats the camera sits on the +X side
-// looking back toward the origin (discovery 0.57 / exploration 0.77 / contact 0.94), so the
-// phoenix lives in the FAR background on the −X side and climbs in +Y — behind and above the
-// Wanderer from every one of those angles, so it never crosses his face or competes with him.
+// +X (the summit gaze direction). The camera sits on the +X side looking back toward the origin
+// (discovery 0.57 / exploration 0.77 / contact 0.94). The firebird is FELT in philosophy as a swept
+// shadow (unseen), then at the spark IGNITES and sweeps visibly into the upper frame from the right
+// (see FLIGHT), arcing across and climbing out to the far −X summit perch — a large firebird above
+// and behind him through the summit.
 
 // The scroll window (all values are scrollProgress 0..1).
 export const PHOENIX = {
@@ -19,61 +20,87 @@ export const PHOENIX = {
   emergeSpan: 0.04, // quick fade/scale-in so the spark ignites rather than popping on
 };
 
-// Threaded-motif foreshadow: a faint, distant ember GLIMPSE during the philosophy beat
-// (~0.12–0.33, "the best systems are built one layer at a time") — the spark of what's coming.
-// It rises in the far +X sky AHEAD of him (where the camera looks at that beat and where the
-// summit fire pays off), kept small and dim so it never steals the Wanderer's establishing
-// beats, then recedes through `focus` before the real spark at 0.50. Its own short path so it
-// doesn't perturb the main FLIGHT's Catmull tangents.
-export const GLIMPSE = {
+// Philosophy foreshadow — the spark is FELT before it's seen. Through the philosophy beat
+// (~0.12–0.34, "the best systems are built one layer at a time") the phoenix is UNSEEN: instead of
+// a visible ember-bird in the sky (removed — Kt: "you shouldn't see the phoenix straight on here"),
+// its shadow sweeps DOWN the Wanderer's back, as if something just passed overhead. The camera is
+// behind him through this beat, so a soft pool swept down his back reads as that shadow.
+// Implemented in three/ForeshadowShadow.jsx (reuses Ground's contact-shadow texture).
+// Through philosophy the Wanderer is a near-black silhouette, so a shadow on his dark back would be
+// invisible — it only reads where it falls on the LIT grass. So the foreshadow is a soft ground
+// pool that sweeps in from ahead (+X, where the spark later returns), passes over him, and on past
+// toward the camera behind — the unseen bird crossing overhead. It does cross his back on the way.
+export const FORESHADOW = {
   from: 0.12,
-  peak: 0.22,
-  to: 0.33,
-  scale: 0.85, // small + far (+X ~8) so it reads as a distant SPARK, not a detailed bird
-  intensity: 4.0, // bright enough to bloom into a glowing spark against the dawn sky
-  // Positions solved live (unproject) to ride the upper-centre sky ahead, rising as it fades.
-  path: [
-    { at: 0.12, pos: [7.82, 0.46, -3.63] }, // appears far in the sky ahead
-    { at: 0.22, pos: [8.07, 1.73, -3.09] }, // rises through centre
-    { at: 0.33, pos: [7.63, 2.33, -4.23] }, // climbs away as it fades
-  ],
+  peak: 0.21,
+  to: 0.34,
+  maxOpacity: 0.6, // darker — it has to read over the textured, lit dawn grass
+  xFrom: 3.4, // sweeps in from ahead on the trail...
+  xTo: -4.2, // ...crossing directly OVER him (origin) at the peak, then on past behind
+  z: 0.1,
+  size: 3.4, // soft pool diameter (m)
 };
 
-// Flight path — keyframed world positions sampled with a Catmull-Rom curve (the plan's
-// chosen interpolation; mirrors how the camera keyframes its shots). Each point is
-// { at: scrollFraction, pos: [x, y, z] }. X stays negative the whole way (never reaches the
-// Wanderer at x=0) while Y climbs: an upward arc that reads as a distant bird rising toward
-// the summit light. Z gives it a little lateral drift into the discovery/exploration views.
-// First-pass values — the spec is approved; nudge these live (Playwright + __seek) if needed.
-// Note on the back beats: the `contact` camera (data/camera.js) cranes UP to y≈2.05 and looks
-// DOWN at the Wanderer, so a far-background bird must sit LOW in world Y to read HIGH on screen
-// (world height is invisible; screen composition is what matters). Hence Y peaks mid-arc through
-// exploration, then settles as the camera tilts down — keeping the fire framed in the upper
-// background at the summit instead of sailing off the top of the frame. Verified live (Playwright
-// projection probe) at the discovery/exploration/contact shots.
-// At the ~3 m scale the bird flies ~10 m out (far -X) so it reads as a large bird far away, not a
-// giant beside him; positions were solved live (unproject of the target screen point at the chosen
-// distance, per camera shot) to hold on-screen height ~20%→33% spark→summit. World Y goes negative
-// at the back because the contact camera cranes up and tilts down (screen comp, not world height).
-// Sized HUGE per the reference (SCALE peaks at ~6.5 → a ~6 m firebird). Positions solved live so
-// it GROWS from a modest ember (~25% of frame height) to a dominating hero at the summit (~70%),
-// held upper-right so it crowns the scene without burying the centre Wanderer.
+// Flight path — keyframed world positions sampled with a Catmull-Rom curve (the plan's chosen
+// interpolation; mirrors how the camera keyframes its shots). Each point is { at, pos:[x,y,z] }.
+//
+// The firebird must be SEEN coming into frame at the spark (an earlier "overhead pass" flew it
+// directly above the camera, where it clipped off the top edge and was never visible — the spark
+// beat had no bird). It is FELT earlier in philosophy as a swept shadow (ForeshadowShadow); at the
+// spark it ignites and is SEEN. Three beats:
+//   1. ENTRY (0.50→0.66): ignites into the upper-right of frame and sweeps across the upper sky —
+//      positions solved live by unprojecting upper-frame screen points (~11–12 m out) at the
+//      discovery/exploration cameras, so it reads as a large firebird arriving, not a clipped blur.
+//   2. CLIMB-OUT (0.66→0.77): arcs up and recedes toward the far summit perch.
+//   3. SUMMIT → ASCENT (0.77→1.0): crisp against the clean blue, upper-left of the sun, then it
+//      CLIMBS — world Y rises 2→5.8 — and the camera tilts up to follow it (data/camera.js FINALE),
+//      the rising-phoenix finale. Slow-flaps to a freeze as it ascends.
+// Heading follows the path tangent; x is monotonic −X and z monotonic +z through the entry, so no
+// flip there (watch the existing curve reversal ~0.85). Re-tune via __seek + the __cam unproject.
 export const FLIGHT = [
-  { at: 0.5, pos: [-14.5, -0.8, -4.5] }, // spark: enters far/low in the sky behind
-  { at: 0.57, pos: [-14.1, -0.51, -4.17] }, // discovery — ember
-  { at: 0.66, pos: [-13.55, 0.97, 0.93] }, // rising
-  { at: 0.77, pos: [-12.8, 2.09, 2.98] }, // exploration — arc peak, upper-right
-  { at: 0.88, pos: [-13.05, 1.1, 1.4] }, // swelling toward the summit, drifting into the blue
-  { at: 0.94, pos: [-11.8, 0.3, 2.8] }, // huge against the clean blue, left of the sun
-  { at: 1.0, pos: [-10.8, -0.16, 4.4] }, // holds upper-left against the blue — slow-flaps to a freeze
+  { at: 0.5, pos: [-1.46, 0.33, -10.25] }, // spark — ignites into the upper-right of frame
+  { at: 0.57, pos: [-5.67, 1.1, -6.49] }, // sweeps in, upper-right — a visible firebird arriving
+  { at: 0.66, pos: [-8.57, 1.39, -0.19] }, // arcs across the upper frame
+  { at: 0.77, pos: [-12.8, 2.09, 2.98] }, // exploration — far upper-right, climbing out
+  { at: 0.88, pos: [-13.05, 2.0, 1.4] }, // the ascent begins — the camera starts tilting up to follow
+  { at: 0.94, pos: [-12.0, 3.4, 3.0] }, // climbing into the sky, upper-left, away from the sun
+  { at: 1.0, pos: [-11.0, 5.8, 4.0] }, // ascends high — the rising-phoenix finale (slow-flap freeze)
 ];
 
-// Emission ramp: ember glow -> fire. Scales emissiveIntensity on the feather material.
-// (Body material has no emission, so it is left untouched.)
-export const EMBER_INTENSITY = 0.8;
-// Low on purpose: the HUGE firebird (~6 m) has a vast emissive area that blooms hard at the peak,
-// so a modest per-pixel fire intensity keeps the wing/body form crisp instead of a white blob.
-export const FIRE_INTENSITY = 1.5;
+// Moving fly-over shadow (three/FlyoverShadow.jsx) — the firebird's shadow sweeping over the
+// Wanderer during the overhead pass. A soft projected pool reusing Ground's radial-gradient
+// contact-shadow texture, NOT a real shadow map: Ground.jsx notes shadow maps would fight the
+// selective-bloom render takeover, so this follows the cheaper painted-shadow pattern. It tracks
+// the bird's published ground position (store.phoenixPos) and is gated to the pass window so it's
+// gone once the bird has climbed away. A higher bird casts a larger, fainter pool.
+export const SHADOW = {
+  from: 0.5, // pass window — matches the first FLIGHT beat
+  peak: 0.57, // darkest as it crosses directly overhead (≈ x:0, the discovery beat)
+  to: 0.72,
+  maxOpacity: 0.55,
+  baseSize: 1.4, // shadow diameter (m) at a low pass — kept tight so it reads as a ground pool, not
+  sizePerHeight: 0.3, // a smudge climbing him at the shallow camera angle (+ diameter per m of altitude)
+  softnessHeight: 8, // altitude (m) by which opacity has faded toward `highFade`
+  highFade: 0.45, // opacity multiplier when the bird is high (fainter, larger)
+};
+
+// Emission ramp: ember glow -> fire. Drives BOTH the emissive colour and intensity on the feather
+// material (the body material has no emission, so it is left untouched). PhoenixFlap overrides the
+// baked emissive with these so the bird reads as FIRE, not a normally-lit pale bird — the climax
+// must out-glow the early glimpse, not under-glow it.
+export const EMBER_INTENSITY = 1.0;
+// Pushed up from 1.5: at the old value the huge firebird read as a dull grey/white bird of prey at
+// the summit instead of fire. The emissive COLOUR (below) stays saturated orange, so the higher
+// intensity blooms into a white-hot core with a fiery halo rather than washing the whole bird white.
+export const FIRE_INTENSITY = 2.8;
+// Ember -> fire colour. Saturated warm hues so the bloom halo reads as fire (orange/gold), never a
+// cold white glow. Lerped by the same ramp that drives intensity.
+export const EMBER_COLOR = '#ff5a1e'; // deep ember orange at the spark
+export const FIRE_COLOR = '#ffb24a'; // bright gold-orange fire at the summit
+
+// A gentle forward glide pitch (radians) so the bird reads as soaring rather than hanging with its
+// talons dangling straight down. Eased to 0 by the summit so the locked freeze pose is untouched.
+export const GLIDE_PITCH = 0.22;
 
 // Flap speed (AnimationAction.timeScale): a slow ember wingbeat that quickens as it ignites.
 export const FLAP_SLOW = 0.6;
@@ -96,6 +123,23 @@ export const HEADING_OFFSET = 0;
 // sits above the body's lit luminance so just the HDR ember/fire feathers glow; strength/radius
 // shape the halo. Tune live like the flight path.
 export const BLOOM = { strength: 0.75, radius: 0.5, threshold: 0.5 };
+
+// Summit feathers — glowing feathers that fall slowly from the phoenix at the summit (Kt's
+// request). A time-based gentle fall (not scroll-locked) so they keep drifting while you rest at
+// the summit; spawned from the live phoenixPos, recycled, warm + on the bloom layer so they glow.
+// Gated by reduced motion. three/Feathers.jsx.
+export const FEATHERS = {
+  from: 0.88, // fade in across the summit approach, full by ~0.95
+  fadeSpan: 0.07,
+  count: 12,
+  size: 1.0, // metres (the phoenix is ~6 m and ~10 m out, so a feather this size reads small)
+  fall: 0.5, // world metres/sec downward drift
+  sway: 0.6, // horizontal sway amplitude (metres)
+  spin: 0.5, // radians/sec flutter
+  spread: 3.2, // spawn radius around the phoenix
+  drop: 7, // metres a feather falls before it recycles back up to the bird
+  color: '#ffd49a', // warm gold ember
+};
 
 // Pointer interaction (Noomo-style) — alive only during the phoenix beat and gated by reduced
 // motion. The bird drifts and banks toward the cursor; the engagement that scales it ramps with

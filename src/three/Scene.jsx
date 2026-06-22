@@ -5,6 +5,7 @@ import PhoenixFlap from './PhoenixFlap.jsx';
 import CameraRig from './CameraRig.jsx';
 import Atmosphere from './Atmosphere.jsx';
 import Ground from './Ground.jsx';
+import Sun from './Sun.jsx';
 import SelectiveBloom from './SelectiveBloom.jsx';
 import { BLOOM } from '../data/phoenix.js';
 
@@ -37,6 +38,8 @@ export default function Scene() {
             the summit. Flight + emission are scroll-driven inside PhoenixFlap (choreography in
             data/phoenix.js); no transform props here. */}
         <PhoenixFlap />
+        {/* The summit sun the firebird flies into — ignites across the final approach. */}
+        <Sun />
       </Suspense>
 
       <CameraRig />

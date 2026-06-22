@@ -16,6 +16,7 @@ export default function VideoAtmosphere({
   max = 0.45,
   fadeIn = [0, 0.06],
   fadeOut,
+  scrub,
 }) {
   const ref = useRef(null);
   const reducedMotion = useExperience((s) => s.reducedMotion);
@@ -35,14 +36,24 @@ export default function VideoAtmosphere({
       let o = ramp(p, fadeIn[0], fadeIn[1]);
       if (fadeOut) o *= 1 - ramp(p, fadeOut[0], fadeOut[1]);
       v.style.opacity = (o * max).toFixed(3);
+      // Scrub mode: drive the video's frame from scroll instead of autoplay-looping, so the plate
+      // moves only as you scroll and FREEZES on its last frame when you stop — a still backdrop
+      // frame-matched to the Wanderer at the summit hold, not looping motion behind a static beat.
+      if (scrub && v.duration) {
+        v.currentTime = ramp(p, scrub[0], scrub[1]) * (v.duration - 0.05);
+      }
     };
     apply(useExperience.getState().scrollProgress);
     const unsub = useExperience.subscribe((s) => apply(s.scrollProgress));
-    v.play?.().catch(() => {
-      /* muted loop autoplay; ignore if blocked */
-    });
+    if (scrub) {
+      v.pause();
+    } else {
+      v.play?.().catch(() => {
+        /* muted loop autoplay; ignore if blocked */
+      });
+    }
     return unsub;
-  }, [reducedMotion, fadeIn, fadeOut, max]);
+  }, [reducedMotion, fadeIn, fadeOut, max, scrub]);
 
   return (
     <video

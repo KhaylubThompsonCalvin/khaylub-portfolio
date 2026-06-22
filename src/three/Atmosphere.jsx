@@ -9,7 +9,10 @@ import { SKY, dayAt } from '../data/palette.js';
 // so the world literally lightens as the Wanderer climbs from the dark trailhead to the sunny
 // summit. Reads scroll via getState() in useFrame (the ADR-001 idiom — no per-frame re-render).
 // Lights are grabbed from the scene once (Scene.jsx owns the declarations).
-const NIGHT = { ambient: 0.12, hemi: 0.35, dir: 0.5 };
+// Night floor lifted slightly (was 0.12/0.35/0.5): the Wanderer was reading as near-pure black
+// through the pre-dawn focus beat (~0.33–0.42), losing his form. This keeps the night mood while
+// letting a rim of him show; the day ramp (dayAt) still opens the shadows fully by sunrise.
+const NIGHT = { ambient: 0.18, hemi: 0.5, dir: 0.72 };
 const DAY = { ambient: 0.6, hemi: 1.6, dir: 2.9 };
 const lerp = (a, b, t) => a + (b - a) * t;
 

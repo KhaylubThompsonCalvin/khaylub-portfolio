@@ -28,12 +28,28 @@ export default function App() {
   // Drive the night→sunny chrome from scroll (imperative via store.subscribe — no re-render):
   //  • text colour flips light→dark with the day so it stays readable on the dark night sky and
   //    the bright sunny summit (the accessible version of Noomo's sectionColor);
-  //  • the DOM column fades out across the finale so the phoenix close-up is clean.
+  //  • a --fire ramp lights the closing contact links in step with the phoenix's fire.
   useEffect(() => {
     const root = document.documentElement;
     const mix = (a, b, t) => Math.round(a + (b - a) * t);
+    // The intro beats are vertically centred in tall, freely-scrolling sections, so their copy
+    // travels up behind the fixed nav (which has no backdrop) and collides with the brand mark. A
+    // full-width top scrim can't fix it — the phoenix shares that strip from ~0.5 on — so fade the
+    // DOM copy out at the top edge instead. Only the short single-viewport beats (#work's tall card
+    // stack is excluded so its lower cards stay readable while scrolling). The fade is applied only
+    // while a block is in the nav band; otherwise control is handed back to the reveal-and-stay CSS
+    // so the entrance reveal is untouched. A few rect reads per scroll — cheap, no React re-render.
+    const NAV_BAND = 130; // px — the fixed nav lives in roughly the top 130px
+    const topFade = Array.from(
+      document.querySelectorAll('#arrival .inner, #philosophy .inner, #focus .inner')
+    );
     const apply = (p) => {
       const day = dayAt(p);
+      for (const el of topFade) {
+        const top = el.getBoundingClientRect().top;
+        if (top < NAV_BAND) el.style.opacity = String(Math.max(0, top / NAV_BAND));
+        else if (el.style.opacity !== '') el.style.opacity = '';
+      }
       // light text at night (236,230,218) → dark ink by day (36,28,18); muted likewise
       root.style.setProperty(
         '--ink',
@@ -43,8 +59,20 @@ export default function App() {
         '--muted',
         `rgb(${mix(168, 91, day)},${mix(160, 81, day)},${mix(146, 63, day)})`
       );
-      const el = overlayRef.current;
-      if (el) el.style.opacity = String(1 - Math.min(1, Math.max(0, (p - 0.95) / 0.05)));
+      // --scrim: a translucent wash of the current sky tone, painted behind the DOM copy (index.css)
+      // so it stays legible wherever the Wanderer passes under a text column. The overlay already
+      // sits above the 3D, so this is a contrast fix, not z-order: the scrim tracks the sky
+      // (night navy → day cream) opposite the ink, restoring text-on-sky contrast at every beat.
+      root.style.setProperty(
+        '--scrim',
+        `${mix(14, 236, day)},${mix(18, 232, day)},${mix(32, 224, day)}`
+      );
+      // --fire: 0→1 across the summit window (the same beat the phoenix ignites), so the closing
+      // contact links brighten WITH the firebird's fire — the spark→fire motif resolving into the
+      // call-to-action. The overlay is NOT faded out at the end any more: the lit links + phoenix
+      // are the closing image, so they stay.
+      const fire = Math.min(1, Math.max(0, (p - 0.8) / 0.18));
+      root.style.setProperty('--fire', (fire * fire * (3 - 2 * fire)).toFixed(3));
     };
     apply(useExperience.getState().scrollProgress);
     return useExperience.subscribe((s) => apply(s.scrollProgress));
@@ -103,12 +131,15 @@ export default function App() {
         max={0.7}
         fadeIn={[0.46, 0.58]}
       />
+      {/* Summit clouds: scrubbed by scroll across the final approach and FROZEN on its last frame
+          at the summit hold — a still, frame-matched sky behind the Wanderer's arrival, not looping
+          motion drifting behind a static beat. */}
       <VideoAtmosphere
         src="/assets/video/summit-clouds.mp4"
         blend="soft-light"
         max={0.4}
-        fadeIn={[0.84, 0.93]}
-        fadeOut={[0.94, 0.99]}
+        fadeIn={[0.82, 0.92]}
+        scrub={[0.82, 0.97]}
       />
 
       {/* scrollable DOM overlay column — its height creates the scroll track */}

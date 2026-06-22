@@ -21,6 +21,11 @@ export default function AudioManager() {
     if (!Ctx) return undefined;
 
     const ctx = new Ctx();
+    if (ctx.state === 'suspended') {
+      ctx.resume().catch(() => {
+        /* ignore resume failures (policy/device) */
+      });
+    }
     const master = ctx.createGain();
     const startMode = useExperience.getState().audioMode;
     master.gain.value = startMode === 'off' ? 0 : 1;
@@ -42,14 +47,18 @@ export default function AudioManager() {
       crackle.setLevel(Math.min(1, Math.max(0, (p - 0.5) / 0.15))); // fire crackle in the phoenix window
     };
     applyScroll(useExperience.getState().scrollProgress);
-    const unsubScroll = useExperience.subscribe((s) => applyScroll(s.scrollProgress));
+    const unsubScroll = useExperience.subscribe((s, prev) => {
+      if (s.scrollProgress !== prev.scrollProgress) applyScroll(s.scrollProgress);
+    });
 
     // Mode drives the master mute (no pop) and whether the score plays.
     const applyMode = (mode) => {
       master.gain.setTargetAtTime(mode === 'off' ? 0 : 1, ctx.currentTime, 0.4);
       score.setEnabled(mode === 'music');
     };
-    const unsubMode = useExperience.subscribe((s) => applyMode(s.audioMode));
+    const unsubMode = useExperience.subscribe((s, prev) => {
+      if (s.audioMode !== prev.audioMode) applyMode(s.audioMode);
+    });
 
     return () => {
       unsubScroll();

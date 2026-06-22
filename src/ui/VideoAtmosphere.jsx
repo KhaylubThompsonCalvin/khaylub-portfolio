@@ -37,7 +37,9 @@ export default function VideoAtmosphere({
       v.style.opacity = (o * max).toFixed(3);
     };
     apply(useExperience.getState().scrollProgress);
-    const unsub = useExperience.subscribe((s) => apply(s.scrollProgress));
+    const unsub = useExperience.subscribe((s, prev) => {
+      if (s.scrollProgress !== prev.scrollProgress) apply(s.scrollProgress);
+    });
     v.play?.().catch(() => {
       /* muted loop autoplay; ignore if blocked */
     });

@@ -5,6 +5,11 @@ import PhoenixFlap from './PhoenixFlap.jsx';
 import CameraRig from './CameraRig.jsx';
 import Atmosphere from './Atmosphere.jsx';
 import Ground from './Ground.jsx';
+import Mountains from './Mountains.jsx';
+import SummitBackdrop from './SummitBackdrop.jsx';
+import FlyoverShadow from './FlyoverShadow.jsx';
+import ForeshadowShadow from './ForeshadowShadow.jsx';
+import Feathers from './Feathers.jsx';
 import Sun from './Sun.jsx';
 import FinaleReveal from './FinaleReveal.jsx';
 import SelectiveBloom from './SelectiveBloom.jsx';
@@ -35,12 +40,23 @@ export default function Scene() {
       <Suspense fallback={null}>
         {/* Grounding slope so he stands on the trail, fog-blended into the tonal sky. */}
         <Ground />
+        {/* Far mountain vista (matte plate) + nearer procedural ranges in front of it — together
+            they open a vista with depth as he crests the summit. */}
+        <SummitBackdrop />
+        <Mountains />
+        {/* The firebird's shadow sweeping over him during the overhead pass (~0.50→0.62);
+            follows store.phoenixPos, gated to the pass window. */}
+        <FlyoverShadow />
         <Wanderer position={[0, 0, 0]} />
+        {/* Philosophy foreshadow: the unseen phoenix felt as a shadow sweeping down his back. */}
+        <ForeshadowShadow />
         {/* "Spark of the Summit": a secondary phoenix accent — dormant until ~0.50, then an
             ember rises through the far background behind the Wanderer and ignites to fire by
             the summit. Flight + emission are scroll-driven inside PhoenixFlap (choreography in
             data/phoenix.js); no transform props here. */}
         <PhoenixFlap />
+        {/* Glowing feathers drifting down from the phoenix at the summit. */}
+        <Feathers />
         {/* The summit sun the firebird flies into — ignites across the final approach. */}
         <Sun />
         {/* Prep mount for the freeze-pose climax ("something amazing") — null stub for now. */}

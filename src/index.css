@@ -22,10 +22,25 @@ a {
   color: inherit;
 }
 
-/* DOM overlays sit above the fixed 3D canvas */
+/* grass/wind video atmosphere — over the 3D canvas (z 0), under the DOM content (z 2). Soft-light
+   blend washes its grass motion into the scene without replacing the tonal sky; opacity is driven
+   by scroll in VideoAtmosphere. Non-interactive. */
+.video-atmosphere {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+  opacity: 0;
+  mix-blend-mode: soft-light;
+  pointer-events: none;
+}
+
+/* DOM overlays sit above the fixed 3D canvas and the video atmosphere */
 .overlay {
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 
 /* each phase is a full-height block; stacked, they create the scroll track */

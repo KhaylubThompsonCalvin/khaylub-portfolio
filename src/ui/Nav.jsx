@@ -3,8 +3,10 @@ import { useExperience } from '../store/useExperience.js';
 
 export default function Nav() {
   // Discrete state (changes only on click) — safe to subscribe; never per-frame.
-  const audioOn = useExperience((s) => s.audioOn);
-  const toggleAudio = useExperience((s) => s.toggleAudio);
+  const audioMode = useExperience((s) => s.audioMode);
+  const cycleAudio = useExperience((s) => s.cycleAudio);
+
+  const label = audioMode === 'off' ? 'Sound off' : audioMode === 'music' ? 'Sound + music' : 'Ambient';
 
   return (
     <nav className="nav">
@@ -15,11 +17,10 @@ export default function Nav() {
         <button
           type="button"
           className="audio-toggle"
-          onClick={toggleAudio}
-          aria-pressed={audioOn}
-          aria-label={audioOn ? 'Turn sound off' : 'Turn sound on'}
+          onClick={cycleAudio}
+          aria-label={`Audio: ${audioMode}. Tap to cycle ambient, music, off.`}
         >
-          {audioOn ? 'Sound on' : 'Sound off'}
+          {label}
         </button>
       </div>
     </nav>

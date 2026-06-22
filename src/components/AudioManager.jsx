@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useExperience } from '../store/useExperience.js';
 import { createWind } from '../audio/ambience/wind.js';
+import { createScore } from '../audio/music/score.js';
 
 // AudioManager — the audio system's single owner. Architecture (per the brief):
 //   1. Environmental ambience (on by default) — wind now; birds/footsteps/ember to follow.
@@ -19,10 +20,13 @@ export default function AudioManager() {
 
     const ctx = new Ctx();
     const master = ctx.createGain();
-    master.gain.value = useExperience.getState().audioOn ? 1 : 0;
+    const startMode = useExperience.getState().audioMode;
+    master.gain.value = startMode === 'off' ? 0 : 1;
     master.connect(ctx.destination);
 
-    const wind = createWind(ctx, master);
+    const wind = createWind(ctx, master); // layer 1 — environmental
+    const score = createScore(ctx, master); // layer 2 — optional soundtrack
+    score.setEnabled(startMode === 'music');
 
     // Scroll-reactive ambience: wind swells in the open landscape (mid-climb) and toward the
     // wide summit, calmer at the enclosed arrival. Cheap curve, eased inside the layer.
@@ -33,15 +37,18 @@ export default function AudioManager() {
     applyScroll(useExperience.getState().scrollProgress);
     const unsubScroll = useExperience.subscribe((s) => applyScroll(s.scrollProgress));
 
-    // Mute/unmute fades the master gain (no pop); state + persistence live in the store.
-    const unsubMute = useExperience.subscribe((s) => {
-      master.gain.setTargetAtTime(s.audioOn ? 1 : 0, ctx.currentTime, 0.4);
-    });
+    // Mode drives the master mute (no pop) and whether the score plays.
+    const applyMode = (mode) => {
+      master.gain.setTargetAtTime(mode === 'off' ? 0 : 1, ctx.currentTime, 0.4);
+      score.setEnabled(mode === 'music');
+    };
+    const unsubMode = useExperience.subscribe((s) => applyMode(s.audioMode));
 
     return () => {
       unsubScroll();
-      unsubMute();
+      unsubMode();
       wind.dispose();
+      score.dispose();
       ctx.close();
     };
   }, [started]);

@@ -20,13 +20,15 @@ export const useExperience = create((set, get) => ({
   pointerY: 0, // -1 (bottom) .. 1 (top)
   scrollVelocity: 0, // signed Lenis velocity; decays to 0 when idle
 
-  // audio — environmental ambience is on by default, but only ever starts after the "Tap to
-  // explore" gesture (never autoplay). The nav toggle mutes/unmutes; the choice persists.
-  audioOn: (() => {
+  // audio — three modes the nav cycles through: 'ambient' (environmental only, the default),
+  // 'music' (ambient + the opt-in cinematic score), 'off' (silent). Ambience is on by default but
+  // only ever starts after the "Tap to explore" gesture (never autoplay); music is explicit opt-in.
+  audioMode: (() => {
     try {
-      return localStorage.getItem('kt-audio') !== 'off';
+      const v = localStorage.getItem('kt-audio');
+      return v === 'music' || v === 'off' ? v : 'ambient';
     } catch {
-      return true;
+      return 'ambient';
     }
   })(),
 
@@ -38,15 +40,16 @@ export const useExperience = create((set, get) => ({
   setScrollVelocity: (v) => {
     if (v !== get().scrollVelocity) set({ scrollVelocity: v });
   },
-  toggleAudio: () =>
+  cycleAudio: () =>
     set((s) => {
-      const next = !s.audioOn;
+      const order = ['ambient', 'music', 'off'];
+      const next = order[(order.indexOf(s.audioMode) + 1) % order.length];
       try {
-        localStorage.setItem('kt-audio', next ? 'on' : 'off');
+        localStorage.setItem('kt-audio', next);
       } catch {
         /* ignore */
       }
-      return { audioOn: next };
+      return { audioMode: next };
     }),
   setScrollProgress: (p) => {
     const clamped = Math.min(1, Math.max(0, p));

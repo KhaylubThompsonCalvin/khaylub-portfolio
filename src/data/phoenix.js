@@ -97,11 +97,15 @@ export const BLOOM = { strength: 0.75, radius: 0.5, threshold: 0.5 };
 // motion. The bird drifts and banks toward the cursor; the engagement that scales it ramps with
 // the ember->fire ramp, so it's barely-there at the spark and fully responsive at the summit.
 // Position stays scroll-locked; pointer only adds a small offset/tilt on top of the flight path.
+// Steering — the cursor flies the firebird. Tuned for real influence (it's ~10 m out, so these
+// world-metre offsets read as clear screen movement) while staying in the far sky behind the
+// Wanderer. Scaled by the climb ramp, so it wakes to the cursor as the bird ignites; the glimpse
+// stays hands-off.
 export const POINTER = {
-  drift: [0.4, 0.28], // max world-metre offset toward the cursor [x, y]
-  bank: 0.28, // max roll (radians) toward cursor.x — a lean, not a swerve
-  yaw: 0.2, // max extra yaw toward cursor.x, on top of the path heading
-  ease: 4.0, // exponential follow (higher = snappier tracking of the cursor)
+  drift: [1.8, 1.1], // max world-metre offset toward the cursor [x, y] — the bird follows
+  bank: 0.5, // max roll (radians) toward cursor.x — banks into the turn
+  yaw: 0.35, // max extra yaw toward cursor.x, on top of the path heading
+  ease: 3.2, // exponential follow (lower = a touch of lag, so it glides rather than snaps)
 };
 
 // Scroll-velocity ember flair — flavour only, never moves the bird (mirrors Noomo's scrollSpeed

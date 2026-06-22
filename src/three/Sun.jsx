@@ -36,10 +36,10 @@ export default function Sun() {
       return;
     }
     g.visible = true;
-    g.scale.setScalar(1 + e * 1.6);
-    // Kept modest so it backlights the firebird (which the phoenix flies into) rather than
-    // blooming over it — the phoenix is the hero and must read against the sun, not drown in it.
-    if (mat.current) mat.current.emissiveIntensity = 0.8 + e * 1.7;
+    // A contained disc (not a sky-wide wash) so most of the blue sky stays clean for the firebird,
+    // which now flies against the blue beside it rather than into it.
+    g.scale.setScalar(1 + e * 0.7);
+    if (mat.current) mat.current.emissiveIntensity = 0.8 + e * 1.6;
   });
 
   return (

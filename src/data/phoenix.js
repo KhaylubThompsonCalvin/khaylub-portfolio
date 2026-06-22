@@ -63,9 +63,9 @@ export const FLIGHT = [
   { at: 0.57, pos: [-14.1, -0.51, -4.17] }, // discovery — ember
   { at: 0.66, pos: [-13.55, 0.97, 0.93] }, // rising
   { at: 0.77, pos: [-12.8, 2.09, 2.98] }, // exploration — arc peak, upper-right
-  { at: 0.88, pos: [-13.05, 0.97, 0.79] }, // swelling toward the summit
-  { at: 0.94, pos: [-12.16, 0.28, -0.93] }, // huge against the blue sky, above the Wanderer
-  { at: 1.0, pos: [-11.7, 0.5, -1.1] }, // holds framed above the summit — slow-flaps to a freeze
+  { at: 0.88, pos: [-13.05, 1.1, 1.4] }, // swelling toward the summit, drifting into the blue
+  { at: 0.94, pos: [-11.8, 0.3, 2.8] }, // huge against the clean blue, left of the sun
+  { at: 1.0, pos: [-10.8, -0.16, 4.4] }, // holds upper-left against the blue — slow-flaps to a freeze
 ];
 
 // Emission ramp: ember glow -> fire. Scales emissiveIntensity on the feather material.

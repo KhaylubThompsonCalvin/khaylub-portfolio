@@ -19,6 +19,26 @@ export const PHOENIX = {
   emergeSpan: 0.04, // quick fade/scale-in so the spark ignites rather than popping on
 };
 
+// Threaded-motif foreshadow: a faint, distant ember GLIMPSE during the philosophy beat
+// (~0.12–0.33, "the best systems are built one layer at a time") — the spark of what's coming.
+// It rises in the far +X sky AHEAD of him (where the camera looks at that beat and where the
+// summit fire pays off), kept small and dim so it never steals the Wanderer's establishing
+// beats, then recedes through `focus` before the real spark at 0.50. Its own short path so it
+// doesn't perturb the main FLIGHT's Catmull tangents.
+export const GLIMPSE = {
+  from: 0.12,
+  peak: 0.22,
+  to: 0.33,
+  scale: 0.85, // small + far (+X ~8) so it reads as a distant SPARK, not a detailed bird
+  intensity: 4.0, // bright enough to bloom into a glowing spark against the dawn sky
+  // Positions solved live (unproject) to ride the upper-centre sky ahead, rising as it fades.
+  path: [
+    { at: 0.12, pos: [7.82, 0.46, -3.63] }, // appears far in the sky ahead
+    { at: 0.22, pos: [8.07, 1.73, -3.09] }, // rises through centre
+    { at: 0.33, pos: [7.63, 2.33, -4.23] }, // climbs away as it fades
+  ],
+};
+
 // Flight path — keyframed world positions sampled with a Catmull-Rom curve (the plan's
 // chosen interpolation; mirrors how the camera keyframes its shots). Each point is
 // { at: scrollFraction, pos: [x, y, z] }. X stays negative the whole way (never reaches the

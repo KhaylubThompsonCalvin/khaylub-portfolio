@@ -20,6 +20,16 @@ export const useExperience = create((set, get) => ({
   pointerY: 0, // -1 (bottom) .. 1 (top)
   scrollVelocity: 0, // signed Lenis velocity; decays to 0 when idle
 
+  // audio — environmental ambience is on by default, but only ever starts after the "Tap to
+  // explore" gesture (never autoplay). The nav toggle mutes/unmutes; the choice persists.
+  audioOn: (() => {
+    try {
+      return localStorage.getItem('kt-audio') !== 'off';
+    } catch {
+      return true;
+    }
+  })(),
+
   // actions
   start: () => set({ started: true }),
   setReady: (ready) => set({ ready }),
@@ -28,6 +38,16 @@ export const useExperience = create((set, get) => ({
   setScrollVelocity: (v) => {
     if (v !== get().scrollVelocity) set({ scrollVelocity: v });
   },
+  toggleAudio: () =>
+    set((s) => {
+      const next = !s.audioOn;
+      try {
+        localStorage.setItem('kt-audio', next ? 'on' : 'off');
+      } catch {
+        /* ignore */
+      }
+      return { audioOn: next };
+    }),
   setScrollProgress: (p) => {
     const clamped = Math.min(1, Math.max(0, p));
     const stage = stageAt(clamped);

@@ -6,6 +6,7 @@ import { SCROLL_VH } from './data/stages.js';
 
 import LoadGate from './ui/LoadGate.jsx';
 import Nav from './ui/Nav.jsx';
+import AudioManager from './components/AudioManager.jsx';
 import SkipToWork from './ui/SkipToWork.jsx';
 import Hero from './ui/Hero.jsx';
 import { Philosophy, AreasOfFocus } from './ui/Sections.jsx';
@@ -54,6 +55,7 @@ export default function App() {
     <>
       <LoadGate />
       <Nav />
+      <AudioManager />
 
       {/* fixed 3D stage */}
       <Scene />

@@ -26,10 +26,14 @@ export const POINTER_PARALLAX = { x: 0.18, y: 0.12, ease: 3.0 };
 // it blends from the contact shot into a tight orbit around the live phoenix position: `radius`
 // metres out, sweeping `sweep` radians (~200°) so the wings/feathers turn, `rise` lifting the eye
 // a touch above the bird. Skipped under reduced motion (the contact hold stays).
+// Orbit DISABLED for the sunny finale: a tight orbit looks into the bright sun and washes white on
+// the daylit sky. The summit now holds the contact shot — the phoenix framed flying ABOVE the
+// Wanderer against the blue sky, slow-flapping to a freeze. (from > 1 = never triggers; flip back
+// to 0.94 only with a dark finale, where the orbit reads.)
 export const FINALE = {
-  from: 0.94,
-  radius: 13, // far enough that the huge (~6 m) firebird frames whole as the camera circles it
+  from: 1.1,
+  radius: 13,
   sweep: Math.PI * 1.15,
-  startAngle: -0.35, // begins on the +X side, near where the contact camera already sits
+  startAngle: -0.35,
   rise: 2.0,
 };

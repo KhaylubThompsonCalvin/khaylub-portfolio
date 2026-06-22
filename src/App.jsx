@@ -3,6 +3,7 @@ import Scene from './three/Scene.jsx';
 import { useScrollSetup } from './scroll/useScrollSetup.js';
 import { useExperience } from './store/useExperience.js';
 import { SCROLL_VH } from './data/stages.js';
+import { dayAt } from './data/palette.js';
 
 import LoadGate from './ui/LoadGate.jsx';
 import Nav from './ui/Nav.jsx';
@@ -24,11 +25,24 @@ export default function App() {
   // wire scroll -> store (Lenis); stageId drives DOM reveals, no GSAP (see ADR-001)
   useScrollSetup();
 
-  // Fade the DOM column out across the finale (0.95→1.0) so the dark phoenix-orbit close-up is
-  // clean — no dark-on-dark text. Imperative via store.subscribe (no re-render); nav + the
-  // Work·Contact cue are separate, so they stay reachable.
+  // Drive the night→sunny chrome from scroll (imperative via store.subscribe — no re-render):
+  //  • text colour flips light→dark with the day so it stays readable on the dark night sky and
+  //    the bright sunny summit (the accessible version of Noomo's sectionColor);
+  //  • the DOM column fades out across the finale so the phoenix close-up is clean.
   useEffect(() => {
+    const root = document.documentElement;
+    const mix = (a, b, t) => Math.round(a + (b - a) * t);
     const apply = (p) => {
+      const day = dayAt(p);
+      // light text at night (236,230,218) → dark ink by day (36,28,18); muted likewise
+      root.style.setProperty(
+        '--ink',
+        `rgb(${mix(236, 36, day)},${mix(230, 28, day)},${mix(218, 18, day)})`
+      );
+      root.style.setProperty(
+        '--muted',
+        `rgb(${mix(168, 91, day)},${mix(160, 81, day)},${mix(146, 63, day)})`
+      );
       const el = overlayRef.current;
       if (el) el.style.opacity = String(1 - Math.min(1, Math.max(0, (p - 0.95) / 0.05)));
     };

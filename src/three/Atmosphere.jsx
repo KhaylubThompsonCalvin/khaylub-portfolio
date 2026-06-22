@@ -1,25 +1,23 @@
-import { useMemo } from 'react';
+import { useMemo, useRef } from 'react';
 import { useThree, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { useExperience } from '../store/useExperience.js';
-import { SKY } from '../data/palette.js';
+import { SKY, dayAt } from '../data/palette.js';
 
-// Atmosphere — the tonal color progression. Samples the SKY palette by scrollProgress and writes
-// the scene background + fog colour each frame, so the world warms (dawn) → cools (alpine) →
-// clears (summit) as you climb. Reads scroll via getState() in useFrame (the ADR-001 idiom — no
-// per-frame React re-render). The grounding terrain (three/Ground.jsx) shares the fog, so its
-// horizon dissolves into whatever colour the sky currently is — they move together.
-//
-// (Phase 4 will add Higgsfield plates — starfield / god-rays — as background planes behind the
-// Wanderer; this colour drive is the cheap-but-high-impact first layer of that atmosphere.)
+// Atmosphere — the night→sunny tonal arc. Samples the SKY palette by scrollProgress for the scene
+// background + fog colour, and ramps the scene LIGHTING from a dim night to a bright day (dayAt),
+// so the world literally lightens as the Wanderer climbs from the dark trailhead to the sunny
+// summit. Reads scroll via getState() in useFrame (the ADR-001 idiom — no per-frame re-render).
+// Lights are grabbed from the scene once (Scene.jsx owns the declarations).
+const NIGHT = { ambient: 0.12, hemi: 0.35, dir: 0.5 };
+const DAY = { ambient: 0.6, hemi: 1.6, dir: 2.9 };
+const lerp = (a, b, t) => a + (b - a) * t;
+
 export default function Atmosphere() {
   const { scene } = useThree();
-
   const stops = useMemo(() => SKY.map((s) => ({ at: s.at, c: new THREE.Color(s.color) })), []);
   const scratch = useMemo(() => new THREE.Color(), []);
-  // Finale dusk — the sky falls to deep twilight across 0.94→1.0 so the white-fire phoenix and the
-  // sun blaze against it during the close-up orbit (the dark backdrop the bird has always needed).
-  const dusk = useMemo(() => new THREE.Color('#0d1322'), []);
+  const lights = useRef(null);
 
   useFrame(() => {
     const p = useExperience.getState().scrollProgress;
@@ -30,14 +28,24 @@ export default function Atmosphere() {
     const b = stops[Math.min(i + 1, stops.length - 1)];
     const t = a.at === b.at ? 0 : Math.min(1, Math.max(0, (p - a.at) / (b.at - a.at)));
     scratch.copy(a.c).lerp(b.c, t);
-
-    if (p > 0.94) {
-      const d = Math.min(1, (p - 0.94) / 0.06);
-      scratch.lerp(dusk, d * d * (3 - 2 * d));
-    }
-
     if (scene.background?.isColor) scene.background.copy(scratch);
     if (scene.fog) scene.fog.color.copy(scratch);
+
+    // Grab the lights once, then ramp them night→day.
+    if (!lights.current) {
+      const l = {};
+      scene.traverse((o) => {
+        if (o.isAmbientLight) l.ambient = o;
+        else if (o.isHemisphereLight) l.hemi = o;
+        else if (o.isDirectionalLight) l.dir = o;
+      });
+      lights.current = l;
+    }
+    const day = dayAt(p);
+    const l = lights.current;
+    if (l.ambient) l.ambient.intensity = lerp(NIGHT.ambient, DAY.ambient, day);
+    if (l.hemi) l.hemi.intensity = lerp(NIGHT.hemi, DAY.hemi, day);
+    if (l.dir) l.dir.intensity = lerp(NIGHT.dir, DAY.dir, day);
   });
 
   return null;

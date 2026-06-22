@@ -20,15 +20,15 @@ export const useExperience = create((set, get) => ({
   pointerY: 0, // -1 (bottom) .. 1 (top)
   scrollVelocity: 0, // signed Lenis velocity; decays to 0 when idle
 
-  // audio — three modes the nav cycles through: 'ambient' (environmental only, the default),
-  // 'music' (ambient + the opt-in cinematic score), 'off' (silent). Ambience is on by default but
-  // only ever starts after the "Tap to explore" gesture (never autoplay); music is explicit opt-in.
+  // audio — three modes the nav cycles through: 'ambient' (environmental), 'music' (ambient + the
+  // opt-in score), 'off'. Defaults to OFF until a real (licensed/recorded) track replaces the
+  // synthesized placeholder — a stored choice still wins, so anyone who turned it on keeps it.
   audioMode: (() => {
     try {
       const v = localStorage.getItem('kt-audio');
-      return v === 'music' || v === 'off' ? v : 'ambient';
+      return v === 'music' || v === 'off' || v === 'ambient' ? v : 'off';
     } catch {
-      return 'ambient';
+      return 'off';
     }
   })(),
 

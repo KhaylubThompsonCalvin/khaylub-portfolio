@@ -11,8 +11,8 @@ export function createScore(ctx, destination) {
   pad.gain.value = 0.5;
   const lowpass = ctx.createBiquadFilter();
   lowpass.type = 'lowpass';
-  lowpass.frequency.value = 1100;
-  lowpass.Q.value = 0.4;
+  lowpass.frequency.value = 820; // darker/warmer so the pad is soft, not buzzy
+  lowpass.Q.value = 0.3;
 
   lowpass.connect(pad);
   pad.connect(enable);
@@ -55,7 +55,7 @@ export function createScore(ctx, destination) {
 
   return {
     setEnabled(on) {
-      enable.gain.setTargetAtTime(on ? 0.5 : 0, ctx.currentTime, 1.2); // slow, unhurried fade
+      enable.gain.setTargetAtTime(on ? 0.28 : 0, ctx.currentTime, 1.6); // soft, slow, unhurried
     },
     dispose() {
       try {

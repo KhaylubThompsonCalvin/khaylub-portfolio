@@ -7,7 +7,7 @@
 // slot in here as samples per ../effects/README.md; crackle is the one that synthesizes honestly.)
 export function createEmberCrackle(ctx, destination) {
   const out = ctx.createGain();
-  out.gain.value = 0.5;
+  out.gain.value = 0.22;
   out.connect(destination);
 
   let level = 0;
@@ -28,7 +28,7 @@ export function createEmberCrackle(ctx, destination) {
     bp.frequency.value = 800 + Math.random() * 2200;
     bp.Q.value = 2;
     const g = ctx.createGain();
-    g.gain.value = (0.15 + Math.random() * 0.3) * level;
+    g.gain.value = (0.08 + Math.random() * 0.14) * level;
     src.connect(bp);
     bp.connect(g);
     g.connect(out);

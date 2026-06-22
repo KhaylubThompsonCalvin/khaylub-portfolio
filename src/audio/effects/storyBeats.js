@@ -49,8 +49,8 @@ export function createStoryBeats(ctx, destination) {
     // 0..1 from scroll: out swells with the beat; shimmer only joins past the halfway point.
     setLevel(v) {
       const lvl = Math.max(0, Math.min(1, v));
-      out.gain.setTargetAtTime(lvl * 0.45, ctx.currentTime, 0.8);
-      shimmer.gain.setTargetAtTime(Math.max(0, (lvl - 0.5) / 0.5) * 0.8, ctx.currentTime, 1.1);
+      out.gain.setTargetAtTime(lvl * 0.16, ctx.currentTime, 0.9);
+      shimmer.gain.setTargetAtTime(Math.max(0, (lvl - 0.5) / 0.5) * 0.35, ctx.currentTime, 1.2);
     },
     dispose() {
       try {

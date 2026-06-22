@@ -21,12 +21,12 @@ export function createWind(ctx, destination) {
 
   const lowpass = ctx.createBiquadFilter();
   lowpass.type = 'lowpass';
-  lowpass.frequency.value = 600;
+  lowpass.frequency.value = 420; // warmer/softer — less hiss, more low wind
 
   const band = ctx.createBiquadFilter();
   band.type = 'bandpass';
-  band.frequency.value = 480;
-  band.Q.value = 0.6;
+  band.frequency.value = 360;
+  band.Q.value = 0.5;
 
   const gain = ctx.createGain();
   gain.gain.value = 0; // silent until setIntensity ramps it (no pop)
@@ -41,16 +41,16 @@ export function createWind(ctx, destination) {
   const lfo = ctx.createOscillator();
   lfo.frequency.value = 0.08;
   const lfoDepth = ctx.createGain();
-  lfoDepth.gain.value = 220;
+  lfoDepth.gain.value = 130;
   lfo.connect(lfoDepth);
   lfoDepth.connect(lowpass.frequency);
   lfo.start();
 
   return {
-    // 0..1 → eased toward a calm ceiling so ambience never dominates.
+    // 0..1 → eased toward a low ceiling so it's a faint bed, never noise that dominates.
     setIntensity(v) {
-      const target = Math.max(0, Math.min(1, v)) * 0.5;
-      gain.gain.setTargetAtTime(target, ctx.currentTime, 0.6);
+      const target = Math.max(0, Math.min(1, v)) * 0.18;
+      gain.gain.setTargetAtTime(target, ctx.currentTime, 0.8);
     },
     dispose() {
       try {

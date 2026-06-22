@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { useExperience } from '../store/useExperience.js';
-import { SHOTS, POINTER_PARALLAX } from '../data/camera.js';
+import { SHOTS, POINTER_PARALLAX, FINALE } from '../data/camera.js';
 import { PHOENIX } from '../data/phoenix.js';
 
 // System 3 — Camera. Keyframed shots interpolated by scrollProgress, so the camera moves
@@ -17,6 +17,8 @@ const clamp01 = (t) => Math.min(1, Math.max(0, t));
 const _pos = new THREE.Vector3();
 const _look = new THREE.Vector3();
 const _b = new THREE.Vector3();
+const _orbit = new THREE.Vector3();
+const _olook = new THREE.Vector3();
 
 // sample the shot list at scrollProgress p -> writes camera pos + look targets
 function sample(p, outPos, outLook) {
@@ -69,6 +71,22 @@ export default function CameraRig() {
       ppy.current += (store.pointerY - ppy.current) * kP;
       _pos.x -= ppx.current * POINTER_PARALLAX.x * eng;
       _pos.y -= ppy.current * POINTER_PARALLAX.y * eng;
+    }
+
+    // Finale — close up on the phoenix and orbit it on all angles as it ascends (the end of the
+    // progression). Blend from the contact shot into the orbit so 0.94 is the held shot and the
+    // circle resolves by 1.0. Skipped under reduced motion (the contact hold stays).
+    if (!reducedMotion && p >= FINALE.from) {
+      const e = smoothstep(clamp01((p - FINALE.from) / (1 - FINALE.from)));
+      const ph = store.phoenixPos;
+      const angle = FINALE.startAngle + e * FINALE.sweep;
+      _orbit.set(
+        ph.x + Math.cos(angle) * FINALE.radius,
+        ph.y + FINALE.rise,
+        ph.z + Math.sin(angle) * FINALE.radius
+      );
+      _pos.lerp(_orbit, e);
+      _look.lerp(_olook.set(ph.x, ph.y, ph.z), e);
     }
 
     const k = 1 - Math.exp(-FOLLOW * dt);

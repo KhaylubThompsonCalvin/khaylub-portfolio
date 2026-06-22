@@ -28,7 +28,12 @@ export default function Sun() {
     const g = group.current;
     if (!g) return;
     const p = useExperience.getState().scrollProgress;
-    const e = smoothstep(clamp01((p - 0.8) / 0.18)); // rises across the summit approach
+    // Ignites across the approach (the "fly into the sun" wide moment ~0.8→0.92), then fades
+    // through the orbit (0.94→1.0) so it stops washing the close-up — the phoenix's own fire
+    // carries the finale against the dusk.
+    const rise = smoothstep(clamp01((p - 0.8) / 0.12));
+    const fade = 1 - smoothstep(clamp01((p - 0.94) / 0.06));
+    const e = rise * fade;
     if (e < 0.01) {
       g.visible = false;
       return;

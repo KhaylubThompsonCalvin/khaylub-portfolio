@@ -110,6 +110,7 @@ export const POINTER = {
   bank: 0.5, // max roll (radians) toward cursor.x — banks into the turn
   yaw: 0.35, // max extra yaw toward cursor.x, on top of the path heading
   ease: 3.2, // exponential follow (lower = a touch of lag, so it glides rather than snaps)
+  emberBoost: 1.8, // cursor engagement also brightens the embers — the mouse "fans the fire"
 };
 
 // Scroll-velocity ember flair — flavour only, never moves the bird (mirrors Noomo's scrollSpeed

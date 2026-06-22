@@ -202,23 +202,39 @@ export default function PhoenixFlap(props) {
     // Small/distant -> modest growth, with the quick scale-in as it ignites.
     g.scale.setScalar(lerp(SCALE_MIN, SCALE_MAX, ramp) * emerge);
 
-    // Ember glow -> fire, plus the scroll-velocity flare (only while the bird is visible).
+    // Ember glow -> fire, plus the scroll-velocity flare AND the cursor fanning the fire: moving
+    // the mouse (away from centre, while engaged) lights the embers up brighter — the pointer
+    // controls both where it flies and how it glows.
+    const pointerGlow =
+      live * Math.min(1, Math.hypot(px.current, py.current)) * POINTER.emberBoost;
     const intensity =
-      (lerp(EMBER_INTENSITY, FIRE_INTENSITY, ramp) + SCROLL_FLAIR.emberBoost * flair.current) *
+      (lerp(EMBER_INTENSITY, FIRE_INTENSITY, ramp) +
+        SCROLL_FLAIR.emberBoost * flair.current +
+        pointerGlow) *
       emerge;
     for (const m of emissiveMats) m.emissiveIntensity = intensity;
 
     // Wingbeat quickens as it ignites and flares with scroll speed; calmed (not frozen) under
     // reduced motion, where the autonomous bob is also dropped so only the scroll flight remains.
     if (flapAction.current) {
-      flapAction.current.timeScale = reducedMotion
+      const base = reducedMotion
         ? FLAP_SLOW
         : lerp(FLAP_SLOW, FLAP_FAST, ramp) + SCROLL_FLAIR.flapBoost * flair.current;
+      // As it reaches the sun (0.93→1.0) the wingbeat drops into slow motion and FREEZES on a
+      // held pose — the climactic beat before "something amazing" (see three/FinaleReveal.jsx).
+      const freeze = smoothstep(clamp01((p - 0.93) / 0.07));
+      flapAction.current.timeScale = base * (1 - freeze);
     }
     if (!reducedMotion) {
       const t = state.clock.elapsedTime;
       g.position.y += Math.sin(t * 0.8) * 0.12 * emerge;
     }
+
+    // Publish the live position so CameraRig can orbit the bird in the finale (mutated in place).
+    const pp = store.phoenixPos;
+    pp.x = g.position.x;
+    pp.y = g.position.y;
+    pp.z = g.position.z;
   });
 
   return <primitive ref={group} object={scene} {...props} />;

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import Scene from './three/Scene.jsx';
 import { useScrollSetup } from './scroll/useScrollSetup.js';
 import { useExperience } from './store/useExperience.js';
@@ -20,8 +20,22 @@ export default function App() {
   // discrete (~6 changes total), never per-frame — safe to subscribe; drives reveal-and-stay
   const reachedStageIndex = useExperience((s) => s.reachedStageIndex);
 
+  const overlayRef = useRef(null);
+
   // wire scroll -> store (Lenis); stageId drives DOM reveals, no GSAP (see ADR-001)
   useScrollSetup();
+
+  // Fade the DOM column out across the finale (0.95→1.0) so the dark phoenix-orbit close-up is
+  // clean — no dark-on-dark text. Imperative via store.subscribe (no re-render); nav + the
+  // Work·Contact cue are separate, so they stay reachable.
+  useEffect(() => {
+    const apply = (p) => {
+      const el = overlayRef.current;
+      if (el) el.style.opacity = String(1 - Math.min(1, Math.max(0, (p - 0.95) / 0.05)));
+    };
+    apply(useExperience.getState().scrollProgress);
+    return useExperience.subscribe((s) => apply(s.scrollProgress));
+  }, []);
 
   // mirror the OS reduced-motion preference into the store
   useEffect(() => {
@@ -81,10 +95,12 @@ export default function App() {
         blend="soft-light"
         max={0.4}
         fadeIn={[0.84, 0.93]}
+        fadeOut={[0.94, 0.99]}
       />
 
       {/* scrollable DOM overlay column — its height creates the scroll track */}
       <main
+        ref={overlayRef}
         className="overlay"
         data-reached={reachedStageIndex}
         style={{ ['--scroll-vh']: `${SCROLL_VH}vh` }}

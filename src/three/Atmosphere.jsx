@@ -17,6 +17,9 @@ export default function Atmosphere() {
 
   const stops = useMemo(() => SKY.map((s) => ({ at: s.at, c: new THREE.Color(s.color) })), []);
   const scratch = useMemo(() => new THREE.Color(), []);
+  // Finale dusk — the sky falls to deep twilight across 0.94→1.0 so the white-fire phoenix and the
+  // sun blaze against it during the close-up orbit (the dark backdrop the bird has always needed).
+  const dusk = useMemo(() => new THREE.Color('#0d1322'), []);
 
   useFrame(() => {
     const p = useExperience.getState().scrollProgress;
@@ -27,6 +30,11 @@ export default function Atmosphere() {
     const b = stops[Math.min(i + 1, stops.length - 1)];
     const t = a.at === b.at ? 0 : Math.min(1, Math.max(0, (p - a.at) / (b.at - a.at)));
     scratch.copy(a.c).lerp(b.c, t);
+
+    if (p > 0.94) {
+      const d = Math.min(1, (p - 0.94) / 0.06);
+      scratch.lerp(dusk, d * d * (3 - 2 * d));
+    }
 
     if (scene.background?.isColor) scene.background.copy(scratch);
     if (scene.fog) scene.fog.color.copy(scratch);

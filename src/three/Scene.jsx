@@ -6,6 +6,7 @@ import CameraRig from './CameraRig.jsx';
 import Atmosphere from './Atmosphere.jsx';
 import Ground from './Ground.jsx';
 import Sun from './Sun.jsx';
+import FinaleReveal from './FinaleReveal.jsx';
 import SelectiveBloom from './SelectiveBloom.jsx';
 import { BLOOM } from '../data/phoenix.js';
 
@@ -42,6 +43,8 @@ export default function Scene() {
         <PhoenixFlap />
         {/* The summit sun the firebird flies into — ignites across the final approach. */}
         <Sun />
+        {/* Prep mount for the freeze-pose climax ("something amazing") — null stub for now. */}
+        <FinaleReveal />
       </Suspense>
 
       <CameraRig />

@@ -20,3 +20,16 @@ export const SHOTS = [
 // moves. Ramped by the phoenix engagement and gated by reduced motion (see CameraRig). Kept tiny
 // on purpose — this is a whisper of parallax, not a free-look camera.
 export const POINTER_PARALLAX = { x: 0.18, y: 0.12, ease: 3.0 };
+
+// Finale — the camera leaves the Wanderer orbit and closes up on the phoenix, circling it on all
+// angles as it ascends into the sun (Noomo-style), the end of the progression. From `from` to 1.0
+// it blends from the contact shot into a tight orbit around the live phoenix position: `radius`
+// metres out, sweeping `sweep` radians (~200°) so the wings/feathers turn, `rise` lifting the eye
+// a touch above the bird. Skipped under reduced motion (the contact hold stays).
+export const FINALE = {
+  from: 0.94,
+  radius: 13, // far enough that the huge (~6 m) firebird frames whole as the camera circles it
+  sweep: Math.PI * 1.15,
+  startAngle: -0.35, // begins on the +X side, near where the contact camera already sits
+  rise: 2.0,
+};

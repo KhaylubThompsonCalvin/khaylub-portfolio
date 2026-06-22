@@ -3,6 +3,7 @@ import { useExperience } from '../store/useExperience.js';
 import { createWind } from '../audio/ambience/wind.js';
 import { createScore } from '../audio/music/score.js';
 import { createStoryBeats } from '../audio/effects/storyBeats.js';
+import { createEmberCrackle } from '../audio/effects/emberCrackle.js';
 
 // AudioManager — the audio system's single owner. Architecture (per the brief):
 //   1. Environmental ambience (on by default) — wind now; birds/footsteps/ember to follow.
@@ -28,6 +29,7 @@ export default function AudioManager() {
     const wind = createWind(ctx, master); // layer 1 — environmental
     const score = createScore(ctx, master); // layer 2 — optional soundtrack
     const story = createStoryBeats(ctx, master); // layer 3 — story-beat swells
+    const crackle = createEmberCrackle(ctx, master); // environmental SFX — fire crackle
     score.setEnabled(startMode === 'music');
 
     // Scroll-reactive: wind swells in the open landscape and toward the wide summit; story swells
@@ -37,6 +39,7 @@ export default function AudioManager() {
       const reveal = p > 0.46 && p < 0.7 ? 1 - Math.abs(p - 0.56) / 0.12 : 0; // phoenix-reveal swell
       const summit = Math.min(1, Math.max(0, (p - 0.85) / 0.1)); // builds to the summit and holds
       story.setLevel(Math.max(reveal * 0.7, summit));
+      crackle.setLevel(Math.min(1, Math.max(0, (p - 0.5) / 0.15))); // fire crackle in the phoenix window
     };
     applyScroll(useExperience.getState().scrollProgress);
     const unsubScroll = useExperience.subscribe((s) => applyScroll(s.scrollProgress));
@@ -54,6 +57,7 @@ export default function AudioManager() {
       wind.dispose();
       score.dispose();
       story.dispose();
+      crackle.dispose();
       ctx.close();
     };
   }, [started]);

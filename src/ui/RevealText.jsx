@@ -10,7 +10,16 @@ import { STAGES, localProgress } from '../data/stages.js';
 // getState()-in-the-loop performance idiom. The reveal finishes early in the beat (default by
 // ~45% through) so the copy is fully legible for most of the section — recruiter clarity first.
 // prefers-reduced-motion renders every word solid with no scroll coupling.
-export default function RevealText({ text, stageId, from = 0, to = 0.45, className, as: Tag = 'p' }) {
+export default function RevealText({
+  text,
+  stageId,
+  from = 0,
+  to = 0.45,
+  className,
+  as: Tag = 'p',
+  intensity = 1, // scales the blur + lift; >1 reads weightier/more cinematic (e.g. the summit)
+  warm = false, // each word lands from ember-warm to ink — ties the summit copy to the fire
+}) {
   const ref = useRef(null);
   const reducedMotion = useExperience((s) => s.reducedMotion);
   const stage = useMemo(() => STAGES.find((s) => s.id === stageId), [stageId]);
@@ -25,6 +34,7 @@ export default function RevealText({ text, stageId, from = 0, to = 0.45, classNa
         el.style.opacity = '1';
         el.style.filter = 'none';
         el.style.transform = 'none';
+        el.style.color = '';
       });
       return;
     }
@@ -39,15 +49,21 @@ export default function RevealText({ text, stageId, from = 0, to = 0.45, classNa
         const e = t * t * (3 - 2 * t); // smoothstep
         const el = spans[i];
         el.style.opacity = (0.08 + 0.92 * e).toFixed(3);
-        el.style.filter = e < 0.999 ? `blur(${((1 - e) * 6).toFixed(2)}px)` : 'none';
-        el.style.transform = e < 0.999 ? `translateY(${((1 - e) * 0.5).toFixed(3)}em)` : 'none';
+        el.style.filter = e < 0.999 ? `blur(${((1 - e) * 6 * intensity).toFixed(2)}px)` : 'none';
+        el.style.transform =
+          e < 0.999 ? `translateY(${((1 - e) * 0.5 * intensity).toFixed(3)}em)` : 'none';
+        if (warm) {
+          // ember-warm (176,122,58) settling to ink (36,28,18) as the word lands
+          const c = (a, b) => Math.round(a + (b - a) * e);
+          el.style.color = `rgb(${c(176, 36)}, ${c(122, 28)}, ${c(58, 18)})`;
+        }
       }
     };
 
     apply(useExperience.getState().scrollProgress);
     const unsub = useExperience.subscribe((s) => apply(s.scrollProgress));
     return unsub;
-  }, [reducedMotion, stage, from, to, words.length]);
+  }, [reducedMotion, stage, from, to, words.length, intensity, warm]);
 
   return (
     <Tag ref={ref} className={className}>

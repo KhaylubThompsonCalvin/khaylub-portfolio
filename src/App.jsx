@@ -76,6 +76,12 @@ export default function App() {
         max={0.7}
         fadeIn={[0.46, 0.58]}
       />
+      <VideoAtmosphere
+        src="/assets/video/summit-clouds.mp4"
+        blend="soft-light"
+        max={0.4}
+        fadeIn={[0.84, 0.93]}
+      />
 
       {/* scrollable DOM overlay column — its height creates the scroll track */}
       <main

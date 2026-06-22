@@ -44,7 +44,11 @@ export default function VideoAtmosphere({
       }
     };
     apply(useExperience.getState().scrollProgress);
-    const unsub = useExperience.subscribe((s) => apply(s.scrollProgress));
+    // Only re-apply when scrollProgress actually changes (not on every store write).
+    const unsub = useExperience.subscribe((s, prev) => {
+      if (s.scrollProgress !== prev.scrollProgress) apply(s.scrollProgress);
+    });
+    // Scrub plates are paused and frame-driven by scroll; looping plates autoplay.
     if (scrub) {
       v.pause();
     } else {

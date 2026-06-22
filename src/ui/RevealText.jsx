@@ -61,7 +61,9 @@ export default function RevealText({
     };
 
     apply(useExperience.getState().scrollProgress);
-    const unsub = useExperience.subscribe((s) => apply(s.scrollProgress));
+    const unsub = useExperience.subscribe((s, prev) => {
+      if (s.scrollProgress !== prev.scrollProgress) apply(s.scrollProgress);
+    });
     return unsub;
   }, [reducedMotion, stage, from, to, words.length, intensity, warm]);
 

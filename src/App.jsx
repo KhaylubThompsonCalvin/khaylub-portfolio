@@ -61,8 +61,21 @@ export default function App() {
       {/* fixed 3D stage */}
       <Scene />
 
-      {/* grass/wind video atmosphere washed over the early open-landscape beats */}
-      <VideoAtmosphere />
+      {/* video atmosphere plates: dawn grass over the open early beats; embers glowing through
+          the phoenix → summit window (screen blend drops the black, so only sparks show). */}
+      <VideoAtmosphere
+        src="/assets/video/dawn-grass.mp4"
+        blend="soft-light"
+        max={0.45}
+        fadeIn={[0, 0.06]}
+        fadeOut={[0.3, 0.45]}
+      />
+      <VideoAtmosphere
+        src="/assets/video/embers.mp4"
+        blend="screen"
+        max={0.7}
+        fadeIn={[0.46, 0.58]}
+      />
 
       {/* scrollable DOM overlay column — its height creates the scroll track */}
       <main

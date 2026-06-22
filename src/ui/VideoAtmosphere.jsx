@@ -1,13 +1,22 @@
 import { useEffect, useRef } from 'react';
 import { useExperience } from '../store/useExperience.js';
 
-// Grass/wind video atmosphere — a Higgsfield-generated dawn-meadow loop washed subtly over the
-// live scene (soft-light blend) to add real grass motion to the open early beats, then faded out
-// before the phoenix/summit. The vault's rule: Higgsfield is an atmosphere PLATE, never the
-// engine or the character — so this composites behind the DOM content and over the 3D, it doesn't
-// replace the tonal sky. Opacity is driven imperatively from scroll (store.subscribe — no React
-// re-render). prefers-reduced-motion freezes it (paused, hidden) so there's no looping motion.
-export default function VideoAtmosphere() {
+// A reusable Higgsfield atmosphere PLATE — a video loop washed over the live scene, its opacity
+// driven by scroll so it fades in/out with its beat (store.subscribe — no React re-render). Per
+// the vault's rule, this composites over the 3D, never replacing it or the character. Two
+// instances drive the cinematic: a soft-light dawn-grass wash over the open early beats, and a
+// screen-blended ember layer that glows through the phoenix → summit window (its black drops out).
+// prefers-reduced-motion freezes it (paused, hidden) so there's no looping motion.
+//
+// Props: src; blend (mix-blend-mode); max (peak opacity); fadeIn [a,b] ramp-up range; fadeOut
+// [c,d] ramp-down range (omit to hold to the end).
+export default function VideoAtmosphere({
+  src,
+  blend = 'soft-light',
+  max = 0.45,
+  fadeIn = [0, 0.06],
+  fadeOut,
+}) {
   const ref = useRef(null);
   const reducedMotion = useExperience((s) => s.reducedMotion);
 
@@ -21,26 +30,26 @@ export default function VideoAtmosphere() {
       return undefined;
     }
 
-    // Present through the open-landscape walk (arrival → focus), fading out before the spark
-    // (~0.45) so it never fights the phoenix beats or the summit sky.
+    const ramp = (p, a, b) => Math.min(1, Math.max(0, (p - a) / (b - a || 1)));
     const apply = (p) => {
-      const fadeIn = Math.min(1, p / 0.06);
-      const fadeOut = 1 - Math.min(1, Math.max(0, (p - 0.3) / 0.15));
-      v.style.opacity = (Math.max(0, fadeIn * fadeOut) * 0.45).toFixed(3);
+      let o = ramp(p, fadeIn[0], fadeIn[1]);
+      if (fadeOut) o *= 1 - ramp(p, fadeOut[0], fadeOut[1]);
+      v.style.opacity = (o * max).toFixed(3);
     };
     apply(useExperience.getState().scrollProgress);
     const unsub = useExperience.subscribe((s) => apply(s.scrollProgress));
     v.play?.().catch(() => {
-      /* autoplay of a muted loop; ignore if blocked */
+      /* muted loop autoplay; ignore if blocked */
     });
     return unsub;
-  }, [reducedMotion]);
+  }, [reducedMotion, fadeIn, fadeOut, max]);
 
   return (
     <video
       ref={ref}
       className="video-atmosphere"
-      src="/assets/video/dawn-grass.mp4"
+      style={{ mixBlendMode: blend }}
+      src={src}
       muted
       loop
       playsInline

@@ -33,7 +33,6 @@ a {
   object-fit: cover;
   z-index: 1;
   opacity: 0;
-  mix-blend-mode: soft-light;
   pointer-events: none;
 }
 

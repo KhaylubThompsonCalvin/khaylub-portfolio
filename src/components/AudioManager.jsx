@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useExperience } from '../store/useExperience.js';
 import { createWind } from '../audio/ambience/wind.js';
 import { createScore } from '../audio/music/score.js';
+import { createStoryBeats } from '../audio/effects/storyBeats.js';
 
 // AudioManager — the audio system's single owner. Architecture (per the brief):
 //   1. Environmental ambience (on by default) — wind now; birds/footsteps/ember to follow.
@@ -26,13 +27,16 @@ export default function AudioManager() {
 
     const wind = createWind(ctx, master); // layer 1 — environmental
     const score = createScore(ctx, master); // layer 2 — optional soundtrack
+    const story = createStoryBeats(ctx, master); // layer 3 — story-beat swells
     score.setEnabled(startMode === 'music');
 
-    // Scroll-reactive ambience: wind swells in the open landscape (mid-climb) and toward the
-    // wide summit, calmer at the enclosed arrival. Cheap curve, eased inside the layer.
+    // Scroll-reactive: wind swells in the open landscape and toward the wide summit; story swells
+    // rise at the phoenix reveal (~0.5) and build to the summit emotional peak. Eased in-layer.
     const applyScroll = (p) => {
-      const open = 0.4 + 0.6 * Math.max(Math.sin(p * Math.PI), p * 0.9);
-      wind.setIntensity(open);
+      wind.setIntensity(0.4 + 0.6 * Math.max(Math.sin(p * Math.PI), p * 0.9));
+      const reveal = p > 0.46 && p < 0.7 ? 1 - Math.abs(p - 0.56) / 0.12 : 0; // phoenix-reveal swell
+      const summit = Math.min(1, Math.max(0, (p - 0.85) / 0.1)); // builds to the summit and holds
+      story.setLevel(Math.max(reveal * 0.7, summit));
     };
     applyScroll(useExperience.getState().scrollProgress);
     const unsubScroll = useExperience.subscribe((s) => applyScroll(s.scrollProgress));
@@ -49,6 +53,7 @@ export default function AudioManager() {
       unsubMode();
       wind.dispose();
       score.dispose();
+      story.dispose();
       ctx.close();
     };
   }, [started]);

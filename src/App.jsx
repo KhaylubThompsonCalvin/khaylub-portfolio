@@ -8,11 +8,11 @@ import LoadGate from './ui/LoadGate.jsx';
 import Nav from './ui/Nav.jsx';
 import AudioManager from './components/AudioManager.jsx';
 import VideoAtmosphere from './ui/VideoAtmosphere.jsx';
-import SkipToWork from './ui/SkipToWork.jsx';
 import Hero from './ui/Hero.jsx';
 import { Philosophy, AreasOfFocus } from './ui/Sections.jsx';
 import ProjectCards from './ui/ProjectCards.jsx';
 import Contact from './ui/Contact.jsx';
+import BottomNav from './ui/BottomNav.jsx';
 
 export default function App() {
   const setReducedMotion = useExperience((s) => s.setReducedMotion);
@@ -96,7 +96,7 @@ export default function App() {
         <Contact />
       </main>
 
-      <SkipToWork />
+      <BottomNav />
     </>
   );
 }

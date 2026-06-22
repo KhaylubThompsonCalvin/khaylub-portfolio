@@ -21,9 +21,11 @@ export default function Scene() {
       <color attach="background" args={['#e9e1d6']} />
       <fog attach="fog" args={['#e9e1d6', 7, 26]} />
 
-      <hemisphereLight args={['#f3e8d4', '#b09a7e', 1.1]} />
-      <directionalLight position={[3, 6, 4]} intensity={2.1} color="#fff1dc" castShadow />
-      <ambientLight intensity={0.25} />
+      {/* Lifted so the Wanderer and firebird read clearly through the scene (was too dark):
+          more ambient fill to open the shadows, a brighter dawn key + sky. */}
+      <hemisphereLight args={['#f7eede', '#c4ad8c', 1.6]} />
+      <directionalLight position={[3, 6, 4]} intensity={2.9} color="#fff3e2" castShadow />
+      <ambientLight intensity={0.6} />
 
       {/* Tonal sky (dawn→alpine→summit) — drives scene background + fog colour from scroll.
           Outside Suspense so it runs even while the GLBs load. */}

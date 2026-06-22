@@ -64,8 +64,8 @@ export const FLIGHT = [
   { at: 0.66, pos: [-13.55, 0.97, 0.93] }, // rising
   { at: 0.77, pos: [-12.8, 2.09, 2.98] }, // exploration — arc peak, upper-right
   { at: 0.88, pos: [-13.05, 0.97, 0.79] }, // swelling toward the summit
-  { at: 0.94, pos: [-12.16, 0.28, -0.93] }, // contact — huge against the cool sky
-  { at: 1.0, pos: [-11.63, 0.09, -1.13] }, // fire at the summit — the hero firebird
+  { at: 0.94, pos: [-12.16, 0.28, -0.93] }, // huge against the cool sky — the peak, into the sun
+  { at: 1.0, pos: [-11.5, 5.4, -1.3] }, // then launches up and OUT of frame, leaving him on the hill
 ];
 
 // Emission ramp: ember glow -> fire. Scales emissiveIntensity on the feather material.

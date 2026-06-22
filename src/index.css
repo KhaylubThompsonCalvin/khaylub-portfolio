@@ -203,23 +203,42 @@ a {
   outline-offset: 2px;
 }
 
-/* skip to work */
-.skip {
+/* bottom nav cue — Work · Contact */
+.bottom-nav {
   position: fixed;
   bottom: 1.3rem;
   left: 50%;
   transform: translateX(-50%);
   z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(255, 250, 240, 0.5);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(40, 32, 20, 0.35);
+  border-radius: 999px;
+  padding: 0.35rem 0.7rem;
+}
+.bottom-nav button {
+  appearance: none;
+  -webkit-appearance: none;
+  border: none;
+  background: none;
+  color: var(--ink);
+  font: inherit;
   font-size: 0.72rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--ink);
-  border: 1px solid rgba(40, 32, 20, 0.35);
-  background: rgba(255, 250, 240, 0.5);
-  backdrop-filter: blur(6px);
-  padding: 0.6rem 1.2rem;
+  padding: 0.35rem 0.7rem;
   border-radius: 999px;
   cursor: pointer;
+}
+.bottom-nav button:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+.bottom-nav-sep {
+  color: var(--muted);
 }
 
 /* project cards */

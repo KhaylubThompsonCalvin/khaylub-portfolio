@@ -32,8 +32,10 @@ export const contact = {
   intro: 'Continuing the climb \u2014 let\u2019s build something.',
   links: [
     { label: 'GitHub', href: 'https://github.com/KhaylubThompsonCalvin' },
-    { label: 'LinkedIn', href: '#' },
+    // TODO: update slug once the LinkedIn custom URL is fixed (calvan → calvin).
+    { label: 'LinkedIn', href: 'https://www.linkedin.com/in/khaylub-thompson-calvan-40543b294/' },
     { label: 'Email', href: 'mailto:hello@khaylub.com' },
+    // Resume stays an honest 'soon' until /public/resume.pdf exists; then set href: '/resume.pdf'.
     { label: 'Resume', href: '#' },
   ],
 };

@@ -6,10 +6,12 @@ import { useExperience } from '../store/useExperience.js';
 import { BLOOM_LAYER } from './SelectiveBloom.jsx';
 import {
   PHOENIX,
-  GLIMPSE,
   FLIGHT,
   EMBER_INTENSITY,
   FIRE_INTENSITY,
+  EMBER_COLOR,
+  FIRE_COLOR,
+  GLIDE_PITCH,
   FLAP_SLOW,
   FLAP_FAST,
   SCALE_MIN,
@@ -62,13 +64,6 @@ function samplePath(path, p, out) {
   return out;
 }
 
-// Smooth 0->1->0 bump over [a,b] peaking at `peak` — the envelope for the philosophy glimpse.
-function bump(p, a, peak, b) {
-  if (p <= a || p >= b) return 0;
-  const t = p < peak ? (p - a) / (peak - a) : (b - p) / (b - peak);
-  return smoothstep(clamp01(t));
-}
-
 // "Spark of the Summit": the phoenix is dormant until the midpoint, then an ember fades in
 // (~0.50), arcs through the far background behind the Wanderer along a Catmull-Rom path, and
 // its emission + wingbeat ramp ember -> fire across 0.50 -> 0.98, peaking at the summit close.
@@ -83,6 +78,11 @@ export default function PhoenixFlap(props) {
   // Scratch vectors reused every frame (no per-frame allocation).
   const pos = useMemo(() => new THREE.Vector3(), []);
   const ahead = useMemo(() => new THREE.Vector3(), []);
+
+  // Ember/fire emissive colours + a scratch colour lerped between them each frame.
+  const emberCol = useMemo(() => new THREE.Color(EMBER_COLOR), []);
+  const fireCol = useMemo(() => new THREE.Color(FIRE_COLOR), []);
+  const emitCol = useMemo(() => new THREE.Color(), []);
 
   // Smoothed interaction inputs (eased toward the store each frame so the bird never snaps).
   const px = useRef(0); // pointer x, smoothed
@@ -141,28 +141,12 @@ export default function PhoenixFlap(props) {
     const store = useExperience.getState();
     const p = store.scrollProgress;
 
-    // Glimpse regime — the philosophy foreshadow. Runs only in its own early window; before the
-    // real spark there's nothing else to do, so handle it and return. (Glimpse and the main arc
-    // never overlap, and the bird is invisible in the gap between them.)
+    // Before the spark the phoenix is UNSEEN. Its presence in the philosophy beat is felt only as a
+    // shadow sweeping the Wanderer's back (three/ForeshadowShadow.jsx) — not a visible bird in the
+    // sky. Keep it hidden and bleed the interaction state back to rest so the main regime starts
+    // clean, not snapped.
     if (p < PHOENIX.spark) {
-      const gl = bump(p, GLIMPSE.from, GLIMPSE.peak, GLIMPSE.to);
-      if (gl < 0.01) {
-        g.visible = false;
-        return;
-      }
-      g.visible = true;
-      samplePath(GLIMPSE.path, p, pos);
-      g.position.copy(pos);
-      samplePath(GLIMPSE.path, Math.min(GLIMPSE.to, p + 0.01), ahead);
-      const gdx = ahead.x - pos.x;
-      const gdz = ahead.z - pos.z;
-      if (gdx || gdz) g.rotation.y = Math.atan2(gdx, gdz) + HEADING_OFFSET;
-      g.rotation.z = 0;
-      if (!reducedMotion) g.position.y += Math.sin(state.clock.elapsedTime * 0.8) * 0.08 * gl;
-      g.scale.setScalar(GLIMPSE.scale * gl);
-      for (const m of emissiveMats) m.emissiveIntensity = GLIMPSE.intensity * gl;
-      if (flapAction.current) flapAction.current.timeScale = FLAP_SLOW; // calm ember wingbeat
-      // bleed the interaction state back to rest so the main regime starts clean, not snapped.
+      g.visible = false;
       const decay = Math.min(1, dt * 4);
       px.current -= px.current * decay;
       py.current -= py.current * decay;
@@ -176,8 +160,11 @@ export default function PhoenixFlap(props) {
     const ramp = smoothstep(clamp01((p - PHOENIX.rampFrom) / (PHOENIX.rampTo - PHOENIX.rampFrom)));
 
     // Interaction is gated by reduced motion and scaled by the ramp, so it's barely-there at the
-    // spark and fully responsive at the fire/contact beat. Inputs are eased toward the store.
-    const live = reducedMotion ? 0 : ramp;
+    // spark and fully responsive at the fire/contact beat. Inputs are eased toward the store. It
+    // also CALMS to zero across the finale (0.88→0.98): the closing is a fixed cinematic hero shot,
+    // so moving the mouse must not spin or shove the firebird as it ascends.
+    const calm = 1 - smoothstep(clamp01((p - 0.88) / 0.1));
+    const live = (reducedMotion ? 0 : ramp) * calm;
     const kP = 1 - Math.exp(-POINTER.ease * dt);
     px.current += ((live ? store.pointerX : 0) - px.current) * kP;
     py.current += ((live ? store.pointerY : 0) - py.current) * kP;
@@ -198,27 +185,51 @@ export default function PhoenixFlap(props) {
     g.position.y += py.current * POINTER.drift[1] * live;
     g.rotation.y += px.current * POINTER.yaw * live;
     g.rotation.z = -px.current * POINTER.bank * live;
+    // Forward glide attitude so the talons trail rather than hang straight down; eased to 0 by the
+    // summit (0.85→1.0) so the locked freeze pose keeps its upright presentation.
+    g.rotation.x = GLIDE_PITCH * (1 - smoothstep(clamp01((p - 0.85) / 0.15)));
 
     // Small/distant -> modest growth, with the quick scale-in as it ignites.
     g.scale.setScalar(lerp(SCALE_MIN, SCALE_MAX, ramp) * emerge);
 
-    // Ember glow -> fire, plus the scroll-velocity flare (only while the bird is visible).
+    // Ember glow -> fire, plus the scroll-velocity flare AND the cursor fanning the fire: moving
+    // the mouse (away from centre, while engaged) lights the embers up brighter — the pointer
+    // controls both where it flies and how it glows.
+    const pointerGlow =
+      live * Math.min(1, Math.hypot(px.current, py.current)) * POINTER.emberBoost;
     const intensity =
-      (lerp(EMBER_INTENSITY, FIRE_INTENSITY, ramp) + SCROLL_FLAIR.emberBoost * flair.current) *
+      (lerp(EMBER_INTENSITY, FIRE_INTENSITY, ramp) +
+        SCROLL_FLAIR.emberBoost * flair.current +
+        pointerGlow) *
       emerge;
-    for (const m of emissiveMats) m.emissiveIntensity = intensity;
+    // Ember orange -> fire gold along the ramp, so the bird reads as fire (not a pale lit bird).
+    emitCol.copy(emberCol).lerp(fireCol, ramp);
+    for (const m of emissiveMats) {
+      m.emissive.copy(emitCol);
+      m.emissiveIntensity = intensity;
+    }
 
     // Wingbeat quickens as it ignites and flares with scroll speed; calmed (not frozen) under
     // reduced motion, where the autonomous bob is also dropped so only the scroll flight remains.
     if (flapAction.current) {
-      flapAction.current.timeScale = reducedMotion
+      const base = reducedMotion
         ? FLAP_SLOW
         : lerp(FLAP_SLOW, FLAP_FAST, ramp) + SCROLL_FLAIR.flapBoost * flair.current;
+      // As it reaches the sun (0.93→1.0) the wingbeat drops into slow motion and FREEZES on a
+      // held pose — the climactic beat before "something amazing" (see three/FinaleReveal.jsx).
+      const freeze = smoothstep(clamp01((p - 0.93) / 0.07));
+      flapAction.current.timeScale = base * (1 - freeze);
     }
     if (!reducedMotion) {
       const t = state.clock.elapsedTime;
       g.position.y += Math.sin(t * 0.8) * 0.12 * emerge;
     }
+
+    // Publish the live position so CameraRig can orbit the bird in the finale (mutated in place).
+    const pp = store.phoenixPos;
+    pp.x = g.position.x;
+    pp.y = g.position.y;
+    pp.z = g.position.z;
   });
 
   return <primitive ref={group} object={scene} {...props} />;

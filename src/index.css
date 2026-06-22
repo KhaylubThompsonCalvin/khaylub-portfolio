@@ -3,6 +3,8 @@
   --ink: #241c12;
   --muted: #5b513f;
   --accent: #caa46f;
+  --fire: 0; /* 0→1 across the summit; lights the closing contact links with the phoenix's fire */
+  --scrim: 236, 232, 224; /* current sky tone behind the copy; driven by scroll in App.jsx */
   --font-display: Georgia, 'Times New Roman', serif;
   --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
@@ -61,6 +63,38 @@ a {
   transition:
     opacity 0.6s ease,
     transform 0.6s ease;
+}
+
+/* Readability scrim — keeps the day-darkened copy legible where the Wanderer (canvas, below the
+   z-2 overlay) passes directly under a text column. Not a z-order fix: a soft, blurred wash of the
+   current sky tone (--scrim, driven by scroll in App.jsx) restores the intended text-on-sky
+   contrast over the character. Scoped to the text beats; #work's card stack is excluded. Inherits
+   the section reveal opacity, so it never flashes in early. */
+#arrival .inner,
+#philosophy .inner,
+#focus .inner,
+#contact .inner {
+  position: relative;
+  isolation: isolate;
+}
+#arrival .inner::before,
+#philosophy .inner::before,
+#focus .inner::before,
+#contact .inner::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: -0.7em -1.4em;
+  border-radius: 1.2em;
+  background: linear-gradient(
+    105deg,
+    rgba(var(--scrim), 0.62) 0%,
+    rgba(var(--scrim), 0.5) 42%,
+    rgba(var(--scrim), 0.16) 74%,
+    transparent 100%
+  );
+  filter: blur(16px);
+  pointer-events: none;
 }
 
 /* Stage-weighted section heights — each section's scroll span now matches its stage in
@@ -278,19 +312,96 @@ a {
   color: var(--muted);
 }
 
-/* contact */
+/* contact — the links carry the phoenix's fire. As --fire ramps over the summit (App.jsx) they
+   glow warmer; on hover an ember flares from the underline. The spark→fire motif resolving into
+   the call-to-action, kept restrained. */
 .contact-links {
   display: flex;
   flex-wrap: wrap;
   gap: 1.2rem;
   margin-top: 1.5rem;
 }
-.contact-links a {
+.contact-links a,
+.contact-links .link-soon {
+  position: relative;
   pointer-events: auto;
   font-size: 1rem;
-  border-bottom: 1px solid var(--accent);
-  padding-bottom: 2px;
+  padding-bottom: 3px;
   text-decoration: none;
+  color: var(--ink);
+  /* ember underline + a soft warm glow that wakes with the summit fire */
+  border-bottom: 1px solid
+    color-mix(in srgb, var(--accent), #ff7a2e calc(var(--fire) * 70%));
+  text-shadow: 0 0 calc(var(--fire) * 12px) rgba(255, 150, 70, calc(var(--fire) * 0.55));
+  transition:
+    color 0.3s ease,
+    text-shadow 0.3s ease,
+    border-color 0.3s ease;
+}
+.contact-links a:hover,
+.contact-links a:focus-visible {
+  color: #b8431a;
+  text-shadow: 0 0 16px rgba(255, 140, 60, 0.85);
+  border-bottom-color: #ff7a2e;
+}
+/* keep a clear keyboard focus ring (the ember glow alone isn't a reliable focus indicator) */
+.contact-links a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+/* the ember that licks up from the link on hover (decorative; calmed for reduced motion) */
+.contact-links a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 0;
+  pointer-events: none;
+  border-radius: 50%;
+  opacity: 0;
+  background: radial-gradient(60% 100% at 50% 100%, rgba(255, 170, 80, 0.6), transparent 70%);
+  transition: opacity 0.3s ease;
+}
+.contact-links a:hover::after,
+.contact-links a:focus-visible::after {
+  height: 1.6em;
+  opacity: 1;
+  animation: ember-flicker 1.1s ease-in-out infinite;
+}
+@keyframes ember-flicker {
+  0%,
+  100% {
+    transform: scaleX(1) scaleY(1);
+    opacity: 0.85;
+  }
+  50% {
+    transform: scaleX(0.86) scaleY(1.12);
+    opacity: 1;
+  }
+}
+/* honest "coming soon" state for a link with no real destination yet — not a dead anchor */
+.contact-links .link-soon {
+  color: var(--muted);
+  cursor: default;
+  border-bottom-style: dashed;
+  border-bottom-color: var(--muted);
+}
+.contact-links .link-soon em {
+  margin-left: 0.4rem;
+  font-style: normal;
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.7;
+  vertical-align: 0.15em;
+}
+@media (prefers-reduced-motion: reduce) {
+  .contact-links a:hover::after,
+  .contact-links a:focus-visible::after {
+    animation: none;
+  }
 }
 
 /* load gate — a living dawn-grass scene behind the entry, fading away on start */

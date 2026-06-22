@@ -20,17 +20,28 @@ export default function Contact() {
           warm
         />
         <p className="body">{contact.intro}</p>
+        {/* The links carry the fire: they brighten with --fire (summit) and flare an ember on hover
+            (see index.css), tying the spark→fire motif to the call-to-action. Links without a real
+            destination yet render as honest "soon" states, never dead anchors (engineering rule). */}
         <div className="contact-links">
-          {contact.links.map((l) => (
-            <a
-              key={l.label}
-              href={l.href}
-              target={l.href.startsWith('http') ? '_blank' : undefined}
-              rel="noreferrer"
-            >
-              {l.label}
-            </a>
-          ))}
+          {contact.links.map((l) => {
+            const real = l.href && l.href !== '#';
+            return real ? (
+              <a
+                key={l.label}
+                href={l.href}
+                target={l.href.startsWith('http') ? '_blank' : undefined}
+                rel="noreferrer"
+              >
+                {l.label}
+              </a>
+            ) : (
+              <span key={l.label} className="link-soon" aria-disabled="true">
+                {l.label}
+                <em>soon</em>
+              </span>
+            );
+          })}
         </div>
       </div>
     </section>

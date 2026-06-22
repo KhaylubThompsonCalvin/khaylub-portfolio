@@ -20,6 +20,11 @@ export const useExperience = create((set, get) => ({
   pointerY: 0, // -1 (bottom) .. 1 (top)
   scrollVelocity: 0, // signed Lenis velocity; decays to 0 when idle
 
+  // the phoenix's live world position — PhoenixFlap mutates this object in place each frame (no
+  // set(), no notification), and CameraRig reads it via getState() to orbit the bird in the
+  // finale. A shared mutable point, the cheapest way to pass per-frame data between two systems.
+  phoenixPos: { x: 0, y: 0, z: 0 },
+
   // audio — three modes the nav cycles through: 'ambient' (environmental), 'music' (ambient + the
   // opt-in score), 'off'. Defaults to OFF until a real (licensed/recorded) track replaces the
   // synthesized placeholder — a stored choice still wins, so anyone who turned it on keeps it.

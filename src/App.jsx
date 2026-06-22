@@ -12,7 +12,6 @@ import Hero from './ui/Hero.jsx';
 import { Philosophy, AreasOfFocus } from './ui/Sections.jsx';
 import ProjectCards from './ui/ProjectCards.jsx';
 import Contact from './ui/Contact.jsx';
-import BottomNav from './ui/BottomNav.jsx';
 
 export default function App() {
   const setReducedMotion = useExperience((s) => s.setReducedMotion);
@@ -111,8 +110,6 @@ export default function App() {
         <ProjectCards />
         <Contact />
       </main>
-
-      <BottomNav />
     </>
   );
 }

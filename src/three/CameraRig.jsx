@@ -17,7 +17,6 @@ const clamp01 = (t) => Math.min(1, Math.max(0, t));
 const _pos = new THREE.Vector3();
 const _look = new THREE.Vector3();
 const _b = new THREE.Vector3();
-const _orbit = new THREE.Vector3();
 const _olook = new THREE.Vector3();
 
 // sample the shot list at scrollProgress p -> writes camera pos + look targets
@@ -52,6 +51,10 @@ export default function CameraRig() {
   const ppx = useRef(0); // smoothed pointer for parallax
   const ppy = useRef(0);
 
+  // DEV probe: expose the live camera so the phoenix flight can be solved by unprojecting a chosen
+  // screen point to world space at a given scroll (the pattern used to place every shot/flight pose).
+  if (import.meta.env.DEV) window.__cam = camera;
+
   useFrame((state, dt) => {
     const store = useExperience.getState();
     const p = store.scrollProgress;
@@ -64,8 +67,11 @@ export default function CameraRig() {
       _pos.y += Math.sin(t * 0.37) * 0.03;
 
       // Pointer counter-drift — a whisper of parallax during the phoenix beat. Engagement ramps
-      // from the spark to the fire peak so the camera only "wakes" to the cursor as the bird does.
-      const eng = smoothstep(clamp01((p - PHOENIX.spark) / (PHOENIX.rampTo - PHOENIX.spark)));
+      // from the spark to the fire peak so the camera only "wakes" to the cursor as the bird does,
+      // then CALMS back to zero across the finale (0.88→0.98) so the closing hero shot is fixed and
+      // the mouse can't drift it.
+      const calm = 1 - smoothstep(clamp01((p - 0.88) / 0.1));
+      const eng = smoothstep(clamp01((p - PHOENIX.spark) / (PHOENIX.rampTo - PHOENIX.spark))) * calm;
       const kP = 1 - Math.exp(-POINTER_PARALLAX.ease * dt);
       ppx.current += (store.pointerX - ppx.current) * kP;
       ppy.current += (store.pointerY - ppy.current) * kP;
@@ -73,20 +79,20 @@ export default function CameraRig() {
       _pos.y -= ppy.current * POINTER_PARALLAX.y * eng;
     }
 
-    // Finale — close up on the phoenix and orbit it on all angles as it ascends (the end of the
-    // progression). Blend from the contact shot into the orbit so 0.94 is the held shot and the
-    // circle resolves by 1.0. Skipped under reduced motion (the contact hold stays).
-    if (!reducedMotion && p >= FINALE.from) {
+    // Finale — the firebird ascends and the camera tilts UP to follow it (not the old sun-washing
+    // orbit). From FINALE.from→1.0 the camera cranes up a touch and swings its LOOK target onto the
+    // live phoenix position, so it pitches up to track the climb. Scroll-driven (honours reduced
+    // motion). The bird is upper-left and the sun upper-right, so this tilts away from the wash.
+    if (p >= FINALE.from) {
       const e = smoothstep(clamp01((p - FINALE.from) / (1 - FINALE.from)));
       const ph = store.phoenixPos;
-      const angle = FINALE.startAngle + e * FINALE.sweep;
-      _orbit.set(
-        ph.x + Math.cos(angle) * FINALE.radius,
-        ph.y + FINALE.rise,
-        ph.z + Math.sin(angle) * FINALE.radius
-      );
-      _pos.lerp(_orbit, e);
-      _look.lerp(_olook.set(ph.x, ph.y, ph.z), e);
+      _olook.set(ph.x, ph.y, ph.z);
+      _pos.y += FINALE.lift * e;
+      // Draw the camera BACK along its view to the bird so the whole model frames with headroom
+      // (it was clipping the top), then swing the look up onto it.
+      _b.copy(_pos).sub(_olook).normalize();
+      _pos.addScaledVector(_b, FINALE.pull * e);
+      _look.lerp(_olook, FINALE.lookLerp * e);
     }
 
     const k = 1 - Math.exp(-FOLLOW * dt);

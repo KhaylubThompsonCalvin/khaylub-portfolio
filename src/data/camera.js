@@ -7,8 +7,13 @@
 // All values in metres/world space. He is ~1.0m tall (head 0.98). Tuned live in-browser.
 
 export const SHOTS = [
-  { id: 'arrival', at: 0.0, pos: [-2.5, 1.35, 0.3], look: [2.4, 0.55, -0.7] },
-  { id: 'philosophy', at: 0.21, pos: [-2.3, 1.35, 0.5], look: [2.0, 0.75, -1.0] },
+  // The climb has to read in the CAMERA, not just the palette: the opening was nearly static
+  // (arrival ≈ philosophy), so the first third never ascended. Now it starts LOW and close behind
+  // him — intimate, in the dark, the trail looming — then RISES and draws back through philosophy
+  // so the journey visibly opens up ahead. (Noomo: every beat earns its motion; the big opening
+  // gets room and movement, not a hold.)
+  { id: 'arrival', at: 0.0, pos: [-2.4, 0.95, 0.25], look: [2.6, 0.5, -0.6] },
+  { id: 'philosophy', at: 0.21, pos: [-3.2, 1.65, 0.55], look: [1.9, 1.0, -0.9] },
   { id: 'focus', at: 0.39, pos: [-1.4, 1.2, 1.9], look: [0.2, 0.7, -0.3] },
   { id: 'discovery', at: 0.57, pos: [2.4, 1.15, 1.2], look: [0.0, 0.72, 0.0] },
   { id: 'exploration', at: 0.77, pos: [2.6, 1.05, -1.5], look: [0.0, 0.7, 0.3] },
@@ -21,19 +26,15 @@ export const SHOTS = [
 // on purpose — this is a whisper of parallax, not a free-look camera.
 export const POINTER_PARALLAX = { x: 0.18, y: 0.12, ease: 3.0 };
 
-// Finale — the camera leaves the Wanderer orbit and closes up on the phoenix, circling it on all
-// angles as it ascends into the sun (Noomo-style), the end of the progression. From `from` to 1.0
-// it blends from the contact shot into a tight orbit around the live phoenix position: `radius`
-// metres out, sweeping `sweep` radians (~200°) so the wings/feathers turn, `rise` lifting the eye
-// a touch above the bird. Skipped under reduced motion (the contact hold stays).
-// Orbit DISABLED for the sunny finale: a tight orbit looks into the bright sun and washes white on
-// the daylit sky. The summit now holds the contact shot — the phoenix framed flying ABOVE the
-// Wanderer against the blue sky, slow-flapping to a freeze. (from > 1 = never triggers; flip back
-// to 0.94 only with a dark finale, where the orbit reads.)
+// Finale — as the journey ends the firebird ASCENDS into the sky and the camera tilts UP to follow
+// it (Noomo's rising-phoenix finale). NOT the old tight orbit (it swung the eye into the bright sun
+// and washed white): from `from`→1.0 the camera cranes up `lift` metres and blends its LOOK target
+// onto the live phoenix position (`lookLerp`), pitching up to track the bird climbing. The phoenix
+// stays upper-LEFT while the sun sits upper-RIGHT, so following it tilts AWAY from the sun — no
+// wash. Scroll-driven, so it honours reduced motion (no autonomous move, just the scroll story).
 export const FINALE = {
-  from: 1.1,
-  radius: 13,
-  sweep: Math.PI * 1.15,
-  startAngle: -0.35,
-  rise: 2.0,
+  from: 0.88, // begin following the ascent here
+  lift: 1.4, // metres the camera cranes up across the finale
+  lookLerp: 0.92, // how fully the look swings onto the ascending phoenix (1 = locked on)
+  pull: 6, // metres the camera draws BACK along the view, so the WHOLE firebird frames with headroom
 };

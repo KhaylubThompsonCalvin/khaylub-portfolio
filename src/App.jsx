@@ -116,6 +116,23 @@ export default function App() {
       {/* fixed 3D stage */}
       <Scene />
 
+      {/* Ground fog: a low, bottom-anchored plate hugging the trail through the dark opening beats
+          (arrival → philosophy). feather='top' masks the upper frame so the fog never climbs into
+          the night sky or over the Wanderer's head; soft-light ties it to the live sky tone, and a
+          low max keeps the black sky and his silhouette intact. Scrubbed by scroll, so the mist
+          drifts as you descend the page and rests when you stop. Mounted FIRST so it sits beneath
+          the other plates. */}
+      <VideoAtmosphere
+        src="/assets/video/fog-trail.mp4"
+        blend="soft-light"
+        max={0.4}
+        fadeIn={[0, 0.05]}
+        fadeOut={[0.22, 0.3]}
+        scrub={[0, 0.21]}
+        anchor="bottom"
+        feather="top"
+      />
+
       {/* video atmosphere plates: dawn grass over the open early beats; embers glowing through
           the phoenix → summit window (screen blend drops the black, so only sparks show). */}
       <VideoAtmosphere

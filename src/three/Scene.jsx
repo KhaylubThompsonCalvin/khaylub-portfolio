@@ -2,6 +2,7 @@ import { Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import Wanderer from './Wanderer.jsx';
 import PhoenixFlap from './PhoenixFlap.jsx';
+import EmberTrail from './EmberTrail.jsx';
 import CameraRig from './CameraRig.jsx';
 import Atmosphere from './Atmosphere.jsx';
 import Ground from './Ground.jsx';
@@ -55,6 +56,8 @@ export default function Scene() {
             the summit. Flight + emission are scroll-driven inside PhoenixFlap (choreography in
             data/phoenix.js); no transform props here. */}
         <PhoenixFlap />
+        {/* Ember trail shed behind the firebird along its flight — the overhead-sweep arc in light. */}
+        <EmberTrail />
         {/* Glowing feathers drifting down from the phoenix at the summit. */}
         <Feathers />
         {/* The summit sun the firebird flies into — ignites across the final approach. */}

@@ -23,7 +23,10 @@ export const useExperience = create((set, get) => ({
   // the phoenix's live world position — PhoenixFlap mutates this object in place each frame (no
   // set(), no notification), and CameraRig reads it via getState() to orbit the bird in the
   // finale. A shared mutable point, the cheapest way to pass per-frame data between two systems.
-  phoenixPos: { x: 0, y: 0, z: 0 },
+  // x/y/z = the bird's PIVOT; cy = its visual-centre Y; fx/fz = its BASE facing (scroll heading,
+  // no pointer yaw) so the finale camera can place a head-on FRONT view. The GLB origin sits below
+  // the body, so the camera aims at cy (not y) to frame the firebird centred on itself.
+  phoenixPos: { x: 0, y: 0, z: 0, cy: 0, fx: 0, fz: 1 },
 
   // audio — three modes the nav cycles through: 'ambient' (environmental), 'music' (ambient + the
   // opt-in score), 'off'. Defaults to OFF until a real (licensed/recorded) track replaces the

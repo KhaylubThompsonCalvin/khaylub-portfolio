@@ -44,9 +44,5 @@ export const FINALE = {
   sprintFrom: 0.92, // where phase B (the sprint to the front view) begins
   frontDist: 13, // how far IN FRONT of the bird's face the camera ends (smaller = closer/more
   // filling). Built each frame from the bird's facing, so it's a true head-on view.
-<<<<<<< HEAD
-  frontHeight: 1.5, // lift the front camera a touch above centre so it reads the bird's face
-=======
   frontHeight: 3.2, // lifted so the full phoenix body clears the bottom of frame at the finale
->>>>>>> 9e75b575f96cd2146ca1d598a68a8bbf5aa7169a
 };

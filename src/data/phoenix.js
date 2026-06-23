@@ -55,16 +55,18 @@ export const FORESHADOW = {
 //   3. SUMMIT → ASCENT (0.77→1.0): crisp against the clean blue, upper-left of the sun, then it
 //      CLIMBS — world Y rises 2→5.8 — and the camera tilts up to follow it (data/camera.js FINALE),
 //      the rising-phoenix finale. Slow-flaps to a freeze as it ascends.
-// Heading follows the path tangent; x is monotonic −X and z monotonic +z through the entry, so no
-// flip there (watch the existing curve reversal ~0.85). Re-tune via __seek + the __cam unproject.
+// Heading follows the path tangent but is EASED with shortest-angle interpolation in PhoenixFlap,
+// so the single banking turn on the way back over him reads smooth (no snap/twist). The back half
+// climbs the whole way (y rises) and arcs back toward the origin, so the firebird flies overhead and
+// UP at the summit. Re-tune via __seek + the __cam unproject (window.__phoenix exposes the bird).
 export const FLIGHT = [
   { at: 0.5, pos: [-1.46, 0.33, -10.25] }, // spark — ignites into the upper-right of frame
-  { at: 0.57, pos: [-5.67, 1.1, -6.49] }, // sweeps in, upper-right — a visible firebird arriving
-  { at: 0.66, pos: [-8.57, 1.39, -0.19] }, // arcs across the upper frame
-  { at: 0.77, pos: [-12.8, 2.09, 2.98] }, // exploration — far upper-right, climbing out
-  { at: 0.88, pos: [-13.05, 2.0, 1.4] }, // the ascent begins — the camera starts tilting up to follow
-  { at: 0.94, pos: [-12.0, 3.4, 3.0] }, // climbing into the sky, upper-left, away from the sun
-  { at: 1.0, pos: [-11.0, 5.8, 4.0] }, // ascends high — the rising-phoenix finale (slow-flap freeze)
+  { at: 0.57, pos: [-4.8, 1.1, -6.6] }, // sweeps in, upper-right — a visible firebird arriving
+  { at: 0.66, pos: [-7.6, 1.7, -2.2] }, // arcs across the upper frame, behind him
+  { at: 0.77, pos: [-8.6, 2.6, 1.4] }, // the wide point of the arc — farthest out, still climbing
+  { at: 0.86, pos: [-7.6, 4.0, 2.8] }, // banks back toward him, rising
+  { at: 0.93, pos: [-5.4, 5.8, 3.0] }, // up and over toward the Wanderer
+  { at: 1.0, pos: [-3.2, 7.8, 2.6] }, // SUMMIT: flies up and OVER him, climbing high (Kt)
 ];
 
 // Moving fly-over shadow (three/FlyoverShadow.jsx) — the firebird's shadow sweeping over the
@@ -164,4 +166,73 @@ export const SCROLL_FLAIR = {
   emberBoost: 1.4, // added emissiveIntensity at full speed
   flapBoost: 0.8, // added wingbeat timeScale at full speed
   ease: 5.0, // smoothing so the flare rises/falls smoothly, not jittery
+};
+
+// Finale reveal — "the spark becomes fire". The climactic beat the architecture reserved for the
+// freeze (three/FinaleReveal.jsx was a null stub). As the phoenix slow-flaps to its held pose at
+// the summit (PhoenixFlap freeze 0.93→1.0), a soft white-gold BLOOM flares from it and a ring of
+// EMBERS bursts outward — then it SETTLES into a calm, held glowing final frame: the emotional
+// resolve of the climb (Noomo's "a feather becomes a fire", tied to our locked rising-phoenix
+// ascent — the bird keeps rising; this only blooms the LIGHT around it, never moves the bird).
+// Scroll-anchored (env from scrollProgress) so it honours reduced motion; only the gentle held
+// breath/bob is autonomous and is dropped when reduced. Sprites ride the bloom layer like Feathers.
+export const FINALE_REVEAL = {
+  from: 0.965, // the resolve begins as the wingbeat freezes
+  full: 1.0, // fully bloomed at the very end of the scroll
+  // central white-gold flare
+  flareColor: '#fff3da',
+  flareSize: 6.5, // metres at full bloom (phoenix ~6 m, ~11 m out → a radiant halo, not a wash)
+  flarePeak: 0.95, // opacity-glow at the crest of the bloom
+  flareHold: 0.6, // ...then it eases (time-based) to this steady glow at the held final frame
+  breath: 0.05, // gentle autonomous glow breath at the hold (dropped under reduced motion)
+  // ember burst
+  emberCount: 30,
+  emberColor: '#ffc46a',
+  emberSize: 0.5, // metre sprite
+  burstRadius: 4.5, // how far the embers travel out from the bird
+  rise: 1.8, // extra upward buoyancy across the burst (sparks rise)
+  bob: 0.18, // gentle hover amplitude at the held frame (autonomous; reduced motion → 0)
+};
+
+// Summit interactivity — at the close the firebird WAKES to the cursor as the interactive hero
+// (Kt: bigger + mouse-interactive at the end). Across `from`→1.0 it SWELLS larger, follows the
+// pointer much further, banks/turns to track you, moving the mouse fans its fire brighter, and the
+// frozen wings stir back to a slow beat while you fly it. Replaces the old "calm to a fixed shot"
+// finale (the calm gate is gone from PhoenixFlap + CameraRig). Gated by reduced motion. Live-tunable.
+export const SUMMIT_INTERACT = {
+  from: 0.9, // where the summit hold begins and interactivity wakes up
+  scaleBoost: 0.1, // a touch bigger at the summit (kept modest — it now flies in CLOSE/overhead, so
+  // it already reads large; the camera pull-back frames the whole bird centred with headroom)
+  drift: [3.4, 2.2], // EXTRA world-metre pointer follow at the summit (added to POINTER.drift)
+  yaw: 0.55, // extra yaw toward the cursor — it turns to track you
+  bank: 0.4, // extra roll into the turn
+  emberBoost: 2.0, // moving the mouse fans the fire brighter at the summit
+  flapWake: 1.1, // pointer movement stirs the frozen wings back to a slow beat
+  // Idle "presentation" — when the cursor rests (not steering) at the summit, the firebird slowly
+  // turns to show its profile + wingspan and keeps a gentle beat, then eases back; your cursor
+  // instantly takes over. Shows off the 3D model at rest. Reduced-motion gated.
+  presentYaw: 0.5, // slow yaw-sway amplitude (rad ≈ 28°) so it turns to present its profile
+  presentBank: 0.18, // gentle roll with the sway
+  presentSpeed: 0.45, // sway speed (slow) — a full left↔right cycle every ~14 s
+  presentFlap: 0.45, // gentle wing-beat while idle so the wings stay alive
+  // Held sky tail — at the close the firebird no longer freezes; it keeps beating and gently drifts
+  // so it reads as FLYING front-on in the sky. The finale camera re-centres on the bird every frame,
+  // so this drift parallaxes the sky/sun behind it rather than carrying it off-frame.
+  hoverSwayX: 0.18, // autonomous horizontal drift amplitude (m), gated by the summit ramp
+  hoverSwayY: 0.15, // autonomous vertical drift amplitude (m), added to the base hover bob
+};
+
+// Ember trail — glowing sparks shed BEHIND the firebird along its flight, drawing the arc of its
+// path in light (emphasises the overhead sweep + the climb). A short time-throttled history of the
+// bird's live position (store.phoenixPos, which already carries the pointer offset); pool sprites
+// sit at recent points, fading + shrinking toward the tail. Bloom layer, additive, reduced-motion
+// gated (three/EmberTrail.jsx). Live-tunable.
+export const TRAIL = {
+  from: 0.5, // active once the bird ignites (= PHOENIX.spark)
+  fadeSpan: 0.05, // quick fade-in at the spark
+  count: 18, // number of trail sparks (the trail's length)
+  sampleDt: 0.035, // seconds between trail samples (spacing of the sparks)
+  size: 0.7, // metre sprite at the head; shrinks toward the tail
+  baseOpacity: 0.55,
+  color: '#ff9a4a', // warm ember
 };

@@ -191,6 +191,17 @@ a {
   max-width: 48ch;
 }
 
+/* Availability — one honest line for recruiters between the intro and the links.
+   Small caps, muted, sits quietly without competing with the closing principle. */
+.availability {
+  margin-top: 0.6rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  opacity: 0.8;
+}
+
 .focus-list {
   list-style: none;
   display: flex;

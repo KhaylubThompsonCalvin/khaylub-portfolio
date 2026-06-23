@@ -97,9 +97,11 @@ a {
   pointer-events: none;
 }
 
-/* Stage-weighted section heights — each section's scroll span now matches its stage in
-   src/data/stages.js (stage span × SCROLL_VH=700). #work spans discovery (0.18) +
-   exploration (0.22) = 0.40. Keep these in sync with STAGES. */
+/* Section heights (viewport-heights). The story sections keep their original spans
+   (84+126+126+280 = 616vh); #contact is now a tall 240vh "sky tail" the held front-on firebird
+   flies behind (total = SCROLL_VH = 856). scrollProgress is the STORY coordinate (raw ÷ STORY_FRAC,
+   clamped to 1 — see stages.js + useScrollSetup), so it still lines up with STAGES across the story;
+   the part of #contact past the clamp is held sky. Keep the story heights in sync with STAGES. */
 #arrival {
   min-height: 84vh; /* 0.12 × 700 */
 }
@@ -113,7 +115,18 @@ a {
   min-height: 280vh; /* 0.40 × 700 (discovery + exploration) */
 }
 #contact {
-  min-height: 84vh; /* 0.12 × 700 */
+  /* The closing "sky tail": a tall section the held, front-on, still-flying firebird flies behind.
+     scrollProgress saturates to 1 as this section reaches the top of the viewport (see STORY_FRAC),
+     so the rest is held sky. The inner is pinned (below) so the closing copy + footer stay in view
+     over it as you scroll the tail down. */
+  min-height: 240vh;
+  justify-content: flex-start;
+}
+/* Pin the closing copy + footer as the held sky tail scrolls under them, so the front-on,
+   still-flying firebird is the backdrop behind the closing principle and the contact links. */
+#contact .inner {
+  position: sticky;
+  top: 28vh;
 }
 
 /* stageId-driven reveal-and-stay: each reached stage index reveals its section and every
@@ -310,6 +323,63 @@ a {
   margin-top: 1rem;
   font-size: 0.75rem;
   color: var(--muted);
+}
+
+/* clickable cards = "dynamic calling cards": a hover lift + warm accent edge-glow + a → that
+   slides in. Concept cards (.card--static) stay calm — no clickable affordance. */
+.card {
+  position: relative;
+  transition:
+    transform 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease,
+    background 0.35s ease;
+}
+.card--link {
+  cursor: pointer;
+}
+.card--link:hover,
+.card--link:focus-visible {
+  transform: translateY(-4px);
+  border-color: color-mix(in srgb, var(--accent), transparent 30%);
+  background: rgba(255, 250, 240, 0.7);
+  box-shadow:
+    0 10px 30px rgba(40, 32, 20, 0.16),
+    0 0 22px color-mix(in srgb, var(--accent), transparent 70%);
+}
+.card--link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+.card--static {
+  cursor: default;
+}
+.card-go {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.3rem;
+  font-size: 1.1rem;
+  color: var(--accent);
+  opacity: 0;
+  transform: translateX(-6px);
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s ease;
+}
+.card--link:hover .card-go,
+.card--link:focus-visible .card-go {
+  opacity: 1;
+  transform: translateX(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .card-go {
+    transition: none;
+  }
+  .card--link:hover,
+  .card--link:focus-visible {
+    transform: none;
+  }
 }
 
 /* contact — the links carry the phoenix's fire. As --fire ramps over the summit (App.jsx) they

@@ -30,6 +30,9 @@ export const closingPrinciple =
 
 export const contact = {
   intro: 'Continuing the climb \u2014 let\u2019s build something.',
+  // One honest line for recruiters — answers the first question without a form.
+  // Update the window when it changes; never show a stale date.
+  availability: 'Open to internship opportunities \u00b7 Summer\u2013Fall 2026',
   links: [
     { label: 'GitHub', href: 'https://github.com/KhaylubThompsonCalvin' },
     // TODO: update slug once the LinkedIn custom URL is fixed (calvan → calvin).

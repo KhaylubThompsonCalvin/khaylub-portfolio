@@ -20,6 +20,9 @@ export default function Contact() {
           warm
         />
         <p className="body">{contact.intro}</p>
+        {/* Availability — one honest line for recruiters; answers the first question without a
+            form. Sits between the intro and the links so it reads as context, not a header. */}
+        <p className="availability">{contact.availability}</p>
         {/* The links carry the fire: they brighten with --fire (summit) and flare an ember on hover
             (see index.css), tying the spark→fire motif to the call-to-action. Links without a real
             destination yet render as honest "soon" states, never dead anchors (engineering rule). */}

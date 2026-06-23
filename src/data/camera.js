@@ -7,13 +7,15 @@
 // All values in metres/world space. He is ~1.0m tall (head 0.98). Tuned live in-browser.
 
 export const SHOTS = [
-  // The climb has to read in the CAMERA, not just the palette: the opening was nearly static
-  // (arrival ≈ philosophy), so the first third never ascended. Now it starts LOW and close behind
-  // him — intimate, in the dark, the trail looming — then RISES and draws back through philosophy
-  // so the journey visibly opens up ahead. (Noomo: every beat earns its motion; the big opening
-  // gets room and movement, not a hold.)
-  { id: 'arrival', at: 0.0, pos: [-2.4, 0.95, 0.25], look: [2.6, 0.5, -0.6] },
-  { id: 'philosophy', at: 0.21, pos: [-3.2, 1.65, 0.55], look: [1.9, 1.0, -0.9] },
+  // The climb has to read in the CAMERA, not just the palette. Arrival starts LOW and
+  // close behind him — ground-level, intimate, the trail ahead looming in the dark —
+  // then the camera RISES hard through philosophy so the journey visibly opens up.
+  // The first third now ascends. (Noomo: every beat earns its motion.)
+  //
+  // arrival — ground-level, close behind; Wanderer a silhouette against the dark sky
+  { id: 'arrival', at: 0.0, pos: [-2.1, 0.48, 0.18], look: [2.6, 0.72, -0.5] },
+  // philosophy — camera rises hard so you FEEL the climb starting; sky opens, world gets bigger
+  { id: 'philosophy', at: 0.21, pos: [-3.8, 2.2, 0.65], look: [1.6, 1.05, -0.8] },
   { id: 'focus', at: 0.39, pos: [-1.4, 1.2, 1.9], look: [0.2, 0.7, -0.3] },
   { id: 'discovery', at: 0.57, pos: [2.4, 1.15, 1.2], look: [0.0, 0.72, 0.0] },
   { id: 'exploration', at: 0.77, pos: [2.6, 1.05, -1.5], look: [0.0, 0.7, 0.3] },
@@ -42,5 +44,5 @@ export const FINALE = {
   sprintFrom: 0.92, // where phase B (the sprint to the front view) begins
   frontDist: 13, // how far IN FRONT of the bird's face the camera ends (smaller = closer/more
   // filling). Built each frame from the bird's facing, so it's a true head-on view.
-  frontHeight: 1.5, // lift the front camera a touch above centre so it reads the bird's face
+  frontHeight: 3.2, // lifted so the full phoenix body clears the bottom of frame at the finale
 };

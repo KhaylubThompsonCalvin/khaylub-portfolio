@@ -33,8 +33,14 @@ export const POINTER_PARALLAX = { x: 0.18, y: 0.12, ease: 3.0 };
 // stays upper-LEFT while the sun sits upper-RIGHT, so following it tilts AWAY from the sun — no
 // wash. Scroll-driven, so it honours reduced motion (no autonomous move, just the scroll story).
 export const FINALE = {
-  from: 0.88, // begin following the ascent here
-  lift: 1.4, // metres the camera cranes up across the finale
-  lookLerp: 0.92, // how fully the look swings onto the ascending phoenix (1 = locked on)
-  pull: 6, // metres the camera draws BACK along the view, so the WHOLE firebird frames with headroom
+  from: 0.84, // begin the finale — phase A: TRACK the rising firebird (watch it fly up/away)
+  trackIn: 0.08, // scroll span to engage the tracking shot
+  follow: 8, // camera-settle speed during the finale (vs base 3) — keeps up with the climb
+  trackOffset: [16, -3, -9], // PHASE A offset: behind/below, framing the whole bird as it rises away
+  // PHASE B (Kt): from `sprintFrom`→1.0 the camera SPRINTS in to a head-on FRONT view — close, on
+  // the bird's facing side, looking at its face — then holds there as the interactive closing hero.
+  sprintFrom: 0.92, // where phase B (the sprint to the front view) begins
+  frontDist: 13, // how far IN FRONT of the bird's face the camera ends (smaller = closer/more
+  // filling). Built each frame from the bird's facing, so it's a true head-on view.
+  frontHeight: 1.5, // lift the front camera a touch above centre so it reads the bird's face
 };

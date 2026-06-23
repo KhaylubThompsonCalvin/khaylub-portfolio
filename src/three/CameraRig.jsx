@@ -18,6 +18,11 @@ const _pos = new THREE.Vector3();
 const _look = new THREE.Vector3();
 const _b = new THREE.Vector3();
 const _olook = new THREE.Vector3();
+const _track = new THREE.Vector3();
+const _trackOffset = new THREE.Vector3().fromArray(FINALE.trackOffset);
+const _fwd = new THREE.Vector3();
+const _frontOff = new THREE.Vector3();
+const _off = new THREE.Vector3();
 
 // sample the shot list at scrollProgress p -> writes camera pos + look targets
 function sample(p, outPos, outLook) {
@@ -67,11 +72,10 @@ export default function CameraRig() {
       _pos.y += Math.sin(t * 0.37) * 0.03;
 
       // Pointer counter-drift — a whisper of parallax during the phoenix beat. Engagement ramps
-      // from the spark to the fire peak so the camera only "wakes" to the cursor as the bird does,
-      // then CALMS back to zero across the finale (0.88→0.98) so the closing hero shot is fixed and
-      // the mouse can't drift it.
-      const calm = 1 - smoothstep(clamp01((p - 0.88) / 0.1));
-      const eng = smoothstep(clamp01((p - PHOENIX.spark) / (PHOENIX.rampTo - PHOENIX.spark))) * calm;
+      // from the spark to the fire peak; it now STAYS alive through the finale (Kt wants the closing
+      // shot interactive), so the camera keeps a little counter-parallax at the summit, giving depth
+      // as you fly the firebird with the cursor.
+      const eng = smoothstep(clamp01((p - PHOENIX.spark) / (PHOENIX.rampTo - PHOENIX.spark)));
       const kP = 1 - Math.exp(-POINTER_PARALLAX.ease * dt);
       ppx.current += (store.pointerX - ppx.current) * kP;
       ppy.current += (store.pointerY - ppy.current) * kP;
@@ -84,18 +88,32 @@ export default function CameraRig() {
     // live phoenix position, so it pitches up to track the climb. Scroll-driven (honours reduced
     // motion). The bird is upper-left and the sun upper-right, so this tilts away from the wash.
     if (p >= FINALE.from) {
-      const e = smoothstep(clamp01((p - FINALE.from) / (1 - FINALE.from)));
+      // FINALE in two beats (Kt): (A) TRACK the rising firebird as it flies up/away, then (B) the
+      // camera SPRINTS in to a head-on FRONT view — close, on the bird's facing side, looking at its
+      // face — and holds there as the interactive closing hero (the cursor turns/banks it within the
+      // shot). Phase A uses the fixed behind/below offset; phase B blends that into an offset built
+      // from the bird's BASE facing (fx/fz, no pointer yaw) so the front view stays put while you
+      // steer the bird with the mouse.
+      const e = smoothstep(clamp01((p - FINALE.from) / FINALE.trackIn));
+      const eB = smoothstep(clamp01((p - FINALE.sprintFrom) / (1 - FINALE.sprintFrom)));
       const ph = store.phoenixPos;
-      _olook.set(ph.x, ph.y, ph.z);
-      _pos.y += FINALE.lift * e;
-      // Draw the camera BACK along its view to the bird so the whole model frames with headroom
-      // (it was clipping the top), then swing the look up onto it.
-      _b.copy(_pos).sub(_olook).normalize();
-      _pos.addScaledVector(_b, FINALE.pull * e);
-      _look.lerp(_olook, FINALE.lookLerp * e);
+      _olook.set(ph.x, ph.cy, ph.z); // the bird's visual centre (cy), not its pivot
+      _fwd.set(ph.fx, 0, ph.fz);
+      if (_fwd.lengthSq() < 1e-4) _fwd.set(1, 0, 0);
+      _fwd.normalize();
+      _frontOff.copy(_fwd).multiplyScalar(FINALE.frontDist); // in front of the face...
+      _frontOff.y += FINALE.frontHeight; // ...lifted to read the face
+      _off.copy(_trackOffset).lerp(_frontOff, eB); // (A) track → (B) sprint to the front view
+      _track.copy(_olook).add(_off);
+      _pos.lerp(_track, e);
+      _look.lerp(_olook, e);
     }
 
-    const k = 1 - Math.exp(-FOLLOW * dt);
+    // During the finale, settle FASTER so the camera keeps up with the climbing bird (otherwise it
+    // lags below the ascent and the bird rides high / clips the top when you scroll quickly).
+    const eFin = p >= FINALE.from ? smoothstep(clamp01((p - FINALE.from) / FINALE.trackIn)) : 0;
+    const follow = FOLLOW + (FINALE.follow - FOLLOW) * eFin;
+    const k = 1 - Math.exp(-follow * dt);
     camera.position.lerp(_pos, k);
     lookRef.current.lerp(_look, k);
     camera.lookAt(lookRef.current);

@@ -15,7 +15,7 @@ function statusState(status = '') {
   return 'concept';
 }
 
-function ProjectCard({ project, onOpen, reducedMotion }) {
+function ProjectCard({ project, onOpen, reducedMotion, playFilms }) {
   const ref = useRef(null);
   const tiltRef = useRef(null);
   const videoRef = useRef(null);
@@ -29,14 +29,16 @@ function ProjectCard({ project, onOpen, reducedMotion }) {
         setInView(entry.isIntersecting);
         const v = videoRef.current;
         if (!v) return;
-        if (entry.isIntersecting && !reducedMotion) v.play?.().catch(() => {});
+        // playFilms is false on touch / save-data / slow links: the poster stands in (the film
+        // still plays in the modal on tap), so we don't stream several 7–11 MB clips on mobile/3G.
+        if (entry.isIntersecting && playFilms) v.play?.().catch(() => {});
         else v.pause?.();
       },
       { threshold: 0.2, rootMargin: '0px 0px -8% 0px' }
     );
     io.observe(el);
     return () => io.disconnect();
-  }, [reducedMotion]);
+  }, [playFilms]);
 
   // Pointer tilt + film parallax via CSS custom properties (no per-frame React state).
   const onPointerMove = (e) => {
@@ -105,6 +107,18 @@ function ProjectCard({ project, onOpen, reducedMotion }) {
 export default function ProjectCards() {
   const reducedMotion = useExperience((s) => s.reducedMotion);
   const [open, setOpen] = useState(null); // { project, originRect }
+  // On touch devices, Save-Data, or 2G-class links, don't autoplay the card films (posters stand
+  // in; the film plays in the modal on tap). Keeps the work section light on mobile/3G where five
+  // streaming clips would blow the load budget. Detected once — these don't change mid-session.
+  const [lightMedia, setLightMedia] = useState(false);
+  useEffect(() => {
+    const coarse = window.matchMedia?.('(pointer: coarse)').matches;
+    const conn = navigator.connection;
+    setLightMedia(
+      Boolean(coarse || conn?.saveData || (conn?.effectiveType && /(^|\W)2g/.test(conn.effectiveType)))
+    );
+  }, []);
+  const playFilms = !reducedMotion && !lightMedia;
 
   return (
     <section className="section" id="work">
@@ -121,6 +135,7 @@ export default function ProjectCards() {
               project={p}
               onOpen={(project, originRect) => setOpen({ project, originRect })}
               reducedMotion={reducedMotion}
+              playFilms={playFilms}
             />
           ))}
         </div>

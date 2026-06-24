@@ -299,97 +299,400 @@ a {
   color: var(--muted);
 }
 
-/* project cards */
-.cards {
+/* project cards — five concept "worlds", each a film-backed button that opens a case study.
+   The concept film plays as the card background (in-view only, see ProjectCards); a scrim keeps
+   the overlaid copy at AA contrast; the card rises in on scroll for the cinematic reveal. */
+.work-lede {
+  margin-top: 0.8rem;
+  max-width: 52ch;
+  font-size: clamp(1rem, 1.7vw, 1.15rem);
+  color: var(--muted);
+}
+.cards--film {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 1.2rem;
   margin-top: 2rem;
   max-width: 1100px;
 }
-.card {
+.card--film {
+  /* button reset */
+  appearance: none;
+  -webkit-appearance: none;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  /* film frame */
+  position: relative;
+  display: block;
+  width: 100%;
+  /* landscape ~16:10 frames the 16:9 films with little crop and keeps five cards inside the
+     #work section's 280vh scroll budget (data/stages.js) — a taller card overflows that slice
+     and desyncs the camera/phoenix choreography downstream. */
+  aspect-ratio: 16 / 10;
+  padding: 0;
+  /* warm hairline + a soft resting lift so the card floats in the scene, not on a hard frame */
+  border: 1px solid color-mix(in srgb, var(--accent), transparent 86%);
+  border-radius: 16px;
+  overflow: hidden;
+  background: #15110b;
+  box-shadow: 0 12px 34px rgba(12, 9, 6, 0.24);
   pointer-events: auto;
-  padding: 1.5rem;
-  border-radius: 14px;
-  border: 1px solid rgba(40, 32, 20, 0.18);
-  background: rgba(255, 250, 240, 0.55);
-  backdrop-filter: blur(8px);
+  /* scroll reveal */
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s ease,
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
 }
-.card h3 {
-  font-family: var(--font-display);
-  font-size: 1.4rem;
+.card--film.is-in {
+  opacity: 1;
+  transform: translateY(0);
 }
-.card .theme {
-  font-size: 0.7rem;
-  letter-spacing: 0.12em;
+/* tilt layer: holds the film + copy and rotates toward the cursor (vars set in ProjectCards).
+   A separate element from the reveal transform on .card--film, so the two never fight. */
+.card-tilt {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  overflow: hidden;
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform 0.3s ease;
+}
+.card-film {
+  position: absolute;
+  inset: -6%; /* overscan so the parallax drift never exposes an edge */
+  width: 112%;
+  height: 112%;
+  object-fit: cover;
+  transform: translate(var(--px, 0px), var(--py, 0px));
+  transition: transform 0.3s ease;
+}
+.card--film:hover .card-tilt,
+.card--film:focus-visible .card-tilt {
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) scale(1.02);
+}
+.card-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(12, 9, 6, 0.86) 0%,
+    rgba(12, 9, 6, 0.5) 38%,
+    rgba(12, 9, 6, 0.1) 70%,
+    rgba(12, 9, 6, 0.28) 100%
+  );
+}
+.card-content {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 1.3rem;
+  color: #f3ece0;
+}
+.card-theme {
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--accent);
-  margin: 0.5rem 0 0.8rem;
 }
-.card .concept {
-  font-size: 0.95rem;
-  color: var(--muted);
+.card-title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  line-height: 1.1;
+  color: #fbf6ee;
 }
-.card .status {
-  margin-top: 1rem;
-  font-size: 0.75rem;
-  color: var(--muted);
+.card-concept {
+  font-size: 0.92rem;
+  line-height: 1.4;
+  color: rgba(243, 236, 224, 0.88);
+  max-width: 38ch;
 }
-
-/* clickable cards = "dynamic calling cards": a hover lift + warm accent edge-glow + a → that
-   slides in. Concept cards (.card--static) stay calm — no clickable affordance. */
-.card {
-  position: relative;
-  transition:
-    transform 0.35s ease,
-    border-color 0.35s ease,
-    box-shadow 0.35s ease,
-    background 0.35s ease;
-}
-.card--link {
-  cursor: pointer;
-}
-.card--link:hover,
-.card--link:focus-visible {
+.card-cue {
+  position: absolute;
+  top: 1rem;
+  right: 1.1rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.03em;
+  color: #fbf6ee;
+  background: color-mix(in srgb, var(--accent), transparent 18%);
+  padding: 0.3rem 0.6rem;
+  border-radius: 999px;
+  opacity: 0;
   transform: translateY(-4px);
-  border-color: color-mix(in srgb, var(--accent), transparent 30%);
-  background: rgba(255, 250, 240, 0.7);
-  box-shadow:
-    0 10px 30px rgba(40, 32, 20, 0.16),
-    0 0 22px color-mix(in srgb, var(--accent), transparent 70%);
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
 }
-.card--link:focus-visible {
+.card--film:hover .card-cue,
+.card--film:focus-visible .card-cue {
+  opacity: 1;
+  transform: translateY(0);
+}
+.card--film:hover,
+.card--film:focus-visible {
+  border-color: color-mix(in srgb, var(--accent), transparent 35%);
+  box-shadow:
+    0 16px 40px rgba(12, 9, 6, 0.34),
+    0 0 26px color-mix(in srgb, var(--accent), transparent 74%);
+}
+.card--film:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
-.card--static {
-  cursor: default;
+
+/* honest status badge with a state dot — shared by the card and the modal */
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
 }
-.card-go {
-  position: absolute;
-  top: 1.2rem;
-  right: 1.3rem;
-  font-size: 1.1rem;
-  color: var(--accent);
-  opacity: 0;
-  transform: translateX(-6px);
-  transition:
-    opacity 0.35s ease,
-    transform 0.35s ease;
+.card-content .status {
+  color: rgba(243, 236, 224, 0.82);
 }
-.card--link:hover .card-go,
-.card--link:focus-visible .card-go {
+.status .dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex: none;
+}
+.status--live .dot {
+  background: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent), transparent 72%);
+}
+.status--progress .dot {
+  background: var(--accent);
+  animation: pulse-dot 1.8s ease-in-out infinite;
+}
+.status--concept .dot {
+  background: transparent;
+  border: 1px solid currentColor;
+  opacity: 0.7;
+}
+@keyframes pulse-dot {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent), transparent 60%);
+  }
+  50% {
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent), transparent 100%);
+  }
+}
+
+/* ---- case-study modal (ProjectDetail) — portaled to <body>, above the fixed canvas + nav ---- */
+.pd-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.2rem;
+  background: rgba(10, 8, 6, 0.66);
+  backdrop-filter: blur(6px);
   opacity: 1;
-  transform: translateX(0);
+  transition: opacity 0.3s ease;
 }
+/* enter-start and exit both dim the backdrop; the panel rides its own transform back to the card */
+.pd-backdrop.is-closing {
+  opacity: 0;
+}
+.pd-dialog {
+  position: relative;
+  width: 100%;
+  max-width: 640px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: var(--bg);
+  /* fixed ink — the global --ink is scroll-driven and can go light, so the modal sets its own */
+  color: #241c12;
+  border-radius: 18px;
+  box-shadow: 0 30px 80px rgba(10, 8, 6, 0.5);
+  /* FLIP pull-out: the panel grows from the clicked card's rect to centre (transform set inline
+     in ProjectDetail) and collapses back on close. */
+  transform-origin: center;
+  transition:
+    transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1),
+    opacity 0.35s ease;
+  will-change: transform, opacity;
+}
+.pd-close {
+  position: absolute;
+  top: 0.7rem;
+  right: 0.7rem;
+  z-index: 2;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  font-size: 1.4rem;
+  line-height: 1;
+  color: #fbf6ee;
+  background: rgba(12, 9, 6, 0.5);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.pd-close:hover {
+  background: rgba(12, 9, 6, 0.78);
+}
+.pd-close:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.pd-media {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: #15110b;
+}
+.pd-film {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.pd-tag {
+  position: absolute;
+  left: 0.9rem;
+  bottom: 0.9rem;
+  font-size: 0.66rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #f3ece0;
+  background: rgba(12, 9, 6, 0.55);
+  padding: 0.3rem 0.6rem;
+  border-radius: 999px;
+}
+.pd-body {
+  padding: 1.5rem 1.6rem 1.8rem;
+}
+.pd-body .status {
+  color: #5b513f;
+  margin-top: 0;
+}
+.pd-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 4vw, 2.1rem);
+  line-height: 1.1;
+  margin-top: 0.5rem;
+}
+.pd-eyebrow {
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-top: 0.4rem;
+}
+.pd-summary {
+  margin-top: 1rem;
+  font-size: 1rem;
+  line-height: 1.55;
+  color: #3a3122;
+}
+.pd-highlights {
+  list-style: none;
+  margin-top: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.pd-highlights li {
+  position: relative;
+  padding-left: 1.3rem;
+  font-size: 0.94rem;
+  color: #3a3122;
+}
+.pd-highlights li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.5em;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.pd-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1.2rem;
+}
+.pd-chip {
+  font-size: 0.74rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid rgba(40, 32, 20, 0.22);
+  color: #5b513f;
+}
+.pd-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+.pd-link {
+  font-weight: 600;
+  color: #6b4e22;
+  text-decoration: none;
+  border-bottom: 2px solid color-mix(in srgb, var(--accent), transparent 40%);
+  padding-bottom: 2px;
+}
+.pd-link:hover {
+  border-bottom-color: var(--accent);
+}
+.pd-link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+.pd-note {
+  font-size: 0.85rem;
+  color: #5b513f;
+  font-style: italic;
+}
+/* keyboard affordance — pushed to the end of the actions row, decorative (aria-hidden) */
+.pd-esc {
+  margin-left: auto;
+  font-size: 0.66rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #8a7d63;
+  border: 1px solid rgba(40, 32, 20, 0.2);
+  border-radius: 6px;
+  padding: 0.25rem 0.5rem;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .card,
-  .card-go {
+  .card--film {
+    opacity: 1;
+    transform: none;
+    transition:
+      box-shadow 0.2s ease,
+      border-color 0.2s ease;
+  }
+  /* no tilt, no parallax, no card zoom */
+  .card-tilt,
+  .card-film,
+  .card-cue {
+    transform: none !important;
     transition: none;
   }
-  .card--link:hover,
-  .card--link:focus-visible {
-    transform: none;
+  .status--progress .dot {
+    animation: none;
+  }
+  /* no pull-out morph — the panel just appears */
+  .pd-backdrop,
+  .pd-dialog {
+    transition: none;
   }
 }
 

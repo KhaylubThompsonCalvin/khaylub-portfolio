@@ -1,10 +1,82 @@
 {
   "mcpServers": {
+    "obsidian": {
+      "command": "C:\\PROGRA~1\\nodejs\\npx.cmd",
+      "args": [
+        "-y",
+        "mcp-remote@latest",
+        "http://127.0.0.1:27123/mcp/",
+        "--allow-http",
+        "--header",
+        "Authorization: Bearer ${OBSIDIAN_API_KEY}"
+      ]
+    },
+
+    "github": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "GITHUB_PERSONAL_ACCESS_TOKEN",
+        "ghcr.io/github/github-mcp-server"
+      ],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_PERSONAL_ACCESS_TOKEN}"
+      }
+    },
+
+    "filesystem": {
+      "command": "cmd",
+      "args": [
+        "/c",
+        "npx",
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "C:\\Users\\Admin\\OneDrive\\Desktop\\Projects",
+        "C:\\Users\\Admin\\OneDrive\\Desktop\\Blender",
+        "C:\\Users\\Admin\\OneDrive\\Desktop\\School",
+        "C:\\Users\\Admin\\OneDrive\\Desktop\\Documentation",
+        "C:\\Users\\Admin\\OneDrive\\Desktop\\Automation"
+      ]
+    },
+
+    "playwright": {
+      "command": "C:\\PROGRA~1\\nodejs\\npx.cmd",
+      "args": [
+        "-y",
+        "@playwright/mcp@latest"
+      ]
+    },
+
     "magic": {
       "command": "npx",
-      "args": ["-y", "@21st-dev/magic@latest"],
+      "args": [
+        "-y",
+        "@21st-dev/magic@latest"
+      ],
       "env": {
         "API_KEY": "${MAGIC_API_KEY}"
+      }
+    },
+
+    "docker-mcp": {
+      "command": "C:\\Program Files\\Docker\\cli-plugins\\docker-mcp.exe",
+      "args": [
+        "gateway",
+        "run",
+        "--profile",
+        "khaylub"
+      ],
+      "env": {
+        "DOCKER_HOST": "",
+        "PYTHONUNBUFFERED": "1",
+        "ProgramData": "C:\\ProgramData",
+        "LOCALAPPDATA": "C:\\Users\\Admin\\AppData\\Local",
+        "APPDATA": "C:\\Users\\Admin\\AppData\\Roaming",
+        "USERPROFILE": "C:\\Users\\Admin",
+        "SystemRoot": "C:\\Windows"
       }
     }
   }

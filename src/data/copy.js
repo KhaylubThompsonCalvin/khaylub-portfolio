@@ -36,7 +36,7 @@ export const contact = {
   links: [
     { label: 'GitHub', href: 'https://github.com/KhaylubThompsonCalvin' },
     { label: 'LinkedIn', href: 'https://www.linkedin.com/in/khaylub-thompson-calvin-40543b294/' },
-    { label: 'Email', href: 'mailto:hello@khaylub.com' },
+    { label: 'Email', href: 'mailto:khaylubthompsoncalvin@gmail.com' },
     // Resume stays an honest 'soon' until /public/resume.pdf exists; then set href: '/resume.pdf'.
     { label: 'Resume', href: '#' },
   ],

@@ -1,75 +1,81 @@
 # Khaylub.com — Current State
 
-> The authoritative description of what Khaylub.com **is today**. Where this and the
-> older planning docs disagree, this document is correct about the present.
-> Last verified against `website/` files on 2026-06-19.
+> The authoritative description of what Khaylub.com **is today**. Where this and the older
+> planning docs disagree, this document is correct about the present.
+> Last verified against the live site + `src/` on 2026-06-24.
 >
-> **Note:** this supersedes the previous version of this file, which described an
-> earlier build (animated loader, campfire/compass scenes, "Summit Render / Trail
-> Engine" cards). That build was replaced by the current rebuild below.
+> **Note:** a previous version of this file described the `website/` static page as the live
+> site. That is no longer accurate — the live site is the **React + React Three Fiber app**
+> at the repo root. `website/` is retained only as the no-WebGL fallback (see below).
 
 ## What exists today
 
-A complete, working **single-page static website** in `website/`, plain web tech:
+**Launched and live at https://khaylub.com** (custom domain, HTTPS). The site auto-deploys from
+`main` (host dashboard-managed; there is no deploy config committed to the repo). The live build is
+the **React + Vite + React Three Fiber "Wanderer" experience** at the repo root (`index.html` +
+`src/`) — `npm run dev` / `build` target this app.
 
-| File                  | Role                                                                       |
-| --------------------- | -------------------------------------------------------------------------- |
-| `website/index.html`  | Markup for the whole page                                                  |
-| `website/styles.css`  | All visuals, color progression, scroll-reveal, responsive + reduced-motion |
-| `website/script.js`   | Footer year + scroll-reveal (IntersectionObserver, staggered)              |
-| `website/favicon.svg` | Inline SVG summit favicon                                                  |
+A second, frozen codebase lives in `website/`: a standalone plain-HTML/CSS/JS page, retained as the
+**no-WebGL fallback**. It is not the live site. (`_archive/` holds dead experiments.)
 
-No build step, no framework, no dependencies. Open `index.html` and it runs.
+### The live experience (as actually built)
 
-### Theme & design language (as actually coded)
+One continuous, scroll-driven timeline. A rigged GLB traveler ("the Wanderer") walks in place at
+the world origin while the camera moves around him; a single normalized `scrollProgress` (0→1) is
+the master clock every system reads.
 
-- **Theme:** "Toward the Summit" — a traveler ascending, told through scroll.
-- **Color progression:** Dawn → Alpine → Summit, blended per section via `data-palette`
-  (warm cream/tan → cool alpine blue-grey → clean summit light).
-- **Type:** display = Georgia serif; body = system-ui sans.
-- **Motion:** scroll-reveal (fade + rise with gentle stagger); a floating "scroll" hint.
-  All motion disabled under `prefers-reduced-motion`.
-- **Inspiration:** Noomo storytelling (scroll-driven narrative), noted in the CSS header.
-- **Phase 3 hook:** a `#canvas-root` div is present, fixed, inert — reserved for a future
-  Three.js scene. Empty in Phase 1.
+- **Spine:** Lenis smooth scroll → `store/useExperience.js` (Zustand) holds `scrollProgress` +
+  derived `stageId`; `three/CameraRig.jsx` and `three/Wanderer.jsx` read it each frame via
+  `getState()` (never a per-frame React re-render). Choreography lives in `data/`
+  (`stages.js`, `camera.js`, `copy.js`, `projects.js`, `palette.js`, `phoenix.js`).
+- **Six phases** (`data/stages.js`, total scroll ≈ 856vh): Arrival → Philosophy → Areas of Focus →
+  Project Discovery → Project Exploration → Contact, weighted unequally with a held "sky tail".
+- **Atmosphere:** scroll-driven video plates over the 3D (`ui/VideoAtmosphere.jsx`) — a
+  bottom-anchored ground-fog plate, dawn-grass, screen-blended embers, and scrubbed summit clouds.
+  Tonal sky/ground colour ramps dawn→summit (`Atmosphere.jsx` + `data/palette.js`).
+- **Phoenix finale:** a faint ember wakes at the midpoint, arcs behind the Wanderer, and resolves
+  into fire at the summit; the camera tracks the rising firebird then sprints to a head-on hold.
+- **Work section — concept "worlds":** five projects, each a short concept-visualization **film**
+  on a card that **pulls out** into an accessible case-study panel (`ui/ProjectCards.jsx` +
+  `ui/ProjectDetail.jsx`). Honest status: **Khaylub.com is Live** and links out; EyesUnclouded,
+  Cloelia, FutureGenius, and Manors are **Concept** and show an "in design" note (no fake demo, no
+  dead `#`). See the vault's [[Project World Definitions]].
+- **Audio:** opt-in Web Audio system created after the entry gate (no autoplay) — wind, an ambient
+  synth layer, and story-beat swells.
+- **Entry gate** (`ui/LoadGate.jsx`): a real `<button>` that supplies the user gesture, covers
+  loading, and fades away to reveal the experience.
 
-### Page structure
+### Design language
 
-1. **Fixed nav** — blurred bar; brand + links to About, Journey, Projects, Contact.
-2. **Hero** — "Toward the Summit," line "In ascending, we become," CTA "Follow the trail."
-3. **About ("The Traveler")** — bio lines, roles (CIS Student · Web Developer · Blender
-   Artist), and a "Currently climbing" list (web dev; 3D/Blender; cybersecurity via coursework).
-4. **Journey ("The Ascent" / "Elevation gained")** — four waypoints: Math 65 Test-Out,
-   Web Fundamentals, Blender Basics, CIS Coursework.
-5. **Projects ("What I've Carried")** — four real cards with honest badges:
-   Khaylub.com (In progress), EyesUnclouded.ai (Concept), Cloelia.ai (Concept),
-   Manors.ai (Concept).
-6. **Contact ("Reach Out")** — `mailto:hello@khaylub.com`.
-7. **Footer** — auto year.
+- **Theme:** the climb from beginner to professional — "the experience is about continuing the
+  climb." Calm, reflective, hopeful.
+- **Type:** display = Georgia serif; body = system-ui sans (design tokens in `src/index.css`).
+- **Styling:** plain CSS + custom properties (`--bg`, `--ink`, `--muted`, `--accent`, fonts). No
+  Tailwind, no CSS-in-JS.
+- **Motion:** scroll-driven throughout; `prefers-reduced-motion` honored everywhere (camera drift,
+  card tilt/parallax, the pull-out morph, and atmosphere plates all degrade gracefully).
 
 ## What works
 
-- Loads instantly; zero network/asset dependencies (pure HTML/CSS/JS).
-- Responsive (collapses at 640px); semantic sections; `aria-hidden` on the inert canvas.
-- `prefers-reduced-motion` fully handled; scroll-reveal degrades to visible.
+- Live, deployed, auto-building from `main`; production `npm run build` passes.
+- Accessibility baked into the new UI: semantic `<button>`s, focus traps + visible focus, AA
+  contrast over the scrim, 44px targets, reduced-motion fallbacks.
+- No dead links: concept projects open a modal / are non-links; only the live project links out
+  (`rel="noreferrer noopener"`).
 
-## What this site is NOT (today)
+## Honest gaps (post-launch)
 
-No Next.js, React, React Three Fiber, Three.js, Tailwind, GLB, or Vercel config — and
-no Blender asset wired in yet. Those belong to `FUTURE_VISION.md` / Phase 3. There is
-also **no animated loader, no campfire/compass graphics, and no social links** in the
-current markup (those were the earlier build).
-
-## Honest gaps before launch
-
-- Not deployed; domain `khaylub.com` and HTTPS not yet set up.
-- Contact email `hello@khaylub.com` needs a real mailbox.
-- Project cards are real, but three of four are concept-stage (correctly badged).
-- Open Graph share image is a placeholder path (`assets/og-cover.jpg`).
-- See `MVP_LAUNCH_ROADMAP.md` for the launch checklist.
+- **Performance + mobile not yet verified** against the Phase-1 bar (Lighthouse 75+, < 3s on 3G,
+  320–1200px). The five work-section films are the main risk — posters + in-view-only playback
+  mitigate, but measure it.
+- **`hello@khaylub.com`** mailbox — confirm it exists and receives (the contact link depends on it).
+- A full **WCAG AA audit** of the live build (keyboard over the canvas, traps) is still pending.
+- The parked Growth-Ledger prep renames project `theme → tags`; the merged work section uses
+  `theme` — reconcile before that prep lands.
 
 ## Pointers
 
-- Launch path: `MVP_LAUNCH_ROADMAP.md`
+- Live checklist + deferred work: the vault's `TODO — Launch + Growth Ledger`
 - Store ownership (repo vs Obsidian vault): `SOURCE_OF_TRUTH.md`
+- Architecture + idioms for contributors: `CLAUDE.md`
 - Narrative/design decisions are developed in the Obsidian vault `01 Projects/Khaylub.com/`.

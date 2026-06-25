@@ -62,9 +62,11 @@ export const FORESHADOW = {
 export const FLIGHT = [
   { at: 0.5, pos: [-1.46, 0.33, -10.25] }, // spark — ignites into the upper-right of frame
   { at: 0.57, pos: [-4.8, 1.1, -6.6] }, // sweeps in, upper-right — a visible firebird arriving
-  { at: 0.66, pos: [-7.6, 1.7, -2.2] }, // arcs across the upper frame, behind him
-  { at: 0.77, pos: [-8.6, 2.6, 1.4] }, // the wide point of the arc — farthest out, still climbing
-  { at: 0.86, pos: [-7.6, 4.0, 2.8] }, // banks back toward him, rising
+  { at: 0.66, pos: [-7.6, 1.2, -2.2] }, // arcs across frame — kept LOW so it stays in shot (was 1.7;
+  // the steep climb is saved for the summit ascent so the firebird isn't cropped off the top here)
+  { at: 0.77, pos: [-8.6, 1.5, 1.4] }, // the wide point of the arc — farthest out, held low for clean
+  // headroom (was 1.9); the dramatic vertical climb is concentrated 0.77→1.0 into the summit ascent
+  { at: 0.86, pos: [-7.6, 3.2, 2.8] }, // banks back toward him; the ascent steepens from here
   { at: 0.93, pos: [-5.4, 5.8, 3.0] }, // up and over toward the Wanderer
   { at: 1.0, pos: [-3.2, 7.8, 2.6] }, // SUMMIT: flies up and OVER him, climbing high (Kt)
 ];

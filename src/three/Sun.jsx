@@ -11,7 +11,10 @@ const smoothstep = (t) => t * t * (3 - 2 * t);
 // bloom layer so it blooms into a radiant sun. It rises and ignites across the summit approach so
 // the firebird reads as flying INTO it. Scroll-driven via getState() in useFrame (the idiom);
 // dormant (hidden) until ~0.8 so it costs nothing earlier. fog is off — it's a light, not terrain.
-const SUN_POS = [-16, 4.5, -1];
+// Lowered to the horizon (was y4.5) so the disc sits clearly BELOW the firebird's summit flight,
+// even through the bird's downward hover drift — it reads against clean blue sky with the sun as a
+// contained warm disc beneath, never a wash it flies inside of.
+const SUN_POS = [-16, -0.5, -2];
 
 export default function Sun() {
   const group = useRef();
@@ -38,9 +41,10 @@ export default function Sun() {
     }
     g.visible = true;
     // A contained disc (not a sky-wide wash) so most of the blue sky stays clean for the firebird,
-    // which now flies against the blue beside it rather than into it.
-    g.scale.setScalar(1 + e * 0.7);
-    if (mat.current) mat.current.emissiveIntensity = 0.8 + e * 1.6;
+    // which now flies against the blue ABOVE it rather than inside it. Kept smaller + dimmer than
+    // before so its bloom no longer swallows the bird when the bird drifts across it.
+    g.scale.setScalar(1 + e * 0.4);
+    if (mat.current) mat.current.emissiveIntensity = 0.6 + e * 1.0;
   });
 
   return (

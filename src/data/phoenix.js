@@ -181,9 +181,9 @@ export const FINALE_REVEAL = {
   full: 1.0, // fully bloomed at the very end of the scroll
   // central white-gold flare
   flareColor: '#fff3da',
-  flareSize: 6.5, // metres at full bloom (phoenix ~6 m, ~11 m out → a radiant halo, not a wash)
-  flarePeak: 0.95, // opacity-glow at the crest of the bloom
-  flareHold: 0.6, // ...then it eases (time-based) to this steady glow at the held final frame
+  flareSize: 4.0, // metres at full bloom — a halo BEHIND the bird, not a disc washing over it
+  flarePeak: 0.5, // opacity-glow at the crest of the bloom (was 0.95 — it blew the bird to white)
+  flareHold: 0.26, // ...then it eases (time-based) to this steady glow at the held final frame
   breath: 0.05, // gentle autonomous glow breath at the hold (dropped under reduced motion)
   // ember burst
   emberCount: 30,

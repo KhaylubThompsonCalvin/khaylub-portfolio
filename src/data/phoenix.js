@@ -122,6 +122,10 @@ export const FLAP_FAST = 1.6;
 // At rest the wings stay still; moving the cursor WAKES them again (fly-by-command), so rest = a
 // frozen hero and touch = it flies. Scroll-anchored, so it honours reduced motion.
 export const FREEZE_FROM = 0.96; // wings start slowing here; fully frozen by 1.0
+// The FRAME to freeze on (seconds into the ~0.708 s flap clip): the wings-UP apex, where all four
+// wings are spread up and the talons + beak read head-on — the held hero pose. As the beat stops the
+// clip eases to this frame and holds; moving the cursor plays the beat again.
+export const FREEZE_POSE_TIME = 0.2;
 
 // Scale: the GLB is ~0.98 m at its largest dim (Wanderer is ~0.98 m tall), so these multipliers
 // set the real-world size of the bird. ~3.0 at the fire peak = a ~3 m firebird (3x the Wanderer);

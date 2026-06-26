@@ -15,6 +15,7 @@ import {
   FLAP_SLOW,
   FLAP_FAST,
   FREEZE_FROM,
+  FREEZE_POSE_TIME,
   SCALE_MIN,
   SCALE_MAX,
   BODY_EMBER,
@@ -266,13 +267,30 @@ export default function PhoenixFlap(props) {
     // command), so the held hero stirs to life when you interact. Scroll-anchored freeze → honours
     // reduced motion (where `live` is 0, so there's no wake — it simply freezes).
     if (flapAction.current) {
+      const a = flapAction.current;
       const base = reducedMotion
         ? FLAP_SLOW
         : lerp(FLAP_SLOW, FLAP_FAST, ramp) + SCROLL_FLAIR.flapBoost * flair.current;
       const freeze = smoothstep(clamp01((p - FREEZE_FROM) / (1 - FREEZE_FROM)));
       const wake =
         SUMMIT_INTERACT.flapWake * summit * live * Math.min(1, Math.hypot(px.current, py.current));
-      flapAction.current.timeScale = base * (1 - freeze) + wake;
+      // Hold the CHOSEN wings-up hero pose at rest; play the beat again the moment you steer (wake).
+      if (freeze > 0.5 && wake < 0.02) {
+        a.paused = true;
+        const dur = a.getClip().duration;
+        if (reducedMotion) {
+          a.time = FREEZE_POSE_TIME; // snap (reduced motion has no animation anyway)
+        } else {
+          // ease the clip the SHORT way around the loop to the wings-up frame, then hold
+          let d = FREEZE_POSE_TIME - a.time;
+          if (d > dur / 2) d -= dur;
+          else if (d < -dur / 2) d += dur;
+          a.time = (a.time + d * (1 - Math.exp(-6 * dt)) + dur) % dur;
+        }
+      } else {
+        a.paused = false;
+        a.timeScale = base * (1 - freeze) + wake;
+      }
     }
     if (!reducedMotion) {
       const t = state.clock.elapsedTime;

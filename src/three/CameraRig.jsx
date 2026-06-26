@@ -90,7 +90,12 @@ export default function CameraRig() {
     // front view stays put while the cursor steers the bird within the shot. Scroll-driven → honours
     // reduced motion (no autonomous move).
     if (p >= FINALE.from) {
-      const e = smoothstep(clamp01((p - FINALE.from) / FINALE.trackIn)); // blend the orbit rig in
+      const e = smoothstep(clamp01((p - FINALE.from) / FINALE.trackIn)); // position blends in
+      // The LOOK target snaps onto the bird faster than the position eases in, so the firebird stays
+      // centred through the hand-off — otherwise the camera swings while the bird isn't yet centred
+      // and it flicks off the right edge (~0.875) before the orbit settles. The lookRef smoothing
+      // below keeps this fast look-on smooth (no hard snap).
+      const eLook = smoothstep(clamp01((p - FINALE.from) / (FINALE.trackIn * 0.4)));
       // orbit 0→1 completes by FINALE.orbitTo, then holds at 1 (front) so the camera settles head-on
       const prog = smoothstep(clamp01((p - FINALE.from) / (FINALE.orbitTo - FINALE.from)));
       const ph = store.phoenixPos;
@@ -120,7 +125,7 @@ export default function CameraRig() {
       _off.y = FINALE.orbitHeight;
       _track.copy(_olook).add(_off);
       _pos.lerp(_track, e);
-      _look.lerp(_olook, e);
+      _look.lerp(_olook, eLook);
     }
 
     // During the finale, settle FASTER so the camera keeps up with the climbing bird (otherwise it

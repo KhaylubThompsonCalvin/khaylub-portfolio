@@ -19,9 +19,7 @@ const _look = new THREE.Vector3();
 const _b = new THREE.Vector3();
 const _olook = new THREE.Vector3();
 const _track = new THREE.Vector3();
-const _trackOffset = new THREE.Vector3().fromArray(FINALE.trackOffset);
 const _fwd = new THREE.Vector3();
-const _frontOff = new THREE.Vector3();
 const _off = new THREE.Vector3();
 
 // sample the shot list at scrollProgress p -> writes camera pos + look targets
@@ -83,27 +81,31 @@ export default function CameraRig() {
       _pos.y -= ppy.current * POINTER_PARALLAX.y * eng;
     }
 
-    // Finale — the firebird ascends and the camera tilts UP to follow it (not the old sun-washing
-    // orbit). From FINALE.from→1.0 the camera cranes up a touch and swings its LOOK target onto the
-    // live phoenix position, so it pitches up to track the climb. Scroll-driven (honours reduced
-    // motion). The bird is upper-left and the sun upper-right, so this tilts away from the wash.
+    // Finale — the camera ORBITS the still-flying firebird a full 360° and lands HEAD-ON at the end
+    // of the scroll (Kt: "it should still look like flight; the camera does the rotating"). The bird
+    // keeps flying/flapping along its climb (no turntable on the model); the camera circles it on a
+    // ring of radius orbitDist at height orbitHeight, the orbit angle driven by scrollProgress from
+    // FINALE.from→1.0. phi = 0 and 2π = the bird's FRONT, so one full loop starts and ends head-on.
+    // The front offset is built from the bird's BASE facing (fx/fz, no pointer yaw), so the held
+    // front view stays put while the cursor steers the bird within the shot. Scroll-driven → honours
+    // reduced motion (no autonomous move).
     if (p >= FINALE.from) {
-      // FINALE in two beats (Kt): (A) TRACK the rising firebird as it flies up/away, then (B) the
-      // camera SPRINTS in to a head-on FRONT view — close, on the bird's facing side, looking at its
-      // face — and holds there as the interactive closing hero (the cursor turns/banks it within the
-      // shot). Phase A uses the fixed behind/below offset; phase B blends that into an offset built
-      // from the bird's BASE facing (fx/fz, no pointer yaw) so the front view stays put while you
-      // steer the bird with the mouse.
-      const e = smoothstep(clamp01((p - FINALE.from) / FINALE.trackIn));
-      const eB = smoothstep(clamp01((p - FINALE.sprintFrom) / (1 - FINALE.sprintFrom)));
+      const e = smoothstep(clamp01((p - FINALE.from) / FINALE.trackIn)); // blend the orbit rig in
+      // orbit 0→1 completes by FINALE.orbitTo, then holds at 1 (front) so the camera settles head-on
+      const prog = smoothstep(clamp01((p - FINALE.from) / (FINALE.orbitTo - FINALE.from)));
       const ph = store.phoenixPos;
-      _olook.set(ph.x, ph.cy, ph.z); // the bird's visual centre (cy), not its pivot
-      _fwd.set(ph.fx, 0, ph.fz);
+      _olook.set(ph.x, ph.cy, ph.z); // the flying bird's visual centre (cy), not its pivot
+      _fwd.set(ph.fx, 0, ph.fz); // bird's facing; the front view sits on this side
       if (_fwd.lengthSq() < 1e-4) _fwd.set(1, 0, 0);
       _fwd.normalize();
-      _frontOff.copy(_fwd).multiplyScalar(FINALE.frontDist); // in front of the face...
-      _frontOff.y += FINALE.frontHeight; // ...lifted to read the face
-      _off.copy(_trackOffset).lerp(_frontOff, eB); // (A) track → (B) sprint to the front view
+      // Rotate the front offset around the bird (Y axis) by phi — a full 360° sweep ending front-on.
+      const phi = prog * Math.PI * 2;
+      const ca = Math.cos(phi);
+      const sa = Math.sin(phi);
+      _off.set(_fwd.x * ca + _fwd.z * sa, 0, -_fwd.x * sa + _fwd.z * ca).multiplyScalar(
+        FINALE.orbitDist
+      );
+      _off.y = FINALE.orbitHeight;
       _track.copy(_olook).add(_off);
       _pos.lerp(_track, e);
       _look.lerp(_olook, e);

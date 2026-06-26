@@ -217,14 +217,13 @@ export const SUMMIT_INTERACT = {
   bank: 0.4, // extra roll into the turn
   emberBoost: 2.0, // moving the mouse fans the fire brighter at the summit
   flapWake: 1.1, // pointer movement stirs the frozen wings back to a slow beat
-  // Idle "presentation" TURNTABLE — when the cursor rests (not steering) at the summit, the firebird
-  // slowly rotates a FULL 360° to present the model in the round (wingspan → profile → back → profile
-  // → front), keeping a gentle beat; the instant you move the cursor it pauses and your steering
-  // takes over from that angle (PhoenixFlap accumulates it — no snap-back). Reduced-motion gated.
-  presentSpeed: 0.45, // turntable angular speed (rad/s) — a full 360° revolution every ~14 s
-  presentBank: 0.18, // gentle roll for life while it turns
-  presentYaw: 0.5, // (retained for reference; the turntable now drives the idle yaw, not this sway)
-  presentFlap: 0.45, // gentle wing-beat while idle so the wings stay alive
+  // Idle "presentation" — the MODEL no longer self-rotates: the CAMERA orbits the flying firebird in
+  // the finale (see CameraRig + data/camera.js FINALE) to present it in the round. Only the idle
+  // wing-beat below still keys off idlePresent, so the bird stays alive at the held front view.
+  presentFlap: 0.45, // gentle wing-beat while the cursor rests so the wings stay alive
+  presentSpeed: 0.45, // (unused — the camera does the rotating now)
+  presentBank: 0.18, // (unused)
+  presentYaw: 0.5, // (unused)
   // Held sky tail — at the close the firebird no longer freezes; it keeps beating and gently drifts
   // so it reads as FLYING front-on in the sky. The finale camera re-centres on the bird every frame,
   // so this drift parallaxes the sky/sun behind it rather than carrying it off-frame.

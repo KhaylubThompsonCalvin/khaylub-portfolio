@@ -16,6 +16,8 @@ import {
   FLAP_FAST,
   SCALE_MIN,
   SCALE_MAX,
+  BODY_EMBER,
+  BODY_FIRE,
   HEADING_OFFSET,
   POINTER,
   SCROLL_FLAIR,
@@ -99,8 +101,9 @@ export default function PhoenixFlap(props) {
 
   // The feather material(s) carry the baked ember emission; the body material is matte
   // (emissive black). Collect just the emissive ones so the ramp leaves the body alone.
-  const emissiveMats = useMemo(() => {
-    const found = new Set();
+  const { emissiveMats, bodyMats } = useMemo(() => {
+    const feathers = new Set();
+    const body = new Set();
     scene.traverse((o) => {
       if (!o.isMesh) return;
       const mats = Array.isArray(o.material) ? o.material : [o.material];
@@ -112,14 +115,16 @@ export default function PhoenixFlap(props) {
         // and the bloom pass already renders fog-free. Keeps the form crisp at any distance.
         m.fog = false;
         if (m.emissive && (m.emissive.r || m.emissive.g || m.emissive.b)) {
-          found.add(m);
+          feathers.add(m); // ember/fire feathers — bloom + full emission ramp
           emissive = true;
+        } else if (m.emissive) {
+          body.add(m); // matte body/head — warmed (no bloom) so the bird reads as fire-lit
         }
       }
       // Opt only the ember/fire feather meshes into selective bloom, so the body stays solid.
       if (emissive) o.layers.enable(BLOOM_LAYER);
     });
-    return [...found];
+    return { emissiveMats: [...feathers], bodyMats: [...body] };
   }, [scene]);
 
   const flapAction = useRef(null);
@@ -254,6 +259,13 @@ export default function PhoenixFlap(props) {
     for (const m of emissiveMats) {
       m.emissive.copy(emitCol);
       m.emissiveIntensity = intensity;
+    }
+    // Warm the matte body/head with the same ember->fire tint at a low intensity (NOT on the bloom
+    // layer), so the whole bird reads as fire-lit rather than a grey bird with glowing orange wings.
+    const bodyI = lerp(BODY_EMBER, BODY_FIRE, ramp) * emerge;
+    for (const m of bodyMats) {
+      m.emissive.copy(emitCol);
+      m.emissiveIntensity = bodyI;
     }
 
     // Wingbeat quickens as it ignites and flares with scroll speed; calmed (not frozen) under

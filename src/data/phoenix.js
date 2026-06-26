@@ -102,6 +102,13 @@ export const FIRE_INTENSITY = 2.8;
 export const EMBER_COLOR = '#ff5a1e'; // deep ember orange at the spark
 export const FIRE_COLOR = '#ffb24a'; // bright gold-orange fire at the summit
 
+// The body/head material is matte (no baked emission), so it lit up as a cold grey bird beside the
+// glowing feathers — "a grey bird with orange wings", not a firebird. Give it a SUBTLE warm self-
+// illumination (the same ember->fire tint, low intensity, and NOT on the bloom layer, so it warms
+// the body without blooming/washing it). Ramped by the same ember->fire ramp as the feathers.
+export const BODY_EMBER = 0.22; // warm self-illumination at the spark
+export const BODY_FIRE = 0.6; // ...growing as it ignites to fire at the summit
+
 // A gentle forward glide pitch (radians) so the bird reads as soaring rather than hanging with its
 // talons dangling straight down. Eased to 0 by the summit so the locked freeze pose is untouched.
 export const GLIDE_PITCH = 0.22;

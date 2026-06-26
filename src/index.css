@@ -86,14 +86,22 @@ a {
   z-index: -1;
   inset: -0.7em -1.4em;
   border-radius: 1.2em;
+  /* Full-column wash: the old gradient faded to `transparent`, so copy that ran past its strong end
+     (the wide body paragraph, the lower lines) fell onto the bright dawn-grass plate with no backplate
+     and dropped below AA. Keep the soft directional fall-off for aesthetics but hold a legible floor
+     all the way across (no transparent tail) so the whole text column stays backed. */
   background: linear-gradient(
     105deg,
-    rgba(var(--scrim), 0.62) 0%,
-    rgba(var(--scrim), 0.5) 42%,
-    rgba(var(--scrim), 0.16) 74%,
-    transparent 100%
+    rgba(var(--scrim), 0.82) 0%,
+    rgba(var(--scrim), 0.7) 55%,
+    rgba(var(--scrim), 0.52) 100%
   );
   filter: blur(16px);
+  /* Soften the busy grass/canvas BEHIND the copy into a smooth backdrop (progressive-blur legibility,
+     adapted from a 21st.dev reference; same backdrop-filter idiom the project cards already use), so
+     the text reads even where the scene behind it is bright and detailed. */
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
   pointer-events: none;
 }
 

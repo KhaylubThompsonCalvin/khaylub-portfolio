@@ -48,4 +48,9 @@ export const FINALE = {
   // settles to a clean head-on landing (the "stops at front view") before the held interactive tail
   orbitDist: 13, // camera distance from the bird while orbiting (smaller = closer/more filling)
   orbitHeight: 3.2, // camera height above the bird's centre so the full body clears the frame
+  // The model's head/beak is posed turned relative to its body, so landing the camera on the body's
+  // facing shows the beak in PROFILE. Rotate the camera's front direction by this (radians) so it
+  // lands in front of the BEAK — the viewer sees the full beak head-on at the freeze. Tuned live
+  // (swept 0→1.7; 1.3 lands symmetric and head-on, wings even, the face toward the viewer).
+  frontOffset: 1.3,
 };

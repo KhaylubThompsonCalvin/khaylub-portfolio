@@ -98,6 +98,18 @@ export default function CameraRig() {
       _fwd.set(ph.fx, 0, ph.fz); // bird's facing; the front view sits on this side
       if (_fwd.lengthSq() < 1e-4) _fwd.set(1, 0, 0);
       _fwd.normalize();
+      // Rotate the front direction so the landing sits in front of the BEAK (the model's head is
+      // posed turned from the body). DEV: window.__frontOffset overrides FINALE.frontOffset for live
+      // tuning of the head-on landing.
+      const fo =
+        import.meta.env.DEV && window.__frontOffset != null
+          ? window.__frontOffset
+          : FINALE.frontOffset;
+      if (fo) {
+        const cf = Math.cos(fo);
+        const sf = Math.sin(fo);
+        _fwd.set(_fwd.x * cf + _fwd.z * sf, 0, -_fwd.x * sf + _fwd.z * cf);
+      }
       // Rotate the front offset around the bird (Y axis) by phi — a full 360° sweep ending front-on.
       const phi = prog * Math.PI * 2;
       const ca = Math.cos(phi);

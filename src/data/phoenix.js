@@ -217,12 +217,13 @@ export const SUMMIT_INTERACT = {
   bank: 0.4, // extra roll into the turn
   emberBoost: 2.0, // moving the mouse fans the fire brighter at the summit
   flapWake: 1.1, // pointer movement stirs the frozen wings back to a slow beat
-  // Idle "presentation" — when the cursor rests (not steering) at the summit, the firebird slowly
-  // turns to show its profile + wingspan and keeps a gentle beat, then eases back; your cursor
-  // instantly takes over. Shows off the 3D model at rest. Reduced-motion gated.
-  presentYaw: 0.5, // slow yaw-sway amplitude (rad ≈ 28°) so it turns to present its profile
-  presentBank: 0.18, // gentle roll with the sway
-  presentSpeed: 0.45, // sway speed (slow) — a full left↔right cycle every ~14 s
+  // Idle "presentation" TURNTABLE — when the cursor rests (not steering) at the summit, the firebird
+  // slowly rotates a FULL 360° to present the model in the round (wingspan → profile → back → profile
+  // → front), keeping a gentle beat; the instant you move the cursor it pauses and your steering
+  // takes over from that angle (PhoenixFlap accumulates it — no snap-back). Reduced-motion gated.
+  presentSpeed: 0.45, // turntable angular speed (rad/s) — a full 360° revolution every ~14 s
+  presentBank: 0.18, // gentle roll for life while it turns
+  presentYaw: 0.5, // (retained for reference; the turntable now drives the idle yaw, not this sway)
   presentFlap: 0.45, // gentle wing-beat while idle so the wings stay alive
   // Held sky tail — at the close the firebird no longer freezes; it keeps beating and gently drifts
   // so it reads as FLYING front-on in the sky. The finale camera re-centres on the bird every frame,

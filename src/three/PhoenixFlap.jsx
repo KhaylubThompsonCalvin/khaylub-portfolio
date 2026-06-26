@@ -98,6 +98,7 @@ export default function PhoenixFlap(props) {
   const flair = useRef(0); // normalized |scroll velocity|, smoothed
   const yaw = useRef(0); // smoothed heading — eased toward the path tangent so turns never snap
   const yawInit = useRef(false); // snap to the first valid heading, then ease from there
+  const turntable = useRef(0); // accumulated idle-turntable angle at the summit (full 360 presentation)
 
   // The feather material(s) carry the baked ember emission; the body material is matte
   // (emissive black). Collect just the emissive ones so the ramp leaves the body alone.
@@ -228,10 +229,14 @@ export default function PhoenixFlap(props) {
     g.position.y += py.current * driftY * live;
     g.rotation.y += px.current * (POINTER.yaw + SUMMIT_INTERACT.yaw * summit) * live;
     g.rotation.z = -px.current * (POINTER.bank + SUMMIT_INTERACT.bank * summit) * live;
-    // Idle show-off sway — turns the bird within the held front shot (the camera uses its BASE
-    // heading, so this reads as the firebird presenting itself); cursor steering overrides it.
-    g.rotation.y += presentSway * SUMMIT_INTERACT.presentYaw * idlePresent;
-    g.rotation.z += presentSway * SUMMIT_INTERACT.presentBank * idlePresent;
+    // Idle TURNTABLE — when the cursor rests at the summit the firebird slowly rotates a FULL 360°
+    // to present the model in the round. The finale camera holds the bird's BASE heading (yaw.current,
+    // below), so this turns the bird WITHIN the held shot rather than dragging the camera. It
+    // ACCUMULATES and never unwinds: it advances only while idle (idlePresent) and pauses the instant
+    // you steer, so cursor control layers on top with no snap-back. Reduced-motion gated via idlePresent.
+    turntable.current += SUMMIT_INTERACT.presentSpeed * dt * idlePresent;
+    g.rotation.y += turntable.current;
+    g.rotation.z += presentSway * SUMMIT_INTERACT.presentBank * idlePresent; // gentle roll for life
     // Forward glide attitude so the talons trail rather than hang straight down; eased to 0 by the
     // summit (0.85→1.0) so the locked freeze pose keeps its upright presentation.
     g.rotation.x = GLIDE_PITCH * (1 - smoothstep(clamp01((p - 0.85) / 0.15)));

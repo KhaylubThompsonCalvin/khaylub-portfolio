@@ -310,7 +310,8 @@ a {
 }
 .cards--film {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  /* min(300px, 100%) caps the track to the container so it never overflows below ~320px */
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
   gap: 1.2rem;
   margin-top: 2rem;
   max-width: 1100px;
@@ -669,6 +670,12 @@ a {
   border: 1px solid rgba(40, 32, 20, 0.2);
   border-radius: 6px;
   padding: 0.25rem 0.5rem;
+}
+/* no hardware keyboard on touch — the Esc hint is meaningless there */
+@media (pointer: coarse) {
+  .pd-esc {
+    display: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

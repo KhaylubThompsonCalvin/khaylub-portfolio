@@ -14,6 +14,7 @@ import {
   GLIDE_PITCH,
   FLAP_SLOW,
   FLAP_FAST,
+  FREEZE_FROM,
   SCALE_MIN,
   SCALE_MAX,
   BODY_EMBER,
@@ -188,13 +189,6 @@ export default function PhoenixFlap(props) {
     const target = live ? clamp01(Math.abs(store.scrollVelocity) / SCROLL_FLAIR.ref) : 0;
     flair.current += (target - flair.current) * (1 - Math.exp(-SCROLL_FLAIR.ease * dt));
 
-    // Idle "presentation" gate: 1 when the cursor rests near centre at the summit, 0 when you're
-    // actively steering. Drives a slow show-off sway + idle wing-beat below so the model stays alive
-    // at rest and turns to show its profile, then hands control straight back to your cursor.
-    const idlePresent = reducedMotion
-      ? 0
-      : summit * clamp01(1 - Math.hypot(px.current, py.current) * 2);
-
     // Position along the Catmull-Rom path.
     samplePath(FLIGHT, p, pos);
     g.position.copy(pos);
@@ -266,19 +260,19 @@ export default function PhoenixFlap(props) {
       m.emissiveIntensity = bodyI;
     }
 
-    // Wingbeat quickens as it ignites and flares with scroll speed; calmed (not frozen) under
-    // reduced motion, where the autonomous bob is also dropped so only the scroll flight remains.
+    // Wingbeat quickens as it ignites and flares with scroll speed, then FREEZES at the end of the
+    // scroll (Kt): the wings ease to a stop and the firebird holds its glowing front-on pose as the
+    // camera lands head-on. At rest it stays frozen; moving the cursor WAKES the wings (fly-by-
+    // command), so the held hero stirs to life when you interact. Scroll-anchored freeze → honours
+    // reduced motion (where `live` is 0, so there's no wake — it simply freezes).
     if (flapAction.current) {
       const base = reducedMotion
         ? FLAP_SLOW
         : lerp(FLAP_SLOW, FLAP_FAST, ramp) + SCROLL_FLAIR.flapBoost * flair.current;
-      // At the summit the wings DON'T freeze any more (Kt): the firebird keeps cruising at `base`
-      // so it reads as flying front-on in the sky through the held closing tail. Moving the cursor
-      // (wake) or resting it (idleFlap) still ADD to the beat — it just never drops to a frozen pose.
+      const freeze = smoothstep(clamp01((p - FREEZE_FROM) / (1 - FREEZE_FROM)));
       const wake =
         SUMMIT_INTERACT.flapWake * summit * live * Math.min(1, Math.hypot(px.current, py.current));
-      const idleFlap = SUMMIT_INTERACT.presentFlap * idlePresent; // gentle extra beat while presenting
-      flapAction.current.timeScale = base + wake + idleFlap;
+      flapAction.current.timeScale = base * (1 - freeze) + wake;
     }
     if (!reducedMotion) {
       const t = state.clock.elapsedTime;

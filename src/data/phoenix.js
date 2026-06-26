@@ -117,6 +117,12 @@ export const GLIDE_PITCH = 0.22;
 export const FLAP_SLOW = 0.6;
 export const FLAP_FAST = 1.6;
 
+// Wing freeze — at the very end of the scroll the wingbeat eases to a STOP (Kt: "the phoenix stops
+// flapping at the end of the scroll"), holding its glowing front-on pose as the camera lands head-on.
+// At rest the wings stay still; moving the cursor WAKES them again (fly-by-command), so rest = a
+// frozen hero and touch = it flies. Scroll-anchored, so it honours reduced motion.
+export const FREEZE_FROM = 0.96; // wings start slowing here; fully frozen by 1.0
+
 // Scale: the GLB is ~0.98 m at its largest dim (Wanderer is ~0.98 m tall), so these multipliers
 // set the real-world size of the bird. ~3.0 at the fire peak = a ~3 m firebird (3x the Wanderer);
 // it stays distant (far -X in FLIGHT) so on screen it reads as a large bird far away, not a giant

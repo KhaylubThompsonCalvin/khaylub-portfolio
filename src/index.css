@@ -86,15 +86,51 @@ a {
   z-index: -1;
   inset: -0.7em -1.4em;
   border-radius: 1.2em;
+  /* Full-column wash: the old gradient faded to `transparent`, so copy that ran past its strong end
+     (the wide body paragraph, the lower lines) fell onto the bright dawn-grass plate with no backplate
+     and dropped below AA. Keep the soft directional fall-off for aesthetics but hold a legible floor
+     all the way across (no transparent tail) so the whole text column stays backed. */
   background: linear-gradient(
     105deg,
-    rgba(var(--scrim), 0.62) 0%,
-    rgba(var(--scrim), 0.5) 42%,
-    rgba(var(--scrim), 0.16) 74%,
-    transparent 100%
+    rgba(var(--scrim), 0.82) 0%,
+    rgba(var(--scrim), 0.7) 55%,
+    rgba(var(--scrim), 0.52) 100%
   );
   filter: blur(16px);
+  /* Soften the busy grass/canvas BEHIND the copy into a smooth backdrop (progressive-blur legibility,
+     adapted from a 21st.dev reference; same backdrop-filter idiom the project cards already use), so
+     the text reads even where the scene behind it is bright and detailed. */
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
   pointer-events: none;
+}
+
+/* Finale exception — don't let the closing copy box block the firebird. Here the copy is DARK ink
+   over the BRIGHT summit sky (already high-contrast), and the phoenix is the hero of the shot, so the
+   full panel is both unnecessary and covers the bird's left wing. Replace it with a SOFT radial glow
+   that pools behind the words on the left and fades to fully transparent toward the bird, and drop the
+   backdrop-blur so the firebird stays crisp behind the copy. (Adapted from a 21st.dev "illuminated
+   hero" reference — a glow that hugs the text, not a box.) */
+#contact .inner::before {
+  inset: -0.5em -1.6em;
+  background: radial-gradient(
+    ellipse 78% 76% at 22% 46%,
+    rgba(var(--scrim), 0.5) 0%,
+    rgba(var(--scrim), 0.24) 44%,
+    rgba(var(--scrim), 0) 74%
+  );
+  filter: blur(24px);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+/* Keep the dark closing copy crisp over the bright bloom WITHOUT a panel — a soft halo of the sky
+   tone hugging the glyphs (the no-box legibility lift from the same reference). */
+#contact .lead,
+#contact .body,
+#contact .availability,
+#contact .contact-links a,
+#contact .contact-links .link-soon {
+  text-shadow: 0 1px 12px rgba(var(--scrim), 0.6);
 }
 
 /* Section heights (viewport-heights). The story sections keep their original spans

@@ -14,8 +14,12 @@ import {
   GLIDE_PITCH,
   FLAP_SLOW,
   FLAP_FAST,
+  FREEZE_FROM,
+  FREEZE_POSE_TIME,
   SCALE_MIN,
   SCALE_MAX,
+  BODY_EMBER,
+  BODY_FIRE,
   HEADING_OFFSET,
   POINTER,
   SCROLL_FLAIR,
@@ -99,8 +103,9 @@ export default function PhoenixFlap(props) {
 
   // The feather material(s) carry the baked ember emission; the body material is matte
   // (emissive black). Collect just the emissive ones so the ramp leaves the body alone.
-  const emissiveMats = useMemo(() => {
-    const found = new Set();
+  const { emissiveMats, bodyMats } = useMemo(() => {
+    const feathers = new Set();
+    const body = new Set();
     scene.traverse((o) => {
       if (!o.isMesh) return;
       const mats = Array.isArray(o.material) ? o.material : [o.material];
@@ -112,14 +117,16 @@ export default function PhoenixFlap(props) {
         // and the bloom pass already renders fog-free. Keeps the form crisp at any distance.
         m.fog = false;
         if (m.emissive && (m.emissive.r || m.emissive.g || m.emissive.b)) {
-          found.add(m);
+          feathers.add(m); // ember/fire feathers — bloom + full emission ramp
           emissive = true;
+        } else if (m.emissive) {
+          body.add(m); // matte body/head — warmed (no bloom) so the bird reads as fire-lit
         }
       }
       // Opt only the ember/fire feather meshes into selective bloom, so the body stays solid.
       if (emissive) o.layers.enable(BLOOM_LAYER);
     });
-    return [...found];
+    return { emissiveMats: [...feathers], bodyMats: [...body] };
   }, [scene]);
 
   const flapAction = useRef(null);
@@ -183,14 +190,6 @@ export default function PhoenixFlap(props) {
     const target = live ? clamp01(Math.abs(store.scrollVelocity) / SCROLL_FLAIR.ref) : 0;
     flair.current += (target - flair.current) * (1 - Math.exp(-SCROLL_FLAIR.ease * dt));
 
-    // Idle "presentation" gate: 1 when the cursor rests near centre at the summit, 0 when you're
-    // actively steering. Drives a slow show-off sway + idle wing-beat below so the model stays alive
-    // at rest and turns to show its profile, then hands control straight back to your cursor.
-    const idlePresent = reducedMotion
-      ? 0
-      : summit * clamp01(1 - Math.hypot(px.current, py.current) * 2);
-    const presentSway = Math.sin(state.clock.elapsedTime * SUMMIT_INTERACT.presentSpeed);
-
     // Position along the Catmull-Rom path.
     samplePath(FLIGHT, p, pos);
     g.position.copy(pos);
@@ -223,10 +222,9 @@ export default function PhoenixFlap(props) {
     g.position.y += py.current * driftY * live;
     g.rotation.y += px.current * (POINTER.yaw + SUMMIT_INTERACT.yaw * summit) * live;
     g.rotation.z = -px.current * (POINTER.bank + SUMMIT_INTERACT.bank * summit) * live;
-    // Idle show-off sway — turns the bird within the held front shot (the camera uses its BASE
-    // heading, so this reads as the firebird presenting itself); cursor steering overrides it.
-    g.rotation.y += presentSway * SUMMIT_INTERACT.presentYaw * idlePresent;
-    g.rotation.z += presentSway * SUMMIT_INTERACT.presentBank * idlePresent;
+    // The summit "presentation in the round" is now done by the CAMERA orbiting the bird (see
+    // CameraRig FINALE), so the model itself keeps FLYING along its heading — no turntable here.
+    // Cursor steering (applied above) still flies it within the held front shot.
     // Forward glide attitude so the talons trail rather than hang straight down; eased to 0 by the
     // summit (0.85→1.0) so the locked freeze pose keeps its upright presentation.
     g.rotation.x = GLIDE_PITCH * (1 - smoothstep(clamp01((p - 0.85) / 0.15)));
@@ -255,20 +253,44 @@ export default function PhoenixFlap(props) {
       m.emissive.copy(emitCol);
       m.emissiveIntensity = intensity;
     }
+    // Warm the matte body/head with the same ember->fire tint at a low intensity (NOT on the bloom
+    // layer), so the whole bird reads as fire-lit rather than a grey bird with glowing orange wings.
+    const bodyI = lerp(BODY_EMBER, BODY_FIRE, ramp) * emerge;
+    for (const m of bodyMats) {
+      m.emissive.copy(emitCol);
+      m.emissiveIntensity = bodyI;
+    }
 
-    // Wingbeat quickens as it ignites and flares with scroll speed; calmed (not frozen) under
-    // reduced motion, where the autonomous bob is also dropped so only the scroll flight remains.
+    // Wingbeat quickens as it ignites and flares with scroll speed, then FREEZES at the end of the
+    // scroll (Kt): the wings ease to a stop and the firebird holds its glowing front-on pose as the
+    // camera lands head-on. At rest it stays frozen; moving the cursor WAKES the wings (fly-by-
+    // command), so the held hero stirs to life when you interact. Scroll-anchored freeze → honours
+    // reduced motion (where `live` is 0, so there's no wake — it simply freezes).
     if (flapAction.current) {
+      const a = flapAction.current;
       const base = reducedMotion
         ? FLAP_SLOW
         : lerp(FLAP_SLOW, FLAP_FAST, ramp) + SCROLL_FLAIR.flapBoost * flair.current;
-      // At the summit the wings DON'T freeze any more (Kt): the firebird keeps cruising at `base`
-      // so it reads as flying front-on in the sky through the held closing tail. Moving the cursor
-      // (wake) or resting it (idleFlap) still ADD to the beat — it just never drops to a frozen pose.
+      const freeze = smoothstep(clamp01((p - FREEZE_FROM) / (1 - FREEZE_FROM)));
       const wake =
         SUMMIT_INTERACT.flapWake * summit * live * Math.min(1, Math.hypot(px.current, py.current));
-      const idleFlap = SUMMIT_INTERACT.presentFlap * idlePresent; // gentle extra beat while presenting
-      flapAction.current.timeScale = base + wake + idleFlap;
+      // Hold the CHOSEN wings-up hero pose at rest; play the beat again the moment you steer (wake).
+      if (freeze > 0.5 && wake < 0.02) {
+        a.paused = true;
+        const dur = a.getClip().duration;
+        if (reducedMotion) {
+          a.time = FREEZE_POSE_TIME; // snap (reduced motion has no animation anyway)
+        } else {
+          // ease the clip the SHORT way around the loop to the wings-up frame, then hold
+          let d = FREEZE_POSE_TIME - a.time;
+          if (d > dur / 2) d -= dur;
+          else if (d < -dur / 2) d += dur;
+          a.time = (a.time + d * (1 - Math.exp(-6 * dt)) + dur) % dur;
+        }
+      } else {
+        a.paused = false;
+        a.timeScale = base * (1 - freeze) + wake;
+      }
     }
     if (!reducedMotion) {
       const t = state.clock.elapsedTime;

@@ -62,9 +62,11 @@ export const FORESHADOW = {
 export const FLIGHT = [
   { at: 0.5, pos: [-1.46, 0.33, -10.25] }, // spark — ignites into the upper-right of frame
   { at: 0.57, pos: [-4.8, 1.1, -6.6] }, // sweeps in, upper-right — a visible firebird arriving
-  { at: 0.66, pos: [-7.6, 1.7, -2.2] }, // arcs across the upper frame, behind him
-  { at: 0.77, pos: [-8.6, 2.6, 1.4] }, // the wide point of the arc — farthest out, still climbing
-  { at: 0.86, pos: [-7.6, 4.0, 2.8] }, // banks back toward him, rising
+  { at: 0.66, pos: [-7.6, 1.2, -2.2] }, // arcs across frame — kept LOW so it stays in shot (was 1.7;
+  // the steep climb is saved for the summit ascent so the firebird isn't cropped off the top here)
+  { at: 0.77, pos: [-8.6, 1.5, 1.4] }, // the wide point of the arc — farthest out, held low for clean
+  // headroom (was 1.9); the dramatic vertical climb is concentrated 0.77→1.0 into the summit ascent
+  { at: 0.86, pos: [-7.6, 3.2, 2.8] }, // banks back toward him; the ascent steepens from here
   { at: 0.93, pos: [-5.4, 5.8, 3.0] }, // up and over toward the Wanderer
   { at: 1.0, pos: [-3.2, 7.8, 2.6] }, // SUMMIT: flies up and OVER him, climbing high (Kt)
 ];
@@ -100,6 +102,13 @@ export const FIRE_INTENSITY = 2.8;
 export const EMBER_COLOR = '#ff5a1e'; // deep ember orange at the spark
 export const FIRE_COLOR = '#ffb24a'; // bright gold-orange fire at the summit
 
+// The body/head material is matte (no baked emission), so it lit up as a cold grey bird beside the
+// glowing feathers — "a grey bird with orange wings", not a firebird. Give it a SUBTLE warm self-
+// illumination (the same ember->fire tint, low intensity, and NOT on the bloom layer, so it warms
+// the body without blooming/washing it). Ramped by the same ember->fire ramp as the feathers.
+export const BODY_EMBER = 0.22; // warm self-illumination at the spark
+export const BODY_FIRE = 0.6; // ...growing as it ignites to fire at the summit
+
 // A gentle forward glide pitch (radians) so the bird reads as soaring rather than hanging with its
 // talons dangling straight down. Eased to 0 by the summit so the locked freeze pose is untouched.
 export const GLIDE_PITCH = 0.22;
@@ -107,6 +116,16 @@ export const GLIDE_PITCH = 0.22;
 // Flap speed (AnimationAction.timeScale): a slow ember wingbeat that quickens as it ignites.
 export const FLAP_SLOW = 0.6;
 export const FLAP_FAST = 1.6;
+
+// Wing freeze — at the very end of the scroll the wingbeat eases to a STOP (Kt: "the phoenix stops
+// flapping at the end of the scroll"), holding its glowing front-on pose as the camera lands head-on.
+// At rest the wings stay still; moving the cursor WAKES them again (fly-by-command), so rest = a
+// frozen hero and touch = it flies. Scroll-anchored, so it honours reduced motion.
+export const FREEZE_FROM = 0.96; // wings start slowing here; fully frozen by 1.0
+// The FRAME to freeze on (seconds into the ~0.708 s flap clip): the wings-UP apex, where all four
+// wings are spread up and the talons + beak read head-on — the held hero pose. As the beat stops the
+// clip eases to this frame and holds; moving the cursor plays the beat again.
+export const FREEZE_POSE_TIME = 0.2;
 
 // Scale: the GLB is ~0.98 m at its largest dim (Wanderer is ~0.98 m tall), so these multipliers
 // set the real-world size of the bird. ~3.0 at the fire peak = a ~3 m firebird (3x the Wanderer);
@@ -181,9 +200,9 @@ export const FINALE_REVEAL = {
   full: 1.0, // fully bloomed at the very end of the scroll
   // central white-gold flare
   flareColor: '#fff3da',
-  flareSize: 6.5, // metres at full bloom (phoenix ~6 m, ~11 m out → a radiant halo, not a wash)
-  flarePeak: 0.95, // opacity-glow at the crest of the bloom
-  flareHold: 0.6, // ...then it eases (time-based) to this steady glow at the held final frame
+  flareSize: 4.0, // metres at full bloom — a halo BEHIND the bird, not a disc washing over it
+  flarePeak: 0.5, // opacity-glow at the crest of the bloom (was 0.95 — it blew the bird to white)
+  flareHold: 0.26, // ...then it eases (time-based) to this steady glow at the held final frame
   breath: 0.05, // gentle autonomous glow breath at the hold (dropped under reduced motion)
   // ember burst
   emberCount: 30,
@@ -208,13 +227,13 @@ export const SUMMIT_INTERACT = {
   bank: 0.4, // extra roll into the turn
   emberBoost: 2.0, // moving the mouse fans the fire brighter at the summit
   flapWake: 1.1, // pointer movement stirs the frozen wings back to a slow beat
-  // Idle "presentation" — when the cursor rests (not steering) at the summit, the firebird slowly
-  // turns to show its profile + wingspan and keeps a gentle beat, then eases back; your cursor
-  // instantly takes over. Shows off the 3D model at rest. Reduced-motion gated.
-  presentYaw: 0.5, // slow yaw-sway amplitude (rad ≈ 28°) so it turns to present its profile
-  presentBank: 0.18, // gentle roll with the sway
-  presentSpeed: 0.45, // sway speed (slow) — a full left↔right cycle every ~14 s
-  presentFlap: 0.45, // gentle wing-beat while idle so the wings stay alive
+  // Idle "presentation" — the MODEL no longer self-rotates: the CAMERA orbits the flying firebird in
+  // the finale (see CameraRig + data/camera.js FINALE) to present it in the round. Only the idle
+  // wing-beat below still keys off idlePresent, so the bird stays alive at the held front view.
+  presentFlap: 0.45, // gentle wing-beat while the cursor rests so the wings stay alive
+  presentSpeed: 0.45, // (unused — the camera does the rotating now)
+  presentBank: 0.18, // (unused)
+  presentYaw: 0.5, // (unused)
   // Held sky tail — at the close the firebird no longer freezes; it keeps beating and gently drifts
   // so it reads as FLYING front-on in the sky. The finale camera re-centres on the bird every frame,
   // so this drift parallaxes the sky/sun behind it rather than carrying it off-frame.

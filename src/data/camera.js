@@ -34,15 +34,23 @@ export const POINTER_PARALLAX = { x: 0.18, y: 0.12, ease: 3.0 };
 // onto the live phoenix position (`lookLerp`), pitching up to track the bird climbing. The phoenix
 // stays upper-LEFT while the sun sits upper-RIGHT, so following it tilts AWAY from the sun — no
 // wash. Scroll-driven, so it honours reduced motion (no autonomous move, just the scroll story).
+// Finale — the camera ORBITS the still-flying firebird a full 360° and lands HEAD-ON at the end of
+// the scroll (Kt's design: "it should still look like flight, the camera does the rotating"). The
+// bird keeps flying/flapping along its climb; the camera circles it on a ring of radius `orbitDist`
+// at height `orbitHeight`, the orbit angle driven by scrollProgress from `from`→1.0 (one full loop
+// that starts and ends on the bird's FRONT). Scroll-driven, so it honours reduced motion. The held
+// front view at the end of the scroll is the interactive closing hero (links lit, fly-by-cursor).
 export const FINALE = {
-  from: 0.84, // begin the finale — phase A: TRACK the rising firebird (watch it fly up/away)
-  trackIn: 0.08, // scroll span to engage the tracking shot
-  follow: 8, // camera-settle speed during the finale (vs base 3) — keeps up with the climb
-  trackOffset: [16, -3, -9], // PHASE A offset: behind/below, framing the whole bird as it rises away
-  // PHASE B (Kt): from `sprintFrom`→1.0 the camera SPRINTS in to a head-on FRONT view — close, on
-  // the bird's facing side, looking at its face — then holds there as the interactive closing hero.
-  sprintFrom: 0.92, // where phase B (the sprint to the front view) begins
-  frontDist: 13, // how far IN FRONT of the bird's face the camera ends (smaller = closer/more
-  // filling). Built each frame from the bird's facing, so it's a true head-on view.
-  frontHeight: 3.2, // lifted so the full phoenix body clears the bottom of frame at the finale
+  from: 0.84, // the orbit engages here
+  trackIn: 0.08, // scroll span to blend the orbit rig in from the exploration shot
+  follow: 8, // camera-settle speed during the finale (vs base 3) — keeps up with the climbing bird
+  orbitTo: 0.97, // the 360° loop COMPLETES here, then holds the front view to 1.0 so the camera
+  // settles to a clean head-on landing (the "stops at front view") before the held interactive tail
+  orbitDist: 13, // camera distance from the bird while orbiting (smaller = closer/more filling)
+  orbitHeight: 3.2, // camera height above the bird's centre so the full body clears the frame
+  // The model's head/beak is posed turned relative to its body, so landing the camera on the body's
+  // facing shows the beak in PROFILE. Rotate the camera's front direction by this (radians) so it
+  // lands in front of the BEAK — the viewer sees the full beak head-on at the freeze. Tuned live
+  // (swept 0→1.7; 1.3 lands symmetric and head-on, wings even, the face toward the viewer).
+  frontOffset: 1.3,
 };

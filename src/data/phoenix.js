@@ -128,11 +128,13 @@ export const FREEZE_FROM = 0.96; // wings start slowing here; fully frozen by 1.
 export const FREEZE_POSE_TIME = 0.2;
 
 // Scale: the GLB is ~0.98 m at its largest dim (Wanderer is ~0.98 m tall), so these multipliers
-// set the real-world size of the bird. ~3.0 at the fire peak = a ~3 m firebird (3x the Wanderer);
-// it stays distant (far -X in FLIGHT) so on screen it reads as a large bird far away, not a giant
-// looming over him. Grows from a smaller, fainter ember as it ascends.
-export const SCALE_MIN = 2.6;
-export const SCALE_MAX = 6.5;
+// set the real-world size of the bird. Ratified 2026-07-01 (hybrid): through the JOURNEY the bird
+// holds the motif plan's restrained accent — ~1.5 m ember growing to a ~3 m firebird (3x the
+// Wanderer), distant (far -X in FLIGHT) so it reads as a large bird far away, never competing with
+// the hero. The closing-hero size lives in SUMMIT_INTERACT.scaleBoost, which swells it across the
+// finale (0.9→1.0) to the approved ~7 m interactive firebird (Kt: "a lot bigger" at the end).
+export const SCALE_MIN = 1.5;
+export const SCALE_MAX = 3.0;
 
 // Yaw applied so the bird banks along the path tangent. HEADING_OFFSET corrects for the
 // model's neutral facing in its own space (0 = its forward already matches +scroll travel);
@@ -220,8 +222,9 @@ export const FINALE_REVEAL = {
 // finale (the calm gate is gone from PhoenixFlap + CameraRig). Gated by reduced motion. Live-tunable.
 export const SUMMIT_INTERACT = {
   from: 0.9, // where the summit hold begins and interactivity wakes up
-  scaleBoost: 0.1, // a touch bigger at the summit (kept modest — it now flies in CLOSE/overhead, so
-  // it already reads large; the camera pull-back frames the whole bird centred with headroom)
+  scaleBoost: 1.4, // the summit SWELL — carries the ~3 m journey accent (SCALE_MAX) to the ratified
+  // ~7 m closing hero across 0.9→1.0 (3.0 × 2.4 ≈ 7.2 m, matching the previously approved finale
+  // size, 6.5 × 1.1). The spark-becomes-fire growth lands the orbit on the same held hero framing.
   drift: [3.4, 2.2], // EXTRA world-metre pointer follow at the summit (added to POINTER.drift)
   yaw: 0.55, // extra yaw toward the cursor — it turns to track you
   bank: 0.4, // extra roll into the turn

@@ -1,7 +1,7 @@
 import { contact, closingPrinciple } from '../data/copy.js';
 import RevealText from './RevealText.jsx';
 
-// Phase 06 — Contact & Closing, the summit/phoenix-fire beat. The closing principle reveals
+// The Summit (contact & closing), the phoenix-fire beat. The closing principle reveals
 // word by word as the firebird blazes — a weightier (intensity) reveal that lands warm→ink,
 // tying the copy to the fire. Drives its own reveal, so the inner opts out of the block
 // reveal-and-stay; the links stay solid and reachable.

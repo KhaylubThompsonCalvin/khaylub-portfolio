@@ -1,6 +1,10 @@
 :root {
   --bg: #e9e1d6;
   --ink: #241c12;
+  /* The daylight ink value. --ink itself is animated night↔day from scroll (App.jsx), so copy
+     that sits mid-flip (the spark beat, ~0.5) would pass through low-contrast grey — those spots
+     pin to this instead, matching the ink RevealText's warm mode lands on. */
+  --ink-day: #241c12;
   --muted: #5b513f;
   --accent: #caa46f;
   --fire: 0; /* 0→1 across the summit; lights the closing contact links with the phoenix's fire */
@@ -73,6 +77,7 @@ a {
 #arrival .inner,
 #philosophy .inner,
 #focus .inner,
+#spark .inner,
 #contact .inner {
   position: relative;
   isolation: isolate;
@@ -80,6 +85,7 @@ a {
 #arrival .inner::before,
 #philosophy .inner::before,
 #focus .inner::before,
+#spark .inner::before,
 #contact .inner::before {
   content: '';
   position: absolute;
@@ -133,8 +139,8 @@ a {
   text-shadow: 0 1px 12px rgba(var(--scrim), 0.6);
 }
 
-/* Section heights (viewport-heights). The story sections keep their original spans
-   (84+126+126+280 = 616vh); #contact is now a tall 240vh "sky tail" the held front-on firebird
+/* Section heights (viewport-heights). The story sections sum to their original 616vh
+   (84+126+126+70+210); #contact is a tall 240vh "sky tail" the held front-on firebird
    flies behind (total = SCROLL_VH = 856). scrollProgress is the STORY coordinate (raw ÷ STORY_FRAC,
    clamped to 1 — see stages.js + useScrollSetup), so it still lines up with STAGES across the story;
    the part of #contact past the clamp is held sky. Keep the story heights in sync with STAGES. */
@@ -147,8 +153,21 @@ a {
 #focus {
   min-height: 126vh; /* 0.18 × 700 */
 }
+#spark {
+  min-height: 70vh; /* 0.10 × 700 — the ignition beat: short, one line, then the camps */
+}
+/* The spark line is short; without this the 60ch inner stretches its scrim backplate across the
+   Wanderer at the face-reveal shot. fit-content hugs the plate to the words. The beat also sits
+   mid palette-flip (~0.5) where the animated --ink/--muted are greyest, so the kicker pins to the
+   day ink — the same value the line's warm reveal lands on. */
+#spark .inner {
+  width: fit-content;
+}
+#spark .kicker {
+  color: var(--ink-day);
+}
 #work {
-  min-height: 280vh; /* 0.40 × 700 (discovery + exploration) */
+  min-height: 210vh; /* 0.30 × 700 (the camps — was 280vh across the two old project beats) */
 }
 #contact {
   /* The closing "sky tail": a tall section the held, front-on, still-flying firebird flies behind.
@@ -170,9 +189,9 @@ a {
 .overlay[data-reached='0'] :is(#arrival) .inner,
 .overlay[data-reached='1'] :is(#arrival, #philosophy) .inner,
 .overlay[data-reached='2'] :is(#arrival, #philosophy, #focus) .inner,
-.overlay[data-reached='3'] :is(#arrival, #philosophy, #focus, #work) .inner,
-.overlay[data-reached='4'] :is(#arrival, #philosophy, #focus, #work) .inner,
-.overlay[data-reached='5'] :is(#arrival, #philosophy, #focus, #work, #contact) .inner {
+.overlay[data-reached='3'] :is(#arrival, #philosophy, #focus, #spark) .inner,
+.overlay[data-reached='4'] :is(#arrival, #philosophy, #focus, #spark, #work) .inner,
+.overlay[data-reached='5'] :is(#arrival, #philosophy, #focus, #spark, #work, #contact) .inner {
   opacity: 1;
   visibility: visible;
   transform: none;
@@ -205,6 +224,10 @@ a {
   font-family: var(--font-display);
   font-size: clamp(1.6rem, 4vw, 2.6rem);
   line-height: 1.15;
+}
+/* Connector lead on Footholds — the trail-marker line scaled down so the pills stay the beat's focus */
+.lead--connector {
+  font-size: clamp(1.25rem, 2.6vw, 1.9rem);
 }
 
 /* Cinematic per-word reveal (RevealText). The word is inline-block so it can blur/lift; the

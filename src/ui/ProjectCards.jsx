@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { projects } from '../data/projects.js';
+import { camps } from '../data/copy.js';
 import { useExperience } from '../store/useExperience.js';
 import ProjectDetail from './ProjectDetail.jsx';
 
-// Phases 04–05 — the work, as five concept "worlds". Each card is a real button that opens its
+// The Camps beat — the work, as five concept "worlds". Each card is a real button that opens its
 // case study, which grows OUT of the card (FLIP pull-out in ProjectDetail). The concept FILM plays
 // as the card background (in view only; poster under prefers-reduced-motion). On a fine pointer the
 // card tilts toward the cursor with the film drifting in parallax — premium depth, no library
@@ -123,11 +124,8 @@ export default function ProjectCards() {
   return (
     <section className="section" id="work">
       <div className="inner">
-        <p className="kicker">Selected work</p>
-        <p className="work-lede">
-          Five ideas, one belief — that potential grows through exploration, guidance, learning,
-          craftsmanship, and perseverance. Step into any world.
-        </p>
+        <p className="kicker">{camps.kicker}</p>
+        <p className="work-lede">{camps.lede}</p>
         <div className="cards cards--film">
           {projects.map((p) => (
             <ProjectCard

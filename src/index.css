@@ -79,6 +79,7 @@ a {
 #philosophy .inner,
 #focus .inner,
 #spark .inner,
+#work .work-intro,
 #contact .inner {
   position: relative;
   isolation: isolate;
@@ -87,6 +88,7 @@ a {
 #philosophy .inner::before,
 #focus .inner::before,
 #spark .inner::before,
+#work .work-intro::before,
 #contact .inner::before {
   content: '';
   position: absolute;
@@ -141,8 +143,8 @@ a {
 }
 
 /* Section heights (viewport-heights). The story sections sum to their original 616vh
-   (84+126+126+70+210); #contact is a tall 240vh "sky tail" the held front-on firebird
-   flies behind (total = SCROLL_VH = 856). scrollProgress is the STORY coordinate (raw ÷ STORY_FRAC,
+   (84+126+126+70+210); #contact is a 184vh "sky tail" the held front-on firebird
+   flies behind (total = SCROLL_VH = 800). scrollProgress is the STORY coordinate (raw ÷ STORY_FRAC,
    clamped to 1 — see stages.js + useScrollSetup), so it still lines up with STAGES across the story;
    the part of #contact past the clamp is held sky. Keep the story heights in sync with STAGES. */
 #arrival {
@@ -182,11 +184,11 @@ a {
   min-height: 210vh; /* 0.30 × 700 (the camps — was 280vh across the two old project beats) */
 }
 #contact {
-  /* The closing "sky tail": a tall section the held, front-on, still-flying firebird flies behind.
-     scrollProgress saturates to 1 as this section reaches the top of the viewport (see STORY_FRAC),
-     so the rest is held sky. The inner is pinned (below) so the closing copy + footer stay in view
-     over it as you scroll the tail down. */
-  min-height: 240vh;
+  /* The closing "sky tail": the held, front-on, still-flying firebird flies behind this section.
+     scrollProgress saturates to 1 as the story completes (see STORY_FRAC), leaving ~1 viewport of
+     held sky — enough for the front view to land and settle, none of the old dead scroll past the
+     links. The inner is pinned (below) so the closing copy stays in view over the held sky. */
+  min-height: 184vh;
   justify-content: flex-start;
 }
 /* Pin the closing copy + footer as the held sky tail scrolls under them, so the front-on,
@@ -379,6 +381,13 @@ a {
   font-size: clamp(1rem, 1.7vw, 1.15rem);
   color: var(--muted);
 }
+/* On narrow viewports the Wanderer can walk behind the camps intro — same no-box halo as the
+   closing copy so the dark text stays separated from his dark jacket (no plate: the card stack
+   below shares this inner, and a plate would wash it). */
+#work .kicker,
+#work .work-lede {
+  text-shadow: 0 1px 12px rgba(var(--scrim), 0.7);
+}
 .cards--film {
   display: grid;
   /* min(300px, 100%) caps the track to the container so it never overflows below ~320px */
@@ -467,12 +476,6 @@ a {
   gap: 0.4rem;
   padding: 1.3rem;
   color: #f3ece0;
-}
-.card-theme {
-  font-size: 0.68rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--accent);
 }
 .card-title {
   font-family: var(--font-display);
@@ -655,13 +658,6 @@ a {
   font-size: clamp(1.6rem, 4vw, 2.1rem);
   line-height: 1.1;
   margin-top: 0.5rem;
-}
-.pd-eyebrow {
-  font-size: 0.7rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-top: 0.4rem;
 }
 .pd-summary {
   margin-top: 1rem;

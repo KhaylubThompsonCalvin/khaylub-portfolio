@@ -7,13 +7,13 @@ export const identity = {
   name: 'Khaylub Thompson-Calvin',
   role: 'Computer Information Systems Student · Builder · Lifelong Learner',
   statement:
-    'I build digital experiences for the web — interactive 3D where technology meets story. A former Division-I athlete, now climbing in a new field. This site documents the climb, not the arrival.',
+    'I build for the web — interactive 3D and tools with a story behind them. I played Division-I football; now I’m climbing in a new field. This site documents the climb, not the arrival.',
 };
 
 // The First Ember — the method, and the first foreshadow of the phoenix in words.
 export const philosophy = {
   lead: 'The best systems are built one layer at a time.',
-  body: 'Growth follows its own timeline. Feeling behind is not the same as failing — and somewhere in the work, a spark catches.',
+  body: 'Growth follows its own timeline. Feeling behind is not the same as failing. And somewhere in the work, a spark catches.',
 };
 
 // Footholds — the skills reframed as trail markers, not a résumé list.
@@ -42,7 +42,7 @@ export const spark = {
 // The Camps — the five worlds as places built along the climb.
 export const camps = {
   kicker: 'The camps',
-  lede: 'Five ideas, one belief — that potential grows through exploration, guidance, learning, craftsmanship, and perseverance. Each a camp on the trail — a world built along the way. Step into any world.',
+  lede: 'Five projects — each a camp on the trail, a world I built along the way.',
 };
 
 // Closing principle (the summit payoff — canonical line from the quote bank)

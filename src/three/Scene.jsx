@@ -24,6 +24,11 @@ export default function Scene() {
       camera={{ position: [0, 1.8, -3], fov: 38 }}
       dpr={[1, 2]}
       gl={{ antialias: true }}
+      onCreated={(state) => {
+        // DEV probe (same pattern as __cam/__seek): renderer.info for draw-call/triangle
+        // audits from the console or Playwright.
+        if (import.meta.env.DEV) window.__gl = state.gl;
+      }}
     >
       <color attach="background" args={['#e9e1d6']} />
       <fog attach="fog" args={['#e9e1d6', 7, 26]} />

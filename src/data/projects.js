@@ -11,9 +11,7 @@ export const projects = [
   {
     id: 'khaylub',
     name: 'Khaylub.com',
-    theme: ['Journey', 'Growth', 'Perseverance'],
-    concept:
-      'A public record of the climb from beginner to professional — growth as an ongoing journey, not a destination.',
+    concept: 'This site — an ongoing record of the climb from beginner to professional.',
     status: 'Live · this site',
     href: 'https://khaylub.com',
     film: '/assets/video/concept-khaylub.mp4',
@@ -36,9 +34,8 @@ export const projects = [
   {
     id: 'eyesunclouded',
     name: 'EyesUnclouded.ai',
-    theme: ['Exploration', 'Perception', 'Discernment'],
     concept:
-      'Interactive worlds that teach discernment — reading people through body language and observation, experiencing ideas instead of reading them.',
+      'Interactive scenes that train you to read people — body language, microexpressions, observation.',
     status: 'Concept',
     href: null,
     film: '/assets/video/concept-eyesunclouded.mp4',
@@ -58,9 +55,8 @@ export const projects = [
   {
     id: 'cloelia',
     name: 'Cloelia.ai',
-    theme: ['Guidance', 'Trust', 'Clarity'],
     concept:
-      'An AI guidance service — a team of intelligent specialists who help you cross uncertain territory and leave knowing where to go.',
+      'An AI guidance service — specialist advisors that help you think through a hard decision.',
     status: 'Concept',
     href: null,
     film: '/assets/video/concept-cloelia.mp4',
@@ -80,9 +76,8 @@ export const projects = [
   {
     id: 'futuregenius',
     name: 'FutureGenius.ai',
-    theme: ['Learning', 'Progression', 'Mastery'],
     concept:
-      'An AI-guided learning companion that maps where you are to where you want to go, then unlocks the path — milestones, certifications, and projects tied to real outcomes.',
+      'An AI learning companion that turns a goal into a path — milestones, certifications, and projects tied to real outcomes.',
     status: 'Concept',
     href: null,
     film: '/assets/video/concept-futuregenius.mp4',
@@ -102,9 +97,8 @@ export const projects = [
   {
     id: 'manors',
     name: 'Manors.ai',
-    theme: ['Craftsmanship', 'Trust', 'Coordination'],
     concept:
-      'Helping real people do real work — connecting homeowners with skilled tradespeople, with the technology kept quietly in the background.',
+      'Connects homeowners with skilled tradespeople — the tech stays out of the way.',
     status: 'Concept',
     href: null,
     film: '/assets/video/concept-manors.mp4',

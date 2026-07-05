@@ -89,7 +89,6 @@ function ProjectCard({ project, onOpen, reducedMotion, playFilms }) {
         />
         <span className="card-scrim" aria-hidden="true" />
         <span className="card-content">
-          <span className="card-theme">{project.theme.join(' · ')}</span>
           <span className="card-title">{project.name}</span>
           <span className="card-concept">{project.concept}</span>
           <span className={`status status--${state}`}>
@@ -124,8 +123,12 @@ export default function ProjectCards() {
   return (
     <section className="section" id="work">
       <div className="inner">
-        <p className="kicker">{camps.kicker}</p>
-        <p className="work-lede">{camps.lede}</p>
+        {/* Wrapped so the intro can carry the beats' scrim backplate without washing the cards —
+            on narrow viewports the Wanderer walks behind this text. */}
+        <div className="work-intro">
+          <p className="kicker">{camps.kicker}</p>
+          <p className="work-lede">{camps.lede}</p>
+        </div>
         <div className="cards cards--film">
           {projects.map((p) => (
             <ProjectCard

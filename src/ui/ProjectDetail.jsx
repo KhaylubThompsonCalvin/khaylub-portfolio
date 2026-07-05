@@ -143,7 +143,6 @@ export default function ProjectDetail({ project, originRect, reducedMotion, onCl
           <h2 className="pd-title" id={titleId}>
             {project.name}
           </h2>
-          <div className="pd-eyebrow">{project.theme.join(' · ')}</div>
           <p className="pd-summary">{d.summary || project.concept}</p>
 
           {d.highlights?.length > 0 && (

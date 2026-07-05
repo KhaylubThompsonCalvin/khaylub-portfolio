@@ -19,6 +19,8 @@ export default function App() {
   const setPointer = useExperience((s) => s.setPointer);
   // discrete (~6 changes total), never per-frame — safe to subscribe; drives reveal-and-stay
   const reachedStageIndex = useExperience((s) => s.reachedStageIndex);
+  // discrete one-shot flag — gates the dawn-grass plate (below) so it doesn't double-fetch
+  const started = useExperience((s) => s.started);
 
   const overlayRef = useRef(null);
 
@@ -134,14 +136,20 @@ export default function App() {
       />
 
       {/* video atmosphere plates: dawn grass over the open early beats; embers glowing through
-          the phoenix → summit window (screen blend drops the black, so only sparks show). */}
-      <VideoAtmosphere
-        src="/assets/video/dawn-grass.mp4"
-        blend="soft-light"
-        max={0.45}
-        fadeIn={[0, 0.06]}
-        fadeOut={[0.3, 0.45]}
-      />
+          the phoenix → summit window (screen blend drops the black, so only sparks show).
+          The dawn-grass plate mounts only after the gate: LoadGate plays the SAME file as its
+          backdrop, and two live <video> elements at load downloaded the full 4.6 MB twice in
+          parallel. The plate is invisible until scrolling anyway (its fadeIn ramps from 0), so
+          mounting it post-gate is a pure loading fix — the request then hits the HTTP cache. */}
+      {started && (
+        <VideoAtmosphere
+          src="/assets/video/dawn-grass.mp4"
+          blend="soft-light"
+          max={0.45}
+          fadeIn={[0, 0.06]}
+          fadeOut={[0.3, 0.45]}
+        />
+      )}
       <VideoAtmosphere
         src="/assets/video/embers.mp4"
         blend="screen"

@@ -9,6 +9,7 @@
   --accent: #caa46f;
   --fire: 0; /* 0→1 across the summit; lights the closing contact links with the phoenix's fire */
   --scrim: 236, 232, 224; /* current sky tone behind the copy; driven by scroll in App.jsx */
+  --scrim-day: 236, 232, 224; /* the daylight scrim value, fixed — pairs with --ink-day (above) */
   --font-display: Georgia, 'Times New Roman', serif;
   --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
@@ -165,6 +166,17 @@ a {
 }
 #spark .kicker {
   color: var(--ink-day);
+}
+/* ...and the plate pins to the day scrim for the same reason: the animated --scrim is a mid grey
+   at ~0.5, which composites with the dark Wanderer behind the plate to below AA under the pinned
+   day ink. The fixed cream reads as part of the sunrise band. */
+#spark .inner::before {
+  background: linear-gradient(
+    105deg,
+    rgba(var(--scrim-day), 0.82) 0%,
+    rgba(var(--scrim-day), 0.7) 55%,
+    rgba(var(--scrim-day), 0.52) 100%
+  );
 }
 #work {
   min-height: 210vh; /* 0.30 × 700 (the camps — was 280vh across the two old project beats) */

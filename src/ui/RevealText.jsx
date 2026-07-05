@@ -34,7 +34,10 @@ export default function RevealText({
         el.style.opacity = '1';
         el.style.filter = 'none';
         el.style.transform = 'none';
-        el.style.color = '';
+        // warm copy lands on its final ink (matching the scroll path's landed state) instead of
+        // inheriting the animated --ink, which mid palette-flip (the spark beat, ~0.5) passes
+        // through a grey too close to the scrim to read.
+        el.style.color = warm ? 'rgb(36, 28, 18)' : '';
       });
       return;
     }

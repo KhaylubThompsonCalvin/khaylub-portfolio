@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { projects } from '../data/projects.js';
+import { camps } from '../data/copy.js';
 import { useExperience } from '../store/useExperience.js';
 import ProjectDetail from './ProjectDetail.jsx';
 
-// Phases 04–05 — the work, as five concept "worlds". Each card is a real button that opens its
+// The Camps beat — the work, as five concept "worlds". Each card is a real button that opens its
 // case study, which grows OUT of the card (FLIP pull-out in ProjectDetail). The concept FILM plays
 // as the card background (in view only; poster under prefers-reduced-motion). On a fine pointer the
 // card tilts toward the cursor with the film drifting in parallax — premium depth, no library
@@ -88,7 +89,6 @@ function ProjectCard({ project, onOpen, reducedMotion, playFilms }) {
         />
         <span className="card-scrim" aria-hidden="true" />
         <span className="card-content">
-          <span className="card-theme">{project.theme.join(' · ')}</span>
           <span className="card-title">{project.name}</span>
           <span className="card-concept">{project.concept}</span>
           <span className={`status status--${state}`}>
@@ -123,11 +123,12 @@ export default function ProjectCards() {
   return (
     <section className="section" id="work">
       <div className="inner">
-        <p className="kicker">Selected work</p>
-        <p className="work-lede">
-          Five ideas, one belief — that potential grows through exploration, guidance, learning,
-          craftsmanship, and perseverance. Step into any world.
-        </p>
+        {/* Wrapped so the intro can carry the beats' scrim backplate without washing the cards —
+            on narrow viewports the Wanderer walks behind this text. */}
+        <div className="work-intro">
+          <p className="kicker">{camps.kicker}</p>
+          <p className="work-lede">{camps.lede}</p>
+        </div>
         <div className="cards cards--film">
           {projects.map((p) => (
             <ProjectCard

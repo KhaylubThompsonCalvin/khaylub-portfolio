@@ -1,6 +1,7 @@
 import { identity } from '../data/copy.js';
 
-// Phase 01 — Arrival. Identity stated immediately (recruiter clarity).
+// The Trailhead (arrival). Identity stated immediately (recruiter clarity); the statement
+// plants the athlete→tech stakes and the call — the climb the rest of the scroll pays off.
 export default function Hero() {
   return (
     <section className="section" id="arrival">

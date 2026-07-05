@@ -1,8 +1,9 @@
-import { philosophy, areasOfFocus } from '../data/copy.js';
+import { philosophy, footholds, areasOfFocus, spark } from '../data/copy.js';
 import RevealText from './RevealText.jsx';
 
-// Phase 02 — Philosophy + Phase 03 — Areas of Focus (DOM text beats).
-// Kept together for now; split into separate files if they grow.
+// The First Ember (philosophy) + Footholds (focus) + The Spark Wakes (spark) — the DOM
+// text beats between the hero and the camps. Kept together for now; split into separate
+// files if they grow.
 export function Philosophy() {
   // The philosophy statement is the cinematic intro beat: its lines write themselves in word by
   // word as you scroll through, then the phoenix ember rises behind it. Drives its own reveal,
@@ -34,12 +35,29 @@ export function AreasOfFocus() {
   return (
     <section className="section" id="focus">
       <div className="inner">
-        <p className="kicker">Areas of focus</p>
+        <p className="kicker">{footholds.kicker}</p>
+        <p className="lead lead--connector">{footholds.lede}</p>
         <ul className="focus-list">
           {areasOfFocus.map((a) => (
             <li key={a}>{a}</li>
           ))}
         </ul>
+      </div>
+    </section>
+  );
+}
+
+// The Spark Wakes — the phoenix's acknowledgment beat. One short line, alone and centred,
+// timed to the ignition at scrollProgress 0.5 (stage 0.48–0.58): the firebird ignites into
+// the upper frame while the Letter-to-Time question writes itself in below. The reveal
+// finishes by local 0.4 (≈ global 0.52) so the words hold, legible, through the ignition
+// and the fly-over before the section lifts away.
+export function Spark() {
+  return (
+    <section className="section" id="spark">
+      <div className="inner inner--reveal">
+        <p className="kicker">{spark.kicker}</p>
+        <RevealText as="p" className="lead" stageId="spark" text={spark.line} from={0} to={0.4} intensity={1.3} warm />
       </div>
     </section>
   );

@@ -2,55 +2,46 @@ import { useRef } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { useExperience } from '../store/useExperience.js';
-import { SHOTS, POINTER_PARALLAX, FINALE } from '../data/camera.js';
+import { samplePath, segmentEase, POINTER_PARALLAX, FINALE } from '../data/camera.js';
 import { PHOENIX } from '../data/phoenix.js';
 
 // System 3 — Camera. Keyframed shots interpolated by scrollProgress, so the camera moves
 // around the in-place Wanderer and the journey reads as composition. scrollProgress
 // (Lenis -> store) is the single scroll authority; this samples it each frame via
 // getState() — no GSAP/ScrollTrigger (see docs/adr/ADR-001-drop-gsap.md).
+// The path math lives in data/camera.js (samplePath) so the audit tooling and the frame
+// loop share it; see the "Motion feel" note there for the 2026-07-05 easing rework.
 
-const FOLLOW = 3.0; // settle smoothing (higher = snappier)
+// Settle smoothing (higher = snappier): 1/FOLLOW is the time constant, so 7 ≈ a 0.14s settle.
+// Was 3.0 (τ ≈ 0.33s) — the camera trailed a scroll flick by a beat, which read as disconnect.
+const FOLLOW = 7.0;
 const smoothstep = (t) => t * t * (3 - 2 * t);
 const clamp01 = (t) => Math.min(1, Math.max(0, t));
 
 const _pos = new THREE.Vector3();
 const _look = new THREE.Vector3();
-const _b = new THREE.Vector3();
 const _olook = new THREE.Vector3();
 const _track = new THREE.Vector3();
 const _fwd = new THREE.Vector3();
 const _off = new THREE.Vector3();
 
-// sample the shot list at scrollProgress p -> writes camera pos + look targets
+// scratch for samplePath — plain arrays, copied into the vectors each frame
+const _sampled = { pos: [0, 0, 0], look: [0, 0, 0] };
 function sample(p, outPos, outLook) {
-  const first = SHOTS[0];
-  const last = SHOTS[SHOTS.length - 1];
-  if (p <= first.at) {
-    outPos.fromArray(first.pos);
-    outLook.fromArray(first.look);
-    return;
-  }
-  if (p >= last.at) {
-    outPos.fromArray(last.pos);
-    outLook.fromArray(last.look);
-    return;
-  }
-
-  let i = 0;
-  while (i < SHOTS.length - 1 && p >= SHOTS[i + 1].at) i++;
-  const a = SHOTS[i];
-  const b = SHOTS[i + 1];
-  const t = smoothstep((p - a.at) / (b.at - a.at));
-
-  outPos.fromArray(a.pos).lerp(_b.fromArray(b.pos), t);
-  outLook.fromArray(a.look).lerp(_b.fromArray(b.look), t);
+  samplePath(p, _sampled);
+  outPos.fromArray(_sampled.pos);
+  outLook.fromArray(_sampled.look);
 }
 
 export default function CameraRig() {
   const { camera } = useThree();
   const reducedMotion = useExperience((s) => s.reducedMotion);
-  const lookRef = useRef(new THREE.Vector3().fromArray(SHOTS[0].look));
+  const lookRef = useRef(
+    (() => {
+      samplePath(0, _sampled);
+      return new THREE.Vector3().fromArray(_sampled.look);
+    })()
+  );
   const ppx = useRef(0); // smoothed pointer for parallax
   const ppy = useRef(0);
 
@@ -96,8 +87,17 @@ export default function CameraRig() {
       // and it flicks off the right edge (~0.875) before the orbit settles. The lookRef smoothing
       // below keeps this fast look-on smooth (no hard snap).
       const eLook = smoothstep(clamp01((p - FINALE.from) / (FINALE.trackIn * 0.4)));
-      // orbit 0→1 completes by FINALE.orbitTo, then holds at 1 (front) so the camera settles head-on
-      const prog = smoothstep(clamp01((p - FINALE.from) / (FINALE.orbitTo - FINALE.from)));
+      // orbit 0→1 completes by FINALE.orbitTo, then holds at 1 (front) so the camera settles
+      // head-on. segmentEase (mild), NOT smoothstep: the audit measured smoothstep compressing
+      // the whole 360° into the middle of the window (peak 85°/0.01p vs the 28° mean) — the
+      // finale whip. The mild ease spreads the spin almost evenly and still lands the same
+      // front view at orbitTo.
+      const prog = segmentEase(
+        clamp01(
+          (p - (FINALE.from + FINALE.spinDelay)) /
+            (FINALE.orbitTo - FINALE.from - FINALE.spinDelay)
+        )
+      );
       const ph = store.phoenixPos;
       _olook.set(ph.x, ph.cy, ph.z); // the flying bird's visual centre (cy), not its pivot
       _fwd.set(ph.fx, 0, ph.fz); // bird's facing; the front view sits on this side

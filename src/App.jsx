@@ -10,7 +10,7 @@ import Nav from './ui/Nav.jsx';
 import AudioManager from './components/AudioManager.jsx';
 import VideoAtmosphere from './ui/VideoAtmosphere.jsx';
 import Hero from './ui/Hero.jsx';
-import { Philosophy, AreasOfFocus } from './ui/Sections.jsx';
+import { Philosophy, AreasOfFocus, Spark } from './ui/Sections.jsx';
 import ProjectCards from './ui/ProjectCards.jsx';
 import Contact from './ui/Contact.jsx';
 
@@ -41,7 +41,7 @@ export default function App() {
     // so the entrance reveal is untouched. A few rect reads per scroll — cheap, no React re-render.
     const NAV_BAND = 130; // px — the fixed nav lives in roughly the top 130px
     const topFade = Array.from(
-      document.querySelectorAll('#arrival .inner, #philosophy .inner, #focus .inner')
+      document.querySelectorAll('#arrival .inner, #philosophy .inner, #focus .inner, #spark .inner')
     );
     const apply = (p) => {
       const day = dayAt(p);
@@ -169,6 +169,7 @@ export default function App() {
         <Hero />
         <Philosophy />
         <AreasOfFocus />
+        <Spark />
         <ProjectCards />
         <Contact />
       </main>

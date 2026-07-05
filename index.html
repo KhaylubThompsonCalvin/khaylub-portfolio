@@ -55,6 +55,27 @@
   </head>
   <body>
     <div id="root"></div>
+    <!-- The stylesheet arrives through the JS bundle, so without JS the page was blank.
+         Inline-styled on purpose: identity + real contact routes, nothing faked. -->
+    <noscript>
+      <main style="max-width: 60ch; margin: 15vh auto 0; padding: 0 8vw; color: #241c12">
+        <h1 style="font-family: Georgia, 'Times New Roman', serif">Khaylub Thompson-Calvin</h1>
+        <p>Computer Information Systems Student · Builder · Lifelong Learner</p>
+        <p>
+          I build for the web — interactive 3D and tools with a story behind them. I played
+          Division-I football; now I’m climbing in a new field. This site documents the climb, not
+          the arrival.
+        </p>
+        <p>The interactive journey needs JavaScript. In the meantime:</p>
+        <p>
+          <a href="https://github.com/KhaylubThompsonCalvin" rel="noreferrer">GitHub</a> ·
+          <a href="https://www.linkedin.com/in/khaylub-thompson-calvin-40543b294/" rel="noreferrer"
+            >LinkedIn</a
+          >
+          · <a href="mailto:khaylubthompsoncalvin@gmail.com">Email</a>
+        </p>
+      </main>
+    </noscript>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

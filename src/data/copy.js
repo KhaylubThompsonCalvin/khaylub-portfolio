@@ -58,7 +58,8 @@ export const contact = {
     { label: 'GitHub', href: 'https://github.com/KhaylubThompsonCalvin' },
     { label: 'LinkedIn', href: 'https://www.linkedin.com/in/khaylub-thompson-calvin-40543b294/' },
     { label: 'Email', href: 'mailto:khaylubthompsoncalvin@gmail.com' },
-    // Resume stays an honest 'soon' until /public/resume.pdf exists; then set href: '/resume.pdf'.
-    { label: 'Resume', href: '#' },
+    // The real one-page PDF (Version P — Portfolio-General; source of truth in the vault's
+    // Resume register). download + _blank per spec: browsers save it directly.
+    { label: 'Resume', href: '/resume/Khaylub-Thompson-Calvin-Resume.pdf', download: true },
   ],
 };

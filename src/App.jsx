@@ -155,6 +155,7 @@ export default function App() {
         blend="screen"
         max={0.7}
         fadeIn={[0.46, 0.58]}
+        deferUntil={0.38}
       />
       {/* Summit clouds: scrubbed by scroll across the final approach and FROZEN on its last frame
           at the summit hold — a still, frame-matched sky behind the Wanderer's arrival, not looping
@@ -165,6 +166,7 @@ export default function App() {
         max={0.4}
         fadeIn={[0.82, 0.92]}
         scrub={[0.82, 0.97]}
+        deferUntil={0.74}
       />
 
       {/* scrollable DOM overlay column — its height creates the scroll track */}

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useExperience } from '../store/useExperience.js';
 
 // A reusable Higgsfield atmosphere PLATE — a video loop washed over the live scene, its opacity
@@ -23,13 +23,29 @@ export default function VideoAtmosphere({
   scrub,
   anchor,
   feather,
+  deferUntil,
 }) {
   const ref = useRef(null);
   const reducedMotion = useExperience((s) => s.reducedMotion);
+  // Deferred loading (2026-07-05 load spec): a plate whose beat is deep in the scroll doesn't
+  // fetch its video at first paint — it arms (gets its src) once scroll crosses `deferUntil`,
+  // the plate analog of the cards' rootMargin (~56vh of warning before its fadeIn begins).
+  // One-way latch; undefined means load eagerly as before (the gate + trailhead plates).
+  const [armed, setArmed] = useState(deferUntil == null);
+  useEffect(() => {
+    if (armed) return undefined;
+    if (useExperience.getState().scrollProgress > deferUntil) {
+      setArmed(true);
+      return undefined;
+    }
+    return useExperience.subscribe((s) => {
+      if (s.scrollProgress > deferUntil) setArmed(true);
+    });
+  }, [armed, deferUntil]);
 
   useEffect(() => {
     const v = ref.current;
-    if (!v) return undefined;
+    if (!v || !armed) return undefined;
 
     if (reducedMotion) {
       v.pause();
@@ -63,7 +79,7 @@ export default function VideoAtmosphere({
       });
     }
     return unsub;
-  }, [reducedMotion, fadeIn, fadeOut, max, scrub]);
+  }, [reducedMotion, fadeIn, fadeOut, max, scrub, armed]);
 
   // Ground-fog masking. anchor='bottom' aligns the (cover-scaled) video to the lower frame so the
   // densest fog sits along the trail; feather='top' fades the upper ~62% to transparent with a
@@ -83,11 +99,11 @@ export default function VideoAtmosphere({
       ref={ref}
       className="video-atmosphere"
       style={style}
-      src={src}
+      src={armed ? src : undefined}
       muted
       loop
       playsInline
-      preload="auto"
+      preload={armed ? 'auto' : 'none'}
       aria-hidden="true"
     />
   );

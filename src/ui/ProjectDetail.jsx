@@ -180,7 +180,7 @@ export default function ProjectDetail({ project, originRect, reducedMotion, onCl
                 );
               })}
             {isConcept && (!d.links || d.links.length === 0) && (
-              <span className="pd-note">Concept — in design, not yet built.</span>
+              <span className="pd-note">Concept. In design, not yet built.</span>
             )}
             <span className="pd-esc" aria-hidden="true">
               Esc to close

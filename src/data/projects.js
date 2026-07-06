@@ -11,14 +11,14 @@ export const projects = [
   {
     id: 'khaylub',
     name: 'Khaylub.com',
-    concept: 'This site — an ongoing record of the climb from beginner to professional.',
+    concept: 'This site is an ongoing record of the climb from beginner to professional.',
     status: 'Live · this site',
     href: 'https://khaylub.com',
     film: '/assets/video/concept-khaylub.mp4',
     poster: '/assets/projects/poster-khaylub.jpg',
     detail: {
       summary:
-        'The site you are on — a scroll-driven 3D experience built around a traveler climbing from curiosity to capability. Not a destination but the climb itself: where I am now, what I am learning, and what I am building next.',
+        'The site you are on. A scroll-driven 3D experience built around a traveler climbing from curiosity to capability. Not a destination but the climb itself: where I am now, what I am learning, and what I am building next.',
       highlights: [
         'One continuous scroll-synchronized 3D timeline',
         'A rigged traveler as the protagonist, built and documented in the open',
@@ -35,14 +35,14 @@ export const projects = [
     id: 'eyesunclouded',
     name: 'EyesUnclouded.ai',
     concept:
-      'Interactive scenes that train you to read people — body language, microexpressions, observation.',
+      'Interactive scenes that train you to read people. Body language, microexpressions, observation.',
     status: 'Concept',
     href: null,
     film: '/assets/video/concept-eyesunclouded.mp4',
     poster: '/assets/projects/poster-eyesunclouded.jpg',
     detail: {
       summary:
-        'Experience first, understanding second. A concept for interactive worlds where people learn to read body language, micro-expressions, and what others miss — discernment in the spirit of "Lie to Me" — by living through it rather than studying it.',
+        'Experience first, understanding second. A concept for interactive worlds where people learn to read body language, micro-expressions, and what others miss, discernment in the spirit of "Lie to Me", by living through it rather than studying it.',
       highlights: [
         'Discernment through body language and observation',
         'Learning by exploration, not instruction',
@@ -56,14 +56,14 @@ export const projects = [
     id: 'cloelia',
     name: 'Cloelia.ai',
     concept:
-      'An AI guidance service — specialist advisors that help you think through a hard decision.',
+      'An AI guidance service. Specialist advisors that help you think through a hard decision.',
     status: 'Concept',
     href: null,
     film: '/assets/video/concept-cloelia.mp4',
     poster: '/assets/projects/poster-cloelia.jpg',
     detail: {
       summary:
-        'Guidance through uncertainty. Instead of searching dozens of disconnected tools, a team of intelligent guides — across law, business, education, career, and finance — helps you navigate decisions. You arrive uncertain and leave with clarity and direction.',
+        'Guidance through uncertainty. Instead of searching dozens of disconnected tools, a team of intelligent guides, across law, business, education, career, and finance, helps you navigate decisions. You arrive uncertain and leave with clarity and direction.',
       highlights: [
         'A team of specialists, not one generalist',
         'Guidance across difficult terrain',
@@ -77,18 +77,18 @@ export const projects = [
     id: 'futuregenius',
     name: 'FutureGenius.ai',
     concept:
-      'An AI learning companion that turns a goal into a path — milestones, certifications, and projects tied to real outcomes.',
+      'An AI learning companion that turns a goal into a path, with milestones, certifications, and projects tied to real outcomes.',
     status: 'Concept',
     href: null,
     film: '/assets/video/concept-futuregenius.mp4',
     poster: '/assets/projects/poster-futuregenius.jpg',
     detail: {
       summary:
-        'Unlocking potential through structured progression. Too many people have talent but no idea where to start. A concept for a companion that maps where you are to where you want to be and lights the path — confusion to understanding to momentum to mastery.',
+        'Unlocking potential through structured progression. Too many people have talent but no idea where to start. A concept for a companion that maps where you are to where you want to be and lights the path. Confusion to understanding to momentum to mastery.',
       highlights: [
         'A personalized roadmap from here to your goal',
         'Milestones, certifications, and projects tied to real outcomes',
-        'Potential, momentum, possibility — "I can actually become this"',
+        'Potential, momentum, possibility. "I can actually become this"',
       ],
       tech: [],
       links: [],
@@ -98,14 +98,14 @@ export const projects = [
     id: 'manors',
     name: 'Manors.ai',
     concept:
-      'Connects homeowners with skilled tradespeople — the tech stays out of the way.',
+      'Connects homeowners with skilled tradespeople. The tech stays out of the way.',
     status: 'Concept',
     href: null,
     film: '/assets/video/concept-manors.mp4',
     poster: '/assets/projects/poster-manors.jpg',
     detail: {
       summary:
-        'Improving home services and skilled trades through technology that disappears into the background. Homeowners struggle to find trustworthy help; workers struggle with scheduling, communication, and running a business. A concept that connects both sides — the home and the people matter more than the platform.',
+        'Improving home services and skilled trades through technology that disappears into the background. Homeowners struggle to find trustworthy help; workers struggle with scheduling, communication, and running a business. A concept that connects both sides. The home and the people matter more than the platform.',
       highlights: [
         'Connecting homeowners with trustworthy tradespeople',
         'Scheduling, job tracking, and clear communication',

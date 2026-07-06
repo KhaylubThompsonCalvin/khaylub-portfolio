@@ -49,7 +49,9 @@ export default function RevealText({
       for (let i = 0; i < spans.length; i++) {
         const start = (i / spans.length) * 0.6; // last word starts at 60% of the window
         const t = Math.min(1, Math.max(0, (r - start) / 0.4));
-        const e = t * t * (3 - 2 * t); // smoothstep
+        // ease-out cubic (2026-07-05 motion spec): words SETTLE into place rather than easing
+        // in-and-out — fast arrival, soft landing, matching the site's settle curve.
+        const e = 1 - (1 - t) ** 3;
         const el = spans[i];
         el.style.opacity = (0.08 + 0.92 * e).toFixed(3);
         el.style.filter = e < 0.999 ? `blur(${((1 - e) * 6 * intensity).toFixed(2)}px)` : 'none';

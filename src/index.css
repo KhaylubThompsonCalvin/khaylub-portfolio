@@ -65,9 +65,10 @@ a {
   opacity: 0;
   visibility: hidden;
   transform: translateY(12px);
+  /* One settle curve site-wide (2026-07-05 motion spec) — same ease-out the cards use */
   transition:
-    opacity 0.6s ease,
-    transform 0.6s ease;
+    opacity 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
+    transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
 /* Readability scrim — keeps the day-darkened copy legible where the Wanderer (canvas, below the
@@ -211,8 +212,11 @@ a {
   transform: none;
 }
 
+/* Type scale (2026-07-05 spec, Kt-approved): modular ratio 1.25 on a 1rem base —
+   0.64 / 0.8 / 1.0 / 1.25 / 1.56 / 1.95 / 2.44, h1's fluid clamp kept as the hero exception.
+   Display line-height 1.1, body 1.5, beat-body measure 56ch, margins on a 0.5rem grid. */
 .kicker {
-  font-size: 0.72rem;
+  font-size: 0.8rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--muted);
@@ -221,7 +225,7 @@ a {
 .h1 {
   font-family: var(--font-display);
   font-size: clamp(2.2rem, 6vw, 4.5rem);
-  line-height: 1.05;
+  line-height: 1.1;
   letter-spacing: -0.01em;
 }
 .role {
@@ -232,16 +236,17 @@ a {
 .statement {
   margin-top: 1.5rem;
   font-size: clamp(1rem, 1.8vw, 1.25rem);
-  max-width: 46ch;
+  line-height: 1.5;
+  max-width: 56ch;
 }
 .lead {
   font-family: var(--font-display);
-  font-size: clamp(1.6rem, 4vw, 2.6rem);
-  line-height: 1.15;
+  font-size: clamp(1.6rem, 4vw, 2.44rem);
+  line-height: 1.1;
 }
 /* Connector lead on Footholds — the trail-marker line scaled down so the pills stay the beat's focus */
 .lead--connector {
-  font-size: clamp(1.25rem, 2.6vw, 1.9rem);
+  font-size: clamp(1.25rem, 2.6vw, 1.95rem);
 }
 
 /* Cinematic per-word reveal (RevealText). The word is inline-block so it can blur/lift; the
@@ -258,17 +263,18 @@ a {
   transform: none;
 }
 .body {
-  margin-top: 1.2rem;
-  font-size: clamp(1rem, 1.8vw, 1.2rem);
+  margin-top: 1rem;
+  font-size: clamp(1rem, 1.8vw, 1.25rem);
+  line-height: 1.5;
   color: var(--muted);
-  max-width: 48ch;
+  max-width: 56ch;
 }
 
 /* Availability — one honest line for recruiters between the intro and the links.
    Small caps, muted, sits quietly without competing with the closing principle. */
 .availability {
-  margin-top: 0.6rem;
-  font-size: 0.72rem;
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--muted);
@@ -279,11 +285,11 @@ a {
   list-style: none;
   display: flex;
   flex-wrap: wrap;
-  gap: 0.6rem 1rem;
+  gap: 0.5rem 1rem;
   margin-top: 1.5rem;
 }
 .focus-list li {
-  font-size: clamp(0.95rem, 1.6vw, 1.15rem);
+  font-size: clamp(0.95rem, 1.6vw, 1rem);
   padding: 0.4rem 0.9rem;
   border: 1px solid rgba(40, 32, 20, 0.25);
   border-radius: 999px;
@@ -310,8 +316,8 @@ a {
 .nav .links {
   display: flex;
   align-items: center;
-  gap: 1.2rem;
-  font-size: 0.85rem;
+  gap: 1rem;
+  font-size: 0.8rem;
   pointer-events: auto;
 }
 /* The nav links were the one interactive element still on the browser-default outline —
@@ -346,7 +352,7 @@ a {
   background: rgba(255, 250, 240, 0.4);
   color: inherit;
   font: inherit;
-  font-size: 0.72rem;
+  font-size: 0.8rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   border-radius: 999px;
@@ -381,7 +387,7 @@ a {
   background: none;
   color: var(--ink);
   font: inherit;
-  font-size: 0.72rem;
+  font-size: 0.8rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   padding: 0.35rem 0.7rem;
@@ -400,9 +406,10 @@ a {
    The concept film plays as the card background (in-view only, see ProjectCards); a scrim keeps
    the overlaid copy at AA contrast; the card rises in on scroll for the cinematic reveal. */
 .work-lede {
-  margin-top: 0.8rem;
-  max-width: 52ch;
-  font-size: clamp(1rem, 1.7vw, 1.15rem);
+  margin-top: 1rem;
+  max-width: 56ch;
+  font-size: clamp(1rem, 1.7vw, 1.25rem);
+  line-height: 1.5;
   color: var(--muted);
 }
 /* On narrow viewports the Wanderer can walk behind the camps intro — same no-box halo as the
@@ -416,7 +423,7 @@ a {
   display: grid;
   /* min(300px, 100%) caps the track to the container so it never overflows below ~320px */
   grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
-  gap: 1.2rem;
+  gap: 1rem;
   margin-top: 2rem;
   max-width: 1100px;
 }
@@ -454,9 +461,9 @@ a {
   transform: translateY(26px) scale(0.977);
   filter: blur(10px);
   transition:
-    opacity 0.7s ease calc(var(--card-i, 0) * 110ms),
-    transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1) calc(var(--card-i, 0) * 110ms),
-    filter 0.7s ease calc(var(--card-i, 0) * 110ms),
+    opacity 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) calc(var(--card-i, 0) * 110ms),
+    transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) calc(var(--card-i, 0) * 110ms),
+    filter 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) calc(var(--card-i, 0) * 110ms),
     box-shadow 0.35s ease,
     border-color 0.35s ease;
 }
@@ -513,27 +520,27 @@ a {
   bottom: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
-  padding: 1.3rem;
+  gap: 0.5rem;
+  padding: 1.5rem;
   color: #f3ece0;
 }
 .card-title {
   font-family: var(--font-display);
-  font-size: 1.5rem;
+  font-size: 1.56rem;
   line-height: 1.1;
   color: #fbf6ee;
 }
 .card-concept {
-  font-size: 0.92rem;
-  line-height: 1.4;
+  font-size: 1rem;
+  line-height: 1.5;
   color: rgba(243, 236, 224, 0.88);
   max-width: 38ch;
 }
 .card-cue {
   position: absolute;
   top: 1rem;
-  right: 1.1rem;
-  font-size: 0.72rem;
+  right: 1rem;
+  font-size: 0.8rem;
   letter-spacing: 0.03em;
   color: #fbf6ee;
   background: color-mix(in srgb, var(--accent), transparent 18%);
@@ -568,7 +575,7 @@ a {
   align-items: center;
   gap: 0.5rem;
   margin-top: 0.5rem;
-  font-size: 0.72rem;
+  font-size: 0.8rem;
   letter-spacing: 0.04em;
 }
 .card-content .status {
@@ -649,7 +656,7 @@ a {
   height: 44px;
   display: grid;
   place-items: center;
-  font-size: 1.4rem;
+  font-size: 1.56rem;
   line-height: 1;
   color: #fbf6ee;
   background: rgba(12, 9, 6, 0.5);
@@ -678,7 +685,7 @@ a {
   position: absolute;
   left: 0.9rem;
   bottom: 0.9rem;
-  font-size: 0.66rem;
+  font-size: 0.64rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: #f3ece0;
@@ -695,14 +702,14 @@ a {
 }
 .pd-title {
   font-family: var(--font-display);
-  font-size: clamp(1.6rem, 4vw, 2.1rem);
+  font-size: clamp(1.6rem, 4vw, 1.95rem);
   line-height: 1.1;
   margin-top: 0.5rem;
 }
 .pd-summary {
   margin-top: 1rem;
   font-size: 1rem;
-  line-height: 1.55;
+  line-height: 1.5;
   color: #3a3122;
 }
 .pd-highlights {
@@ -715,7 +722,7 @@ a {
 .pd-highlights li {
   position: relative;
   padding-left: 1.3rem;
-  font-size: 0.94rem;
+  font-size: 1rem;
   color: #3a3122;
 }
 .pd-highlights li::before {
@@ -735,7 +742,7 @@ a {
   margin-top: 1.2rem;
 }
 .pd-chip {
-  font-size: 0.74rem;
+  font-size: 0.8rem;
   padding: 0.3rem 0.7rem;
   border-radius: 999px;
   border: 1px solid rgba(40, 32, 20, 0.22);
@@ -763,14 +770,14 @@ a {
   outline-offset: 3px;
 }
 .pd-note {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: #5b513f;
   font-style: italic;
 }
 /* keyboard affordance — pushed to the end of the actions row, decorative (aria-hidden) */
 .pd-esc {
   margin-left: auto;
-  font-size: 0.66rem;
+  font-size: 0.64rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: #8a7d63;
@@ -816,7 +823,7 @@ a {
 .contact-links {
   display: flex;
   flex-wrap: wrap;
-  gap: 1.2rem;
+  gap: 1rem;
   margin-top: 1.5rem;
 }
 .contact-links a,
@@ -889,7 +896,7 @@ a {
 .contact-links .link-soon em {
   margin-left: 0.4rem;
   font-style: normal;
-  font-size: 0.62rem;
+  font-size: 0.64rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   opacity: 0.7;
@@ -948,7 +955,7 @@ a {
 }
 .gate .title {
   font-family: var(--font-display);
-  font-size: clamp(1.6rem, 4vw, 2.6rem);
+  font-size: clamp(1.6rem, 4vw, 2.44rem);
 }
 .gate .hint {
   font-size: 0.8rem;

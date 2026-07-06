@@ -11,7 +11,15 @@ export function useScrollSetup() {
   const setScrollVelocity = useExperience((s) => s.setScrollVelocity);
 
   useEffect(() => {
-    const lenis = new Lenis({ smoothWheel: true, lerp: 0.1 });
+    // 2026-07-05 scroll-feel spec: lerp 0.09 (a touch tighter than 0.1 — Lenis smoothing stacks
+    // with the camera's own 0.14 s damping) and wheelMultiplier 1.25 (an 800vh page at 1× takes
+    // twice the strokes of a normal page). Touch stays native (no syncTouch): synthetic touch
+    // scrolling costs main-thread time on mid-range phones and fights iOS inertia.
+    // prefers-reduced-motion gets NATIVE wheel scrolling too — Lenis still tracks position and
+    // feeds the store, it just stops smoothing input. Read once at init: flipping the OS setting
+    // mid-session re-applies on next load.
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const lenis = new Lenis({ smoothWheel: !reduced, lerp: 0.09, wheelMultiplier: 1.25 });
 
     // Map raw page scroll → STORY progress. The whole choreography (walk → flight → the camera
     // spinning around to the head-on FRONT view) plays across the first STORY_FRAC of the page;

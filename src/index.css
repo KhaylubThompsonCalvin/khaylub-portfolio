@@ -314,6 +314,30 @@ a {
   font-size: 0.85rem;
   pointer-events: auto;
 }
+/* The nav links were the one interactive element still on the browser-default outline —
+   give them the same 2px token ring every other control uses (--ink flips with the day). */
+.nav .links a:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+/* 44px touch floor (QA 2026-07-05: these measured 18px tall at every breakpoint). An invisible
+   ::before hit extender grows the tappable box without moving a pixel of layout — clicks on the
+   pseudo-element land on the link. ±8px horizontally stays inside the 1.2rem link gap, so
+   neighbouring hit areas never overlap. The contact links get the same treatment below (their
+   ::after is the ember flare, so ::before is the free slot on both). */
+.nav .links a {
+  position: relative;
+}
+.nav .links a::before,
+.contact-links a::before {
+  content: '';
+  position: absolute;
+  left: -8px;
+  right: -8px;
+  top: 50%;
+  height: 44px;
+  transform: translateY(-50%);
+}
 /* sound toggle — reuses nav type; honest button, visible focus, ≥44px touch target via padding */
 .audio-toggle {
   appearance: none;
@@ -419,18 +443,27 @@ a {
   background: #15110b;
   box-shadow: 0 12px 34px rgba(12, 9, 6, 0.24);
   pointer-events: auto;
-  /* scroll reveal */
+  /* Scroll reveal, staggered: --card-i (set inline by ProjectCards) delays only the
+     entrance properties, so when a pair enters together (two-column grid, fast scroll)
+     they cascade instead of popping in unison. Hover feedback (box-shadow/border and the
+     .card-tilt scale) is deliberately delay-free.
+     The entrance itself speaks the site's reveal language — the same blur-and-lift the
+     per-word copy reveals use (RevealText): each camp rises, settles from 97.7% scale,
+     and sharpens from a soft blur, like a frame coming into focus. Restrained on purpose. */
   opacity: 0;
-  transform: translateY(18px);
+  transform: translateY(26px) scale(0.977);
+  filter: blur(10px);
   transition:
-    opacity 0.6s ease,
-    transform 0.6s ease,
+    opacity 0.7s ease calc(var(--card-i, 0) * 110ms),
+    transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1) calc(var(--card-i, 0) * 110ms),
+    filter 0.7s ease calc(var(--card-i, 0) * 110ms),
     box-shadow 0.35s ease,
     border-color 0.35s ease;
 }
 .card--film.is-in {
   opacity: 1;
-  transform: translateY(0);
+  transform: none;
+  filter: none;
 }
 /* tilt layer: holds the film + copy and rotates toward the cursor (vars set in ProjectCards).
    A separate element from the reveal transform on .card--film, so the two never fight. */
@@ -453,7 +486,14 @@ a {
 }
 .card--film:hover .card-tilt,
 .card--film:focus-visible .card-tilt {
-  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) scale(1.02);
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) scale(1.035);
+}
+/* Hover / keyboard-focus expand — the film previews larger inside its frame (the scrim and
+   copy stay put, so the overlaid text keeps its contrast). Same treatment for focus so a
+   keyboard user gets the full preview, not just the ring. */
+.card--film:hover .card-film,
+.card--film:focus-visible .card-film {
+  transform: translate(var(--px, 0px), var(--py, 0px)) scale(1.06);
 }
 .card-scrim {
   position: absolute;
@@ -927,5 +967,22 @@ a {
     visibility: visible;
     transform: none;
     transition: none;
+  }
+  /* cards: no entrance motion or hover/focus zoom — visible immediately, focus ring intact */
+  .card--film {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    transition: none;
+  }
+  .card-tilt,
+  .card-film {
+    transition: none;
+  }
+  .card--film:hover .card-tilt,
+  .card--film:focus-visible .card-tilt,
+  .card--film:hover .card-film,
+  .card--film:focus-visible .card-film {
+    transform: none;
   }
 }

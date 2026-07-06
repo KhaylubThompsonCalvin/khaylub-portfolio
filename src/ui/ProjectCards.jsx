@@ -16,7 +16,7 @@ function statusState(status = '') {
   return 'concept';
 }
 
-function ProjectCard({ project, onOpen, reducedMotion, playFilms }) {
+function ProjectCard({ project, index, onOpen, reducedMotion, playFilms }) {
   const ref = useRef(null);
   const tiltRef = useRef(null);
   const videoRef = useRef(null);
@@ -70,6 +70,7 @@ function ProjectCard({ project, onOpen, reducedMotion, playFilms }) {
       ref={ref}
       type="button"
       className={`card--film${inView ? ' is-in' : ''}`}
+      style={{ '--card-i': index }}
       onClick={(e) => onOpen(project, e.currentTarget.getBoundingClientRect())}
       onPointerMove={onPointerMove}
       onPointerLeave={resetTilt}
@@ -130,10 +131,11 @@ export default function ProjectCards() {
           <p className="work-lede">{camps.lede}</p>
         </div>
         <div className="cards cards--film">
-          {projects.map((p) => (
+          {projects.map((p, i) => (
             <ProjectCard
               key={p.id}
               project={p}
+              index={i}
               onOpen={(project, originRect) => setOpen({ project, originRect })}
               reducedMotion={reducedMotion}
               playFilms={playFilms}

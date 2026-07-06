@@ -320,6 +320,24 @@ a {
   outline: 2px solid var(--ink);
   outline-offset: 3px;
 }
+/* 44px touch floor (QA 2026-07-05: these measured 18px tall at every breakpoint). An invisible
+   ::before hit extender grows the tappable box without moving a pixel of layout — clicks on the
+   pseudo-element land on the link. ±8px horizontally stays inside the 1.2rem link gap, so
+   neighbouring hit areas never overlap. The contact links get the same treatment below (their
+   ::after is the ember flare, so ::before is the free slot on both). */
+.nav .links a {
+  position: relative;
+}
+.nav .links a::before,
+.contact-links a::before {
+  content: '';
+  position: absolute;
+  left: -8px;
+  right: -8px;
+  top: 50%;
+  height: 44px;
+  transform: translateY(-50%);
+}
 /* sound toggle — reuses nav type; honest button, visible focus, ≥44px touch target via padding */
 .audio-toggle {
   appearance: none;

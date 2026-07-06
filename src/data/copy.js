@@ -7,13 +7,13 @@ export const identity = {
   name: 'Khaylub Thompson-Calvin',
   role: 'Computer Information Systems Student · Builder · Lifelong Learner',
   statement:
-    'I build for the web — interactive 3D and tools with a story behind them. I played Division-I football; now I’m climbing in a new field. This site documents the climb, not the arrival.',
+    'I build for a better future, so the next generation starts further ahead than I did. I’m a CIS student making interactive 3D and tools for the web. This is a record of the climb, not the arrival.',
 };
 
 // The First Ember — the method, and the first foreshadow of the phoenix in words.
 export const philosophy = {
   lead: 'The best systems are built one layer at a time.',
-  body: 'Growth follows its own timeline. Feeling behind is not the same as failing. And somewhere in the work, a spark catches.',
+  body: 'Growth follows its own timeline. Feeling behind is not the same as failing.',
 };
 
 // Footholds — the skills reframed as trail markers, not a résumé list.
@@ -32,17 +32,16 @@ export const areasOfFocus = [
 ];
 
 // The Spark Wakes — the phoenix's one acknowledgment beat, timed to the ignition at
-// scrollProgress 0.5. "How far?" is the Letter-to-Time question — the boy under the
-// sunroof looking up at the stars — asked again as the spark takes wing.
+// scrollProgress 0.5. The quote-bank rebirth line, spoken as the firebird ignites.
 export const spark = {
   kicker: 'The spark wakes',
-  line: 'How far?',
+  line: 'A single loss does not mean you have lost forever.',
 };
 
 // The Camps — the five worlds as places built along the climb.
 export const camps = {
   kicker: 'The camps',
-  lede: 'Five projects — each a camp on the trail, a world I built along the way.',
+  lede: 'Five projects. Each a camp on the trail, a world I built along the way.',
 };
 
 // Closing principle (the summit payoff — canonical line from the quote bank)

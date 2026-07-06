@@ -47,10 +47,10 @@ export const camps = {
 
 // Closing principle (the summit payoff — canonical line from the quote bank)
 export const closingPrinciple =
-  'The summit was never the point. The climb changed the traveler.';
+  'I aimed for the stars and reached the moon. It was farther than I’d ever been. There’s always a taller mountain. I climb for the valley on the other side, the rest I’m still trying to reach.';
 
 export const contact = {
-  intro: 'Rise, and climb again — let’s build something.',
+  intro: 'Rise, and climb again. Let’s build something.',
   // One honest line for recruiters — answers the first question without a form.
   // Update the window when it changes; never show a stale date.
   availability: 'Open to internship opportunities · Summer–Fall 2026',

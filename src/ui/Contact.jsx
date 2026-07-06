@@ -33,9 +33,8 @@ export default function Contact() {
               <a
                 key={l.label}
                 href={l.href}
-                target={l.href.startsWith('http') || l.download ? '_blank' : undefined}
+                target={l.href.startsWith('http') || l.href.endsWith('.pdf') ? '_blank' : undefined}
                 rel="noreferrer"
-                download={l.download ? '' : undefined}
               >
                 {l.label}
               </a>

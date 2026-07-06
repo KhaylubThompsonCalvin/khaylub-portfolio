@@ -59,7 +59,7 @@ export const contact = {
     { label: 'LinkedIn', href: 'https://www.linkedin.com/in/khaylub-thompson-calvin-40543b294/' },
     { label: 'Email', href: 'mailto:khaylubthompsoncalvin@gmail.com' },
     // The real one-page PDF (Version P — Portfolio-General; source of truth in the vault's
-    // Resume register). download + _blank per spec: browsers save it directly.
-    { label: 'Resume', href: '/resume/Khaylub-Thompson-Calvin-Resume.pdf', download: true },
+    // Resume register). Opens inline in a new tab — no download attribute, by Kt's call.
+    { label: 'Resume', href: '/resume/Khaylub-Thompson-Calvin-Resume.pdf' },
   ],
 };

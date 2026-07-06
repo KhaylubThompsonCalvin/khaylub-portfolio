@@ -422,18 +422,24 @@ a {
   /* Scroll reveal, staggered: --card-i (set inline by ProjectCards) delays only the
      entrance properties, so when a pair enters together (two-column grid, fast scroll)
      they cascade instead of popping in unison. Hover feedback (box-shadow/border and the
-     .card-tilt scale) is deliberately delay-free. */
+     .card-tilt scale) is deliberately delay-free.
+     The entrance itself speaks the site's reveal language — the same blur-and-lift the
+     per-word copy reveals use (RevealText): each camp rises, settles from 97.7% scale,
+     and sharpens from a soft blur, like a frame coming into focus. Restrained on purpose. */
   opacity: 0;
-  transform: translateY(18px);
+  transform: translateY(26px) scale(0.977);
+  filter: blur(10px);
   transition:
-    opacity 0.6s ease calc(var(--card-i, 0) * 90ms),
-    transform 0.6s ease calc(var(--card-i, 0) * 90ms),
+    opacity 0.7s ease calc(var(--card-i, 0) * 110ms),
+    transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1) calc(var(--card-i, 0) * 110ms),
+    filter 0.7s ease calc(var(--card-i, 0) * 110ms),
     box-shadow 0.35s ease,
     border-color 0.35s ease;
 }
 .card--film.is-in {
   opacity: 1;
-  transform: translateY(0);
+  transform: none;
+  filter: none;
 }
 /* tilt layer: holds the film + copy and rotates toward the cursor (vars set in ProjectCards).
    A separate element from the reveal transform on .card--film, so the two never fight. */
@@ -942,6 +948,7 @@ a {
   .card--film {
     opacity: 1;
     transform: none;
+    filter: none;
     transition: none;
   }
   .card-tilt,

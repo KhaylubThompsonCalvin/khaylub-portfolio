@@ -4,10 +4,10 @@ import * as THREE from 'three';
 import { useExperience } from '../store/useExperience.js';
 import { SKY, dayAt } from '../data/palette.js';
 
-// Atmosphere — the night→sunny tonal arc. Samples the SKY palette by scrollProgress for the scene
+// Atmosphere - the night→sunny tonal arc. Samples the SKY palette by scrollProgress for the scene
 // background + fog colour, and ramps the scene LIGHTING from a dim night to a bright day (dayAt),
 // so the world literally lightens as the Wanderer climbs from the dark trailhead to the sunny
-// summit. Reads scroll via getState() in useFrame (the ADR-001 idiom — no per-frame re-render).
+// summit. Reads scroll via getState() in useFrame (the ADR-001 idiom - no per-frame re-render).
 // Lights are grabbed from the scene once (Scene.jsx owns the declarations).
 // Night floor lifted slightly (was 0.12/0.35/0.5): the Wanderer was reading as near-pure black
 // through the pre-dawn focus beat (~0.33–0.42), losing his form. This keeps the night mood while

@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { STAGES, stageAt } from '../data/stages.js';
 
 // THE single source of truth. Scroll writes scrollProgress; everything else reads it.
-// Keep this lean — derived values are computed by consumers from scrollProgress.
+// Keep this lean - derived values are computed by consumers from scrollProgress.
 export const useExperience = create((set, get) => ({
   // lifecycle
   started: false, // set true after the "Tap to explore" gate
@@ -14,13 +14,13 @@ export const useExperience = create((set, get) => ({
   stageId: STAGES[0].id, // current phase id, derived on write
   reachedStageIndex: 0, // furthest stage index ever reached; monotonic, drives reveal-and-stay
 
-  // input — pointer parallax + scroll-velocity flair (the phoenix interaction). Written by
+  // input - pointer parallax + scroll-velocity flair (the phoenix interaction). Written by
   // listeners; read via getState() in frame loops, never subscribed (same idiom as scrollProgress).
   pointerX: 0, // -1 (left) .. 1 (right), viewport-normalized
   pointerY: 0, // -1 (bottom) .. 1 (top)
   scrollVelocity: 0, // signed Lenis velocity; decays to 0 when idle
 
-  // the phoenix's live world position — PhoenixFlap mutates this object in place each frame (no
+  // the phoenix's live world position - PhoenixFlap mutates this object in place each frame (no
   // set(), no notification), and CameraRig reads it via getState() to orbit the bird in the
   // finale. A shared mutable point, the cheapest way to pass per-frame data between two systems.
   // x/y/z = the bird's PIVOT; cy = its visual-centre Y; fx/fz = its BASE facing (scroll heading,
@@ -28,9 +28,9 @@ export const useExperience = create((set, get) => ({
   // the body, so the camera aims at cy (not y) to frame the firebird centred on itself.
   phoenixPos: { x: 0, y: 0, z: 0, cy: 0, fx: 0, fz: 1 },
 
-  // audio — three modes the nav cycles through: 'ambient' (environmental), 'music' (ambient + the
+  // audio - three modes the nav cycles through: 'ambient' (environmental), 'music' (ambient + the
   // opt-in score), 'off'. Defaults to OFF until a real (licensed/recorded) track replaces the
-  // synthesized placeholder — a stored choice still wins, so anyone who turned it on keeps it.
+  // synthesized placeholder - a stored choice still wins, so anyone who turned it on keeps it.
   audioMode: (() => {
     try {
       const v = localStorage.getItem('kt-audio');

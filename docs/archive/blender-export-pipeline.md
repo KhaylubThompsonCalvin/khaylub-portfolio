@@ -23,7 +23,7 @@ assets/blender/      assets/models/         glTF Viewer    optional step    webs
 
 - Use **kebab-case**: `hero-scene.glb`, `project-alpha.glb`
 - Match the Blender file name: `hero-scene.blend` → `hero-scene.glb`
-- Version iterations in Blender only: `hero-scene-v02.blend` — export always overwrites the canonical GLB name
+- Version iterations in Blender only: `hero-scene-v02.blend` - export always overwrites the canonical GLB name
 - No spaces, no uppercase in exported file names
 
 ## Blender Scene Setup
@@ -38,7 +38,7 @@ Follow these conventions **before** modeling to avoid export surprises.
 
 ### Materials
 
-- Use **Principled BSDF** only — it maps cleanly to glTF PBR
+- Use **Principled BSDF** only - it maps cleanly to glTF PBR
 - Avoid unsupported nodes: Glass BSDF, Toon, custom OSL, most procedural textures
 - **Bake** procedural or complex materials to PNG/JPEG texture maps before export:
   - Base Color → 1024×1024 or 2048×2048
@@ -64,7 +64,7 @@ The web scene will use its own lighting rig in React Three Fiber. Two approaches
 1. **Recommended for Phase 1:** Export geometry only; light in code with `<Environment>` and directional lights.
 2. **Alternative:** Bake lighting to vertex colors or a lightmap texture (advanced, Phase 4).
 
-Do not rely on Blender lights exporting correctly — glTF light support is limited in browsers.
+Do not rely on Blender lights exporting correctly - glTF light support is limited in browsers.
 
 ### Animation (Phase 4+)
 
@@ -104,12 +104,12 @@ Before clicking Export:
 
 ## Post-Export Validation
 
-1. **File size check** — hero GLB must be ≤ 5 MB uncompressed; if over, reduce textures or polycount and re-export.
-2. **Visual check** — open the GLB in one of:
+1. **File size check** - hero GLB must be ≤ 5 MB uncompressed; if over, reduce textures or polycount and re-export.
+2. **Visual check** - open the GLB in one of:
    - [gltf-viewer.donmccurdy.com](https://gltf-viewer.donmccurdy.com/)
    - Blender re-import (File → Import → glTF 2.0)
    - Three.js editor
-3. **Console check** — glTF viewer should report zero errors; warnings about unsupported extensions are acceptable if visuals are correct.
+3. **Console check** - glTF viewer should report zero errors; warnings about unsupported extensions are acceptable if visuals are correct.
 
 Record results in a brief note at the bottom of this file or in a per-asset log in `assets/models/{name}/export-log.md`.
 
@@ -117,7 +117,7 @@ Record results in a brief note at the bottom of this file or in a per-asset log 
 
 Apply Draco compression before production deploy to reduce transfer size by 60–90%.
 
-### Option A — gltf-pipeline (CLI)
+### Option A - gltf-pipeline (CLI)
 
 ```bash
 npx gltf-pipeline -i assets/models/hero/hero-scene.glb \
@@ -125,7 +125,7 @@ npx gltf-pipeline -i assets/models/hero/hero-scene.glb \
   -d
 ```
 
-### Option B — Blender glTF Draco exporter plugin
+### Option B - Blender glTF Draco exporter plugin
 
 Enable Draco in the export dialog only after verifying the uncompressed GLB looks correct. Draco can occasionally affect morph targets or edge cases.
 
@@ -166,14 +166,14 @@ For the first shippable page, only one asset is required:
 | ---------- | -------------------------------------- | ----------------------------------- | ------------------------------------------ |
 | Hero scene | `assets/blender/hero/hero-scene.blend` | `assets/models/hero/hero-scene.glb` | Single object or small group; no animation |
 
-The hero does not need to be final portfolio work — it can be a placeholder sculpt or logo object. The goal is to validate the pipeline, not to ship final art.
+The hero does not need to be final portfolio work - it can be a placeholder sculpt or logo object. The goal is to validate the pipeline, not to ship final art.
 
 ## Export Log Template
 
 Create `assets/models/{name}/export-log.md` per asset:
 
 ```markdown
-# Export Log — hero-scene
+# Export Log - hero-scene
 
 | Field                    | Value                                |
 | ------------------------ | ------------------------------------ |
@@ -190,6 +190,6 @@ Create `assets/models/{name}/export-log.md` per asset:
 
 ## Related Documents
 
-- [architecture.md](architecture.md) — performance budgets and data flow
-- [phase-1-requirements.md](phase-1-requirements.md) — what the hero asset must achieve
-- [build-plan.md](build-plan.md) — when compression and additional assets are needed
+- [architecture.md](architecture.md) - performance budgets and data flow
+- [phase-1-requirements.md](phase-1-requirements.md) - what the hero asset must achieve
+- [build-plan.md](build-plan.md) - when compression and additional assets are needed

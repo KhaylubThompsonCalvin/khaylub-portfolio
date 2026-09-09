@@ -2,14 +2,14 @@
   --bg: #e9e1d6;
   --ink: #241c12;
   /* The daylight ink value. --ink itself is animated night↔day from scroll (App.jsx), so copy
-     that sits mid-flip (the spark beat, ~0.5) would pass through low-contrast grey — those spots
+     that sits mid-flip (the spark beat, ~0.5) would pass through low-contrast grey - those spots
      pin to this instead, matching the ink RevealText's warm mode lands on. */
   --ink-day: #241c12;
   --muted: #5b513f;
   --accent: #caa46f;
   --fire: 0; /* 0→1 across the summit; lights the closing contact links with the phoenix's fire */
   --scrim: 236, 232, 224; /* current sky tone behind the copy; driven by scroll in App.jsx */
-  --scrim-day: 236, 232, 224; /* the daylight scrim value, fixed — pairs with --ink-day (above) */
+  --scrim-day: 236, 232, 224; /* the daylight scrim value, fixed - pairs with --ink-day (above) */
   --font-display: Georgia, 'Times New Roman', serif;
   --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
@@ -29,7 +29,7 @@ a {
   color: inherit;
 }
 
-/* grass/wind video atmosphere — over the 3D canvas (z 0), under the DOM content (z 2). Soft-light
+/* grass/wind video atmosphere - over the 3D canvas (z 0), under the DOM content (z 2). Soft-light
    blend washes its grass motion into the scene without replacing the tonal sky; opacity is driven
    by scroll in VideoAtmosphere. Non-interactive. */
 .video-atmosphere {
@@ -65,13 +65,13 @@ a {
   opacity: 0;
   visibility: hidden;
   transform: translateY(12px);
-  /* One settle curve site-wide (2026-07-05 motion spec) — same ease-out the cards use */
+  /* One settle curve site-wide (2026-07-05 motion spec) - same ease-out the cards use */
   transition:
     opacity 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
     transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
-/* Readability scrim — keeps the day-darkened copy legible where the Wanderer (canvas, below the
+/* Readability scrim - keeps the day-darkened copy legible where the Wanderer (canvas, below the
    z-2 overlay) passes directly under a text column. Not a z-order fix: a soft, blurred wash of the
    current sky tone (--scrim, driven by scroll in App.jsx) restores the intended text-on-sky
    contrast over the character. Scoped to the text beats; #work's card stack is excluded. Inherits
@@ -115,12 +115,12 @@ a {
   pointer-events: none;
 }
 
-/* Finale exception — don't let the closing copy box block the firebird. Here the copy is DARK ink
+/* Finale exception - don't let the closing copy box block the firebird. Here the copy is DARK ink
    over the BRIGHT summit sky (already high-contrast), and the phoenix is the hero of the shot, so the
    full panel is both unnecessary and covers the bird's left wing. Replace it with a SOFT radial glow
    that pools behind the words on the left and fades to fully transparent toward the bird, and drop the
    backdrop-blur so the firebird stays crisp behind the copy. (Adapted from a 21st.dev "illuminated
-   hero" reference — a glow that hugs the text, not a box.) */
+   hero" reference - a glow that hugs the text, not a box.) */
 #contact .inner::before {
   inset: -0.5em -1.6em;
   background: radial-gradient(
@@ -133,7 +133,7 @@ a {
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
 }
-/* Keep the dark closing copy crisp over the bright bloom WITHOUT a panel — a soft halo of the sky
+/* Keep the dark closing copy crisp over the bright bloom WITHOUT a panel - a soft halo of the sky
    tone hugging the glyphs (the no-box legibility lift from the same reference). */
 #contact .lead,
 #contact .body,
@@ -146,7 +146,7 @@ a {
 /* Section heights (viewport-heights). The story sections sum to their original 616vh
    (84+126+126+70+210); #contact is a 184vh "sky tail" the held front-on firebird
    flies behind (total = SCROLL_VH = 800). scrollProgress is the STORY coordinate (raw ÷ STORY_FRAC,
-   clamped to 1 — see stages.js + useScrollSetup), so it still lines up with STAGES across the story;
+   clamped to 1 - see stages.js + useScrollSetup), so it still lines up with STAGES across the story;
    the part of #contact past the clamp is held sky. Keep the story heights in sync with STAGES. */
 #arrival {
   min-height: 84vh; /* 0.12 × 700 */
@@ -158,12 +158,12 @@ a {
   min-height: 126vh; /* 0.18 × 700 */
 }
 #spark {
-  min-height: 70vh; /* 0.10 × 700 — the ignition beat: short, one line, then the camps */
+  min-height: 70vh; /* 0.10 × 700 - the ignition beat: short, one line, then the camps */
 }
 /* The spark line is short; without this the 60ch inner stretches its scrim backplate across the
    Wanderer at the face-reveal shot. fit-content hugs the plate to the words. The beat also sits
    mid palette-flip (~0.5) where the animated --ink/--muted are greyest, so the kicker pins to the
-   day ink — the same value the line's warm reveal lands on. */
+   day ink - the same value the line's warm reveal lands on. */
 #spark .inner {
   width: fit-content;
 }
@@ -182,12 +182,12 @@ a {
   );
 }
 #work {
-  min-height: 210vh; /* 0.30 × 700 (the camps — was 280vh across the two old project beats) */
+  min-height: 210vh; /* 0.30 × 700 (the camps - was 280vh across the two old project beats) */
 }
 #contact {
   /* The closing "sky tail": the held, front-on, still-flying firebird flies behind this section.
      scrollProgress saturates to 1 as the story completes (see STORY_FRAC), leaving ~1 viewport of
-     held sky — enough for the front view to land and settle, none of the old dead scroll past the
+     held sky - enough for the front view to land and settle, none of the old dead scroll past the
      links. The inner is pinned (below) so the closing copy stays in view over the held sky. */
   min-height: 184vh;
   justify-content: flex-start;
@@ -212,7 +212,7 @@ a {
   transform: none;
 }
 
-/* Type scale (2026-07-05 spec, Kt-approved): modular ratio 1.25 on a 1rem base —
+/* Type scale (2026-07-05 spec, Kt-approved): modular ratio 1.25 on a 1rem base  - 
    0.64 / 0.8 / 1.0 / 1.25 / 1.56 / 1.95 / 2.44, h1's fluid clamp kept as the hero exception.
    Display line-height 1.1, body 1.5, beat-body measure 56ch, margins on a 0.5rem grid. */
 .kicker {
@@ -244,7 +244,7 @@ a {
   font-size: clamp(1.6rem, 4vw, 2.44rem);
   line-height: 1.1;
 }
-/* Connector lead on Footholds — the trail-marker line scaled down so the pills stay the beat's focus */
+/* Connector lead on Footholds - the trail-marker line scaled down so the pills stay the beat's focus */
 .lead--connector {
   font-size: clamp(1.25rem, 2.6vw, 1.95rem);
 }
@@ -256,7 +256,7 @@ a {
   will-change: opacity, filter, transform;
 }
 /* A beat that drives its own per-word reveal opts out of the block reveal-and-stay so the two
-   don't compound — RevealText alone controls visibility here. */
+   don't compound - RevealText alone controls visibility here. */
 .section .inner.inner--reveal {
   opacity: 1;
   visibility: visible;
@@ -270,7 +270,7 @@ a {
   max-width: 56ch;
 }
 
-/* Availability — one honest line for recruiters between the intro and the links.
+/* Availability - one honest line for recruiters between the intro and the links.
    Small caps, muted, sits quietly without competing with the closing principle. */
 .availability {
   margin-top: 0.5rem;
@@ -320,14 +320,14 @@ a {
   font-size: 0.8rem;
   pointer-events: auto;
 }
-/* The nav links were the one interactive element still on the browser-default outline —
+/* The nav links were the one interactive element still on the browser-default outline  - 
    give them the same 2px token ring every other control uses (--ink flips with the day). */
 .nav .links a:focus-visible {
   outline: 2px solid var(--ink);
   outline-offset: 3px;
 }
 /* 44px touch floor (QA 2026-07-05: these measured 18px tall at every breakpoint). An invisible
-   ::before hit extender grows the tappable box without moving a pixel of layout — clicks on the
+   ::before hit extender grows the tappable box without moving a pixel of layout - clicks on the
    pseudo-element land on the link. ±8px horizontally stays inside the 1.2rem link gap, so
    neighbouring hit areas never overlap. The contact links get the same treatment below (their
    ::after is the ember flare, so ::before is the free slot on both). */
@@ -344,7 +344,7 @@ a {
   height: 44px;
   transform: translateY(-50%);
 }
-/* sound toggle — reuses nav type; honest button, visible focus, ≥44px touch target via padding */
+/* sound toggle - reuses nav type; honest button, visible focus, ≥44px touch target via padding */
 .audio-toggle {
   appearance: none;
   -webkit-appearance: none;
@@ -364,7 +364,7 @@ a {
   outline-offset: 2px;
 }
 
-/* bottom nav cue — Work · Contact */
+/* bottom nav cue - Work · Contact */
 .bottom-nav {
   position: fixed;
   bottom: 1.3rem;
@@ -402,7 +402,7 @@ a {
   color: var(--muted);
 }
 
-/* project cards — five concept "worlds", each a film-backed button that opens a case study.
+/* project cards - five concept "worlds", each a film-backed button that opens a case study.
    The concept film plays as the card background (in-view only, see ProjectCards); a scrim keeps
    the overlaid copy at AA contrast; the card rises in on scroll for the cinematic reveal. */
 .work-lede {
@@ -412,7 +412,7 @@ a {
   line-height: 1.5;
   color: var(--muted);
 }
-/* On narrow viewports the Wanderer can walk behind the camps intro — same no-box halo as the
+/* On narrow viewports the Wanderer can walk behind the camps intro - same no-box halo as the
    closing copy so the dark text stays separated from his dark jacket (no plate: the card stack
    below shares this inner, and a plate would wash it). */
 #work .kicker,
@@ -439,7 +439,7 @@ a {
   display: block;
   width: 100%;
   /* landscape ~16:10 frames the 16:9 films with little crop and keeps five cards inside the
-     #work section's 280vh scroll budget (data/stages.js) — a taller card overflows that slice
+     #work section's 280vh scroll budget (data/stages.js) - a taller card overflows that slice
      and desyncs the camera/phoenix choreography downstream. */
   aspect-ratio: 16 / 10;
   padding: 0;
@@ -454,7 +454,7 @@ a {
      entrance properties, so when a pair enters together (two-column grid, fast scroll)
      they cascade instead of popping in unison. Hover feedback (box-shadow/border and the
      .card-tilt scale) is deliberately delay-free.
-     The entrance itself speaks the site's reveal language — the same blur-and-lift the
+     The entrance itself speaks the site's reveal language - the same blur-and-lift the
      per-word copy reveals use (RevealText): each camp rises, settles from 97.7% scale,
      and sharpens from a soft blur, like a frame coming into focus. Restrained on purpose. */
   opacity: 0;
@@ -495,7 +495,7 @@ a {
 .card--film:focus-visible .card-tilt {
   transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) scale(1.035);
 }
-/* Hover / keyboard-focus expand — the film previews larger inside its frame (the scrim and
+/* Hover / keyboard-focus expand - the film previews larger inside its frame (the scrim and
    copy stay put, so the overlaid text keeps its contrast). Same treatment for focus so a
    keyboard user gets the full preview, not just the ring. */
 .card--film:hover .card-film,
@@ -569,7 +569,7 @@ a {
   outline-offset: 3px;
 }
 
-/* honest status badge with a state dot — shared by the card and the modal */
+/* honest status badge with a state dot - shared by the card and the modal */
 .status {
   display: inline-flex;
   align-items: center;
@@ -610,7 +610,7 @@ a {
   }
 }
 
-/* ---- case-study modal (ProjectDetail) — portaled to <body>, above the fixed canvas + nav ---- */
+/* ---- case-study modal (ProjectDetail) - portaled to <body>, above the fixed canvas + nav ---- */
 .pd-backdrop {
   position: fixed;
   inset: 0;
@@ -635,7 +635,7 @@ a {
   max-height: 90vh;
   overflow-y: auto;
   background: var(--bg);
-  /* fixed ink — the global --ink is scroll-driven and can go light, so the modal sets its own */
+  /* fixed ink - the global --ink is scroll-driven and can go light, so the modal sets its own */
   color: #241c12;
   border-radius: 18px;
   box-shadow: 0 30px 80px rgba(10, 8, 6, 0.5);
@@ -774,7 +774,7 @@ a {
   color: #5b513f;
   font-style: italic;
 }
-/* keyboard affordance — pushed to the end of the actions row, decorative (aria-hidden) */
+/* keyboard affordance - pushed to the end of the actions row, decorative (aria-hidden) */
 .pd-esc {
   margin-left: auto;
   font-size: 0.64rem;
@@ -785,7 +785,7 @@ a {
   border-radius: 6px;
   padding: 0.25rem 0.5rem;
 }
-/* no hardware keyboard on touch — the Esc hint is meaningless there */
+/* no hardware keyboard on touch - the Esc hint is meaningless there */
 @media (pointer: coarse) {
   .pd-esc {
     display: none;
@@ -810,14 +810,14 @@ a {
   .status--progress .dot {
     animation: none;
   }
-  /* no pull-out morph — the panel just appears */
+  /* no pull-out morph - the panel just appears */
   .pd-backdrop,
   .pd-dialog {
     transition: none;
   }
 }
 
-/* contact — the links carry the phoenix's fire. As --fire ramps over the summit (App.jsx) they
+/* contact - the links carry the phoenix's fire. As --fire ramps over the summit (App.jsx) they
    glow warmer; on hover an ember flares from the underline. The spark→fire motif resolving into
    the call-to-action, kept restrained. */
 .contact-links {
@@ -886,7 +886,7 @@ a {
     opacity: 1;
   }
 }
-/* honest "coming soon" state for a link with no real destination yet — not a dead anchor */
+/* honest "coming soon" state for a link with no real destination yet - not a dead anchor */
 .contact-links .link-soon {
   color: var(--muted);
   cursor: default;
@@ -909,7 +909,7 @@ a {
   }
 }
 
-/* load gate — a living dawn-grass scene behind the entry, fading away on start */
+/* load gate - a living dawn-grass scene behind the entry, fading away on start */
 .gate-scene {
   position: fixed;
   inset: 0;
@@ -968,14 +968,14 @@ a {
   html {
     scroll-behavior: auto;
   }
-  /* reveals collapse to "always visible" — no entrance motion, nothing hidden */
+  /* reveals collapse to "always visible" - no entrance motion, nothing hidden */
   .section .inner {
     opacity: 1;
     visibility: visible;
     transform: none;
     transition: none;
   }
-  /* cards: no entrance motion or hover/focus zoom — visible immediately, focus ring intact */
+  /* cards: no entrance motion or hover/focus zoom - visible immediately, focus ring intact */
   .card--film {
     opacity: 1;
     transform: none;

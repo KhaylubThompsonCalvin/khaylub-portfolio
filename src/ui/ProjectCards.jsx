@@ -4,12 +4,12 @@ import { camps } from '../data/copy.js';
 import { useExperience } from '../store/useExperience.js';
 import ProjectDetail from './ProjectDetail.jsx';
 
-// The Camps beat — the work, as five concept "worlds". Each card is a real button that opens its
+// The Camps beat - the work, as five concept "worlds". Each card is a real button that opens its
 // case study, which grows OUT of the card (FLIP pull-out in ProjectDetail). The concept FILM plays
-// as the card background while the card is in view — all in-view films run simultaneously (the
+// as the card background while the card is in view - all in-view films run simultaneously (the
 // camps read as living worlds) under one shared IntersectionObserver, paused off-screen and when
 // the tab is hidden. On a fine pointer the card tilts toward the cursor with the film drifting in
-// parallax — premium depth, no library (adapted from a 21st.dev reference; rebuilt in our
+// parallax - premium depth, no library (adapted from a 21st.dev reference; rebuilt in our
 // plain-CSS idiom, gated by reduced motion).
 function statusState(status = '') {
   const s = status.toLowerCase();
@@ -97,7 +97,7 @@ export default function ProjectCards() {
   // Films never autoplay for users who asked for less (reduced motion) or opted into data
   // saving, and never on 2G-class links where five clips would blow the budget. The old
   // blanket "no autoplay on touch" gate is gone: measured at 375px with 4x CPU throttle,
-  // three in-view films play at ~43 fps average — within budget — and preload="none" +
+  // three in-view films play at ~43 fps average - within budget - and preload="none" +
   // play-only-in-view means nothing streams until the visitor actually reaches the camps.
   const [lightMedia, setLightMedia] = useState(false);
   useEffect(() => {
@@ -109,7 +109,7 @@ export default function ProjectCards() {
   const playFilms = !reducedMotion && !lightMedia;
 
   // ONE shared IntersectionObserver for all five cards (was one per card). It flips the
-  // reveal class and keeps a registry so playback can be re-synced as a set — on visibility
+  // reveal class and keeps a registry so playback can be re-synced as a set - on visibility
   // (in view / off screen), on tab hide/show, and when the playFilms gates change.
   const registry = useRef(new Map()); // card el -> { video, inView }
   const playFilmsRef = useRef(playFilms);
@@ -169,7 +169,7 @@ export default function ProjectCards() {
   return (
     <section className="section" id="work">
       <div className="inner">
-        {/* Wrapped so the intro can carry the beats' scrim backplate without washing the cards —
+        {/* Wrapped so the intro can carry the beats' scrim backplate without washing the cards  - 
             on narrow viewports the Wanderer walks behind this text. */}
         <div className="work-intro">
           <p className="kicker">{camps.kicker}</p>

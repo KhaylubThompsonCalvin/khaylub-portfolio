@@ -3,7 +3,7 @@ import { useExperience } from '../store/useExperience.js';
 import { identity } from '../data/copy.js';
 
 // The entry: a living dawn-grass scene behind "Tap to explore". Supplies the user gesture (needed
-// to unlock audio later), covers asset loading, and flips started=true — then the whole scene
+// to unlock audio later), covers asset loading, and flips started=true - then the whole scene
 // fades away to reveal the experience. The grass video is paused under prefers-reduced-motion and
 // once the gate has been dismissed (started), so no off-screen loop keeps running.
 export default function LoadGate() {

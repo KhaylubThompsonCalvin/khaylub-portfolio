@@ -1,4 +1,4 @@
-// The project "worlds" — five manifestations of one belief: human potential grows through
+// The project "worlds" - five manifestations of one belief: human potential grows through
 // exploration, guidance, learning, craftsmanship, and perseverance. (Master brief: the vault's
 // "Project World Definitions".) Each carries a concept FILM (a concept visualization, never a fake
 // running product) shown on its card and, larger, in the case-study panel.

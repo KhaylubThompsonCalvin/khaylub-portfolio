@@ -5,15 +5,15 @@ import { useExperience } from '../store/useExperience.js';
 import { samplePath, segmentEase, POINTER_PARALLAX, FINALE } from '../data/camera.js';
 import { PHOENIX } from '../data/phoenix.js';
 
-// System 3 — Camera. Keyframed shots interpolated by scrollProgress, so the camera moves
+// System 3 - Camera. Keyframed shots interpolated by scrollProgress, so the camera moves
 // around the in-place Wanderer and the journey reads as composition. scrollProgress
 // (Lenis -> store) is the single scroll authority; this samples it each frame via
-// getState() — no GSAP/ScrollTrigger (see docs/adr/ADR-001-drop-gsap.md).
+// getState() - no GSAP/ScrollTrigger (see docs/adr/ADR-001-drop-gsap.md).
 // The path math lives in data/camera.js (samplePath) so the audit tooling and the frame
 // loop share it; see the "Motion feel" note there for the 2026-07-05 easing rework.
 
 // Settle smoothing (higher = snappier): 1/FOLLOW is the time constant, so 7 ≈ a 0.14s settle.
-// Was 3.0 (τ ≈ 0.33s) — the camera trailed a scroll flick by a beat, which read as disconnect.
+// Was 3.0 (τ ≈ 0.33s) - the camera trailed a scroll flick by a beat, which read as disconnect.
 const FOLLOW = 7.0;
 const smoothstep = (t) => t * t * (3 - 2 * t);
 const clamp01 = (t) => Math.min(1, Math.max(0, t));
@@ -25,7 +25,7 @@ const _track = new THREE.Vector3();
 const _fwd = new THREE.Vector3();
 const _off = new THREE.Vector3();
 
-// scratch for samplePath — plain arrays, copied into the vectors each frame
+// scratch for samplePath - plain arrays, copied into the vectors each frame
 const _sampled = { pos: [0, 0, 0], look: [0, 0, 0] };
 function sample(p, outPos, outLook) {
   samplePath(p, _sampled);
@@ -60,7 +60,7 @@ export default function CameraRig() {
       _pos.x += Math.sin(t * 0.5) * 0.04;
       _pos.y += Math.sin(t * 0.37) * 0.03;
 
-      // Pointer counter-drift — a whisper of parallax during the phoenix beat. Engagement ramps
+      // Pointer counter-drift - a whisper of parallax during the phoenix beat. Engagement ramps
       // from the spark to the fire peak; it now STAYS alive through the finale (Kt wants the closing
       // shot interactive), so the camera keeps a little counter-parallax at the summit, giving depth
       // as you fly the firebird with the cursor.
@@ -72,7 +72,7 @@ export default function CameraRig() {
       _pos.y -= ppy.current * POINTER_PARALLAX.y * eng;
     }
 
-    // Finale — the camera ORBITS the still-flying firebird a full 360° and lands HEAD-ON at the end
+    // Finale - the camera ORBITS the still-flying firebird a full 360° and lands HEAD-ON at the end
     // of the scroll (Kt: "it should still look like flight; the camera does the rotating"). The bird
     // keeps flying/flapping along its climb (no turntable on the model); the camera circles it on a
     // ring of radius orbitDist at height orbitHeight, the orbit angle driven by scrollProgress from
@@ -83,13 +83,13 @@ export default function CameraRig() {
     if (p >= FINALE.from) {
       const e = smoothstep(clamp01((p - FINALE.from) / FINALE.trackIn)); // position blends in
       // The LOOK target snaps onto the bird faster than the position eases in, so the firebird stays
-      // centred through the hand-off — otherwise the camera swings while the bird isn't yet centred
+      // centred through the hand-off - otherwise the camera swings while the bird isn't yet centred
       // and it flicks off the right edge (~0.875) before the orbit settles. The lookRef smoothing
       // below keeps this fast look-on smooth (no hard snap).
       const eLook = smoothstep(clamp01((p - FINALE.from) / (FINALE.trackIn * 0.4)));
       // orbit 0→1 completes by FINALE.orbitTo, then holds at 1 (front) so the camera settles
       // head-on. segmentEase (mild), NOT smoothstep: the audit measured smoothstep compressing
-      // the whole 360° into the middle of the window (peak 85°/0.01p vs the 28° mean) — the
+      // the whole 360° into the middle of the window (peak 85°/0.01p vs the 28° mean) - the
       // finale whip. The mild ease spreads the spin almost evenly and still lands the same
       // front view at orbitTo.
       const prog = segmentEase(
@@ -115,7 +115,7 @@ export default function CameraRig() {
         const sf = Math.sin(fo);
         _fwd.set(_fwd.x * cf + _fwd.z * sf, 0, -_fwd.x * sf + _fwd.z * cf);
       }
-      // Rotate the front offset around the bird (Y axis) by phi — a full 360° sweep ending front-on.
+      // Rotate the front offset around the bird (Y axis) by phi - a full 360° sweep ending front-on.
       const phi = prog * Math.PI * 2;
       const ca = Math.cos(phi);
       const sa = Math.sin(phi);

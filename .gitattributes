@@ -2,7 +2,7 @@
 # matches how the initial commit was stored). Working-tree checkout stays LF too.
 * text=auto eol=lf
 
-# Treat binary assets as binary — never normalize line endings, never diff as text.
+# Treat binary assets as binary - never normalize line endings, never diff as text.
 *.glb  binary
 *.png  binary
 *.jpg  binary

@@ -1,4 +1,4 @@
-// AudioManager — MUTED (synth placeholders removed).
+// AudioManager - MUTED (synth placeholders removed).
 // The synthesized wind/swell/crackle/pad layers sounded poor as placeholder audio.
 // This component is kept as the mount point and architecture reference; it will be
 // re-enabled once real audio assets are sourced.

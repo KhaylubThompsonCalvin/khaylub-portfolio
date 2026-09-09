@@ -9,7 +9,7 @@ const clamp01 = (t) => Math.min(1, Math.max(0, t));
 const smoothstep = (t) => t * t * (3 - 2 * t);
 const lerp = (a, b, t) => a + (b - a) * t;
 
-// Smooth 0->1->0 bump over [a,b] peaking at `peak` — the overhead-pass envelope.
+// Smooth 0->1->0 bump over [a,b] peaking at `peak` - the overhead-pass envelope.
 function bump(p, a, peak, b) {
   if (p <= a || p >= b) return 0;
   const t = p < peak ? (p - a) / (peak - a) : (b - p) / (b - peak);
@@ -19,7 +19,7 @@ function bump(p, a, peak, b) {
 // The firebird's shadow sweeping over the Wanderer during the overhead pass (~0.50→0.62). A soft
 // projected pool, not a real shadow map (Ground.jsx explains why). It tracks the bird's published
 // ground position (store.phoenixPos, mutated each frame by PhoenixFlap) and sits on the same trail
-// surface as the geometry. Scroll-driven via getState() — no per-frame React re-render. Gated to
+// surface as the geometry. Scroll-driven via getState() - no per-frame React re-render. Gated to
 // the pass window so it's invisible once the bird has climbed away.
 export default function FlyoverShadow() {
   const mesh = useRef();

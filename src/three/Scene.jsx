@@ -39,14 +39,14 @@ export default function Scene() {
       <directionalLight position={[3, 6, 4]} intensity={2.9} color="#fff3e2" castShadow />
       <ambientLight intensity={0.6} />
 
-      {/* Tonal sky (dawn→alpine→summit) — drives scene background + fog colour from scroll.
+      {/* Tonal sky (dawn→alpine→summit) - drives scene background + fog colour from scroll.
           Outside Suspense so it runs even while the GLBs load. */}
       <Atmosphere />
 
       <Suspense fallback={null}>
         {/* Grounding slope so he stands on the trail, fog-blended into the tonal sky. */}
         <Ground />
-        {/* Far mountain vista (matte plate) + nearer procedural ranges in front of it — together
+        {/* Far mountain vista (matte plate) + nearer procedural ranges in front of it - together
             they open a vista with depth as he crests the summit. */}
         <SummitBackdrop />
         <Mountains />
@@ -56,24 +56,24 @@ export default function Scene() {
         <Wanderer position={[0, 0, 0]} />
         {/* Philosophy foreshadow: the unseen phoenix felt as a shadow sweeping down his back. */}
         <ForeshadowShadow />
-        {/* "Spark of the Summit": a secondary phoenix accent — dormant until ~0.50, then an
+        {/* "Spark of the Summit": a secondary phoenix accent - dormant until ~0.50, then an
             ember rises through the far background behind the Wanderer and ignites to fire by
             the summit. Flight + emission are scroll-driven inside PhoenixFlap (choreography in
             data/phoenix.js); no transform props here. */}
         <PhoenixFlap />
-        {/* Ember trail shed behind the firebird along its flight — the overhead-sweep arc in light. */}
+        {/* Ember trail shed behind the firebird along its flight - the overhead-sweep arc in light. */}
         <EmberTrail />
         {/* Glowing feathers drifting down from the phoenix at the summit. */}
         <Feathers />
-        {/* The summit sun the firebird flies into — ignites across the final approach. */}
+        {/* The summit sun the firebird flies into - ignites across the final approach. */}
         <Sun />
-        {/* Prep mount for the freeze-pose climax ("something amazing") — null stub for now. */}
+        {/* Prep mount for the freeze-pose climax ("something amazing") - null stub for now. */}
         <FinaleReveal />
       </Suspense>
 
       <CameraRig />
       {/* Selective bloom so only the phoenix's ember/fire feathers glow (the light cream
-          background must never bloom). Takes over the render loop — keep it last in the tree. */}
+          background must never bloom). Takes over the render loop - keep it last in the tree. */}
       <SelectiveBloom strength={BLOOM.strength} radius={BLOOM.radius} threshold={BLOOM.threshold} />
     </Canvas>
   );

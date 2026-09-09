@@ -10,7 +10,7 @@ function statusState(status = '') {
 }
 
 // Click-to-expand case-study panel. Portaled to <body> so it escapes the transformed/stacked
-// overlay and the fixed WebGL canvas. It "pulls out" of the clicked card: a dependency-free FLIP —
+// overlay and the fixed WebGL canvas. It "pulls out" of the clicked card: a dependency-free FLIP  - 
 // we render the panel centered, then start it translated+scaled back onto the card's rect and let
 // it grow into place (and collapse back on close). This gives the framer-motion shared-layout feel
 // without a new dependency (consistent with ADR-001: store/CSS-driven motion, no animation lib).

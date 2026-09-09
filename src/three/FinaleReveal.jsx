@@ -5,11 +5,11 @@ import { useExperience } from '../store/useExperience.js';
 import { BLOOM_LAYER } from './SelectiveBloom.jsx';
 import { FINALE_REVEAL } from '../data/phoenix.js';
 
-// FinaleReveal — "the spark becomes fire" (built into the freeze the stub reserved).
+// FinaleReveal - "the spark becomes fire" (built into the freeze the stub reserved).
 //
 // As the phoenix slow-flaps to its held pose at the summit (PhoenixFlap freeze 0.93→1.0), a soft
 // white-gold BLOOM flares from it and a ring of EMBERS bursts outward; then it SETTLES into a calm,
-// held glowing final frame — the emotional resolve of the climb. The bird is NOT touched (the
+// held glowing final frame - the emotional resolve of the climb. The bird is NOT touched (the
 // locked rising-phoenix ascent stands); this only blooms the light AROUND it, spawned from the live
 // store.phoenixPos. Same idioms as Feathers: canvas glow sprites on the BLOOM_LAYER, additive +
 // toneMapped off, deterministic seeds (no per-frame alloc), scrollProgress via getState() in
@@ -20,7 +20,7 @@ const clamp01 = (t) => Math.min(1, Math.max(0, t));
 const smoothstep = (t) => t * t * (3 - 2 * t);
 const easeOut = (t) => 1 - (1 - t) * (1 - t);
 
-// Soft radial glow sprite — warm core fading to a transparent edge. `core`/`mid` tune the look so
+// Soft radial glow sprite - warm core fading to a transparent edge. `core`/`mid` tune the look so
 // the one maker serves both the big white-gold flare and the smaller gold embers.
 function makeGlowTexture(core, mid) {
   const c = document.createElement('canvas');
@@ -58,7 +58,7 @@ export default function FinaleReveal() {
   const embers = useRef();
   const settle = useRef(0); // 0 at the crest → 1 once held; eases the flare peak down to its hold
 
-  // Deterministic ember directions — a golden-angle spiral biased UP so the burst rises like sparks
+  // Deterministic ember directions - a golden-angle spiral biased UP so the burst rises like sparks
   // rather than spraying down. Seeded by index, so no Math.random in the frame loop.
   const seeds = useMemo(
     () =>
@@ -103,7 +103,7 @@ export default function FinaleReveal() {
     const t = state.clock.elapsedTime;
     const out = easeOut(env);
     const breath = reducedMotion ? 0 : Math.sin(t * 1.1) * FINALE_REVEAL.breath;
-    // Moving the cursor fans the bloom brighter — the finale reacts to you (reduced motion → 0).
+    // Moving the cursor fans the bloom brighter - the finale reacts to you (reduced motion → 0).
     const ptr = reducedMotion ? 0 : Math.min(1, Math.hypot(store.pointerX, store.pointerY));
 
     // Once bloomed, ease the flare from its peak down to a steadier hold over ~1.2s (scroll is

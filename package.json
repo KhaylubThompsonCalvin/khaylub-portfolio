@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "Khaylub.com — the Wanderer experience. One hero character, one continuous scroll-driven 3D timeline.",
+  "description": "Khaylub.com - the Wanderer experience. One hero character, one continuous scroll-driven 3D timeline.",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

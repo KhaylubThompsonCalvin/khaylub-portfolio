@@ -9,7 +9,7 @@ export function groundHeight(x, z) {
   return x * 0.06 + Math.sin(x * 0.25) * 0.12 + Math.sin(z * 0.2) * 0.1;
 }
 
-// Soft radial-gradient shadow texture (canvas) — shared by the painted contact shadow under the
+// Soft radial-gradient shadow texture (canvas) - shared by the painted contact shadow under the
 // Wanderer and the moving shadow under the firebird. Cheaper and more predictable than real shadow
 // maps, which would also fight the selective-bloom render takeover.
 export function makeContactShadowTexture() {
@@ -27,11 +27,11 @@ export function makeContactShadowTexture() {
   return tex;
 }
 
-// Grounding slope — gives the Wanderer a surface so he reads as standing on the trail, not
+// Grounding slope - gives the Wanderer a surface so he reads as standing on the trail, not
 // floating in cream. A wide plane that rises gently toward +X (the summit he faces) and falls
 // toward −X (the valley behind), with low-frequency undulation so it reads as terrain, not a
 // ramp. Fog is left ON (default), so beyond ~26 m it dissolves into whatever colour the sky
-// currently is (Atmosphere drives both) — no hard horizon edge, and the ground re-tints itself
+// currently is (Atmosphere drives both) - no hard horizon edge, and the ground re-tints itself
 // dawn→alpine→summit for free. A soft painted shadow plants his feet (cheaper and more
 // predictable than real shadow maps, which would also fight the bloom render takeover).
 export default function Ground() {

@@ -1,4 +1,4 @@
-# Khaylub.com — Build Plan
+# Khaylub.com - Build Plan
 
 > Phased delivery from empty scaffold to live portfolio. Each phase has a defined goal, deliverables, and exit criteria. Do not start a phase until the previous phase's exit criteria are met.
 
@@ -20,11 +20,11 @@ Phase 1 ──► Phase 2 ──► Phase 3 ──► Phase 4 (ongoing)
 
 ---
 
-## Phase 1 — Foundation
+## Phase 1 - Foundation
 
 **Goal:** Prove the Blender → web pipeline with a single landing page and hero model.
 
-**Prerequisites (documentation only — current phase):**
+**Prerequisites (documentation only - current phase):**
 
 - [x] Project scaffold
 - [x] Architecture document
@@ -52,16 +52,16 @@ Phase 1 ──► Phase 2 ──► Phase 3 ──► Phase 4 (ongoing)
 
 ---
 
-## Phase 2 — Content Shell
+## Phase 2 - Content Shell
 
 **Goal:** Portfolio structure that can hold real projects, without advanced 3D interactions.
 
 **Deliverables:**
 
 - [ ] `content/projects.json` schema defined and populated with 2–3 placeholder entries
-- [ ] `/work` — project grid page with thumbnails, titles, tags
-- [ ] `/work/[slug]` — case study template (text + images; 3D viewer optional)
-- [ ] `/about` — bio and skills section
+- [ ] `/work` - project grid page with thumbnails, titles, tags
+- [ ] `/work/[slug]` - case study template (text + images; 3D viewer optional)
+- [ ] `/about` - bio and skills section
 - [ ] Contact section (email link or placeholder)
 - [ ] Brand assets in `assets/brand/` (logo, favicon)
 - [ ] `docs/content-model.md` documenting the project JSON schema
@@ -69,12 +69,12 @@ Phase 1 ──► Phase 2 ──► Phase 3 ──► Phase 4 (ongoing)
 **Exit criteria:**
 
 - All routes navigable via top nav
-- Adding a new project requires only editing `projects.json` and dropping assets — no scene code changes
+- Adding a new project requires only editing `projects.json` and dropping assets - no scene code changes
 - Site is usable end-to-end with placeholder content
 
 ---
 
-## Phase 3 — Polish & Deploy
+## Phase 3 - Polish & Deploy
 
 **Goal:** Production-ready site live at khaylub.com.
 
@@ -97,7 +97,7 @@ Phase 1 ──► Phase 2 ──► Phase 3 ──► Phase 4 (ongoing)
 
 ---
 
-## Phase 4 — Signature Interactions (ongoing)
+## Phase 4 - Signature Interactions (ongoing)
 
 **Goal:** Features that make the site feel authored and memorable, not generic.
 
@@ -144,6 +144,6 @@ Tasks that span multiple phases:
 
 ## Related Documents
 
-- [architecture.md](architecture.md) — system design and tech stack
-- [blender-export-pipeline.md](blender-export-pipeline.md) — asset export workflow
-- [phase-1-requirements.md](phase-1-requirements.md) — Phase 1 acceptance criteria
+- [architecture.md](architecture.md) - system design and tech stack
+- [blender-export-pipeline.md](blender-export-pipeline.md) - asset export workflow
+- [phase-1-requirements.md](phase-1-requirements.md) - Phase 1 acceptance criteria

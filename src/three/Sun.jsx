@@ -7,12 +7,12 @@ import { BLOOM_LAYER } from './SelectiveBloom.jsx';
 const clamp01 = (t) => Math.min(1, Math.max(0, t));
 const smoothstep = (t) => t * t * (3 - 2 * t);
 
-// The summit sun — a bright emissive sphere far in the sky behind the phoenix's flight, on the
+// The summit sun - a bright emissive sphere far in the sky behind the phoenix's flight, on the
 // bloom layer so it blooms into a radiant sun. It rises and ignites across the summit approach so
 // the firebird reads as flying INTO it. Scroll-driven via getState() in useFrame (the idiom);
-// dormant (hidden) until ~0.8 so it costs nothing earlier. fog is off — it's a light, not terrain.
+// dormant (hidden) until ~0.8 so it costs nothing earlier. fog is off - it's a light, not terrain.
 // Placed high + far BEHIND the bird (Kt: "the sun should be above it") so at the finale head-on
-// landing it reads as a contained warm disc ABOVE the firebird — the phoenix rising toward the sun —
+// landing it reads as a contained warm disc ABOVE the firebird - the phoenix rising toward the sun  - 
 // while staying far enough back that it doesn't bloom-wash the bird. Tuned live by unprojecting a
 // screen point above the bird and pushing it into the background (swept; [-8,18,27] lands the sun
 // above with the firebird crisp below). During the orbit it passes in/out of frame, which is fine.
@@ -33,7 +33,7 @@ export default function Sun() {
     const g = group.current;
     if (!g) return;
     const p = useExperience.getState().scrollProgress;
-    // Ignites LATE on the final approach and stays bright through the summit — the warm disc the
+    // Ignites LATE on the final approach and stays bright through the summit - the warm disc the
     // firebird flies toward. Pushed from 0.80 to 0.84 so it no longer blooms into a white wash that
     // swallows the bird around 0.85; by 1.0 it's still at full brightness for the locked summit.
     const e = smoothstep(clamp01((p - 0.84) / 0.16));

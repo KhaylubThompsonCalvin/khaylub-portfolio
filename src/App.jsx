@@ -17,9 +17,9 @@ import Contact from './ui/Contact.jsx';
 export default function App() {
   const setReducedMotion = useExperience((s) => s.setReducedMotion);
   const setPointer = useExperience((s) => s.setPointer);
-  // discrete (~6 changes total), never per-frame — safe to subscribe; drives reveal-and-stay
+  // discrete (~6 changes total), never per-frame - safe to subscribe; drives reveal-and-stay
   const reachedStageIndex = useExperience((s) => s.reachedStageIndex);
-  // discrete one-shot flag — gates the dawn-grass plate (below) so it doesn't double-fetch
+  // discrete one-shot flag - gates the dawn-grass plate (below) so it doesn't double-fetch
   const started = useExperience((s) => s.started);
 
   const overlayRef = useRef(null);
@@ -27,7 +27,7 @@ export default function App() {
   // wire scroll -> store (Lenis); stageId drives DOM reveals, no GSAP (see ADR-001)
   useScrollSetup();
 
-  // Drive the night→sunny chrome from scroll (imperative via store.subscribe — no re-render):
+  // Drive the night→sunny chrome from scroll (imperative via store.subscribe - no re-render):
   //  • text colour flips light→dark with the day so it stays readable on the dark night sky and
   //    the bright sunny summit (the accessible version of Noomo's sectionColor);
   //  • a --fire ramp lights the closing contact links in step with the phoenix's fire.
@@ -36,12 +36,12 @@ export default function App() {
     const mix = (a, b, t) => Math.round(a + (b - a) * t);
     // The intro beats are vertically centred in tall, freely-scrolling sections, so their copy
     // travels up behind the fixed nav (which has no backdrop) and collides with the brand mark. A
-    // full-width top scrim can't fix it — the phoenix shares that strip from ~0.5 on — so fade the
+    // full-width top scrim can't fix it - the phoenix shares that strip from ~0.5 on - so fade the
     // DOM copy out at the top edge instead. Only the short single-viewport beats (#work's tall card
     // stack is excluded so its lower cards stay readable while scrolling). The fade is applied only
     // while a block is in the nav band; otherwise control is handed back to the reveal-and-stay CSS
-    // so the entrance reveal is untouched. A few rect reads per scroll — cheap, no React re-render.
-    const NAV_BAND = 130; // px — the fixed nav lives in roughly the top 130px
+    // so the entrance reveal is untouched. A few rect reads per scroll - cheap, no React re-render.
+    const NAV_BAND = 130; // px - the fixed nav lives in roughly the top 130px
     const topFade = Array.from(
       document.querySelectorAll('#arrival .inner, #philosophy .inner, #focus .inner, #spark .inner')
     );
@@ -70,7 +70,7 @@ export default function App() {
         `${mix(14, 236, day)},${mix(18, 232, day)},${mix(32, 224, day)}`
       );
       // --fire: 0→1 across the summit window (the same beat the phoenix ignites), so the closing
-      // contact links brighten WITH the firebird's fire — the spark→fire motif resolving into the
+      // contact links brighten WITH the firebird's fire - the spark→fire motif resolving into the
       // call-to-action. The overlay is NOT faded out at the end any more: the lit links + phoenix
       // are the closing image, so they stay.
       const fire = Math.min(1, Math.max(0, (p - 0.8) / 0.18));
@@ -140,7 +140,7 @@ export default function App() {
           The dawn-grass plate mounts only after the gate: LoadGate plays the SAME file as its
           backdrop, and two live <video> elements at load downloaded the full 4.6 MB twice in
           parallel. The plate is invisible until scrolling anyway (its fadeIn ramps from 0), so
-          mounting it post-gate is a pure loading fix — the request then hits the HTTP cache. */}
+          mounting it post-gate is a pure loading fix - the request then hits the HTTP cache. */}
       {started && (
         <VideoAtmosphere
           src="/assets/video/dawn-grass.mp4"
@@ -158,7 +158,7 @@ export default function App() {
         deferUntil={0.38}
       />
       {/* Summit clouds: scrubbed by scroll across the final approach and FROZEN on its last frame
-          at the summit hold — a still, frame-matched sky behind the Wanderer's arrival, not looping
+          at the summit hold - a still, frame-matched sky behind the Wanderer's arrival, not looping
           motion drifting behind a static beat. */}
       <VideoAtmosphere
         src="/assets/video/summit-clouds.mp4"
@@ -169,7 +169,7 @@ export default function App() {
         deferUntil={0.74}
       />
 
-      {/* scrollable DOM overlay column — its height creates the scroll track */}
+      {/* scrollable DOM overlay column - its height creates the scroll track */}
       <main
         ref={overlayRef}
         className="overlay"

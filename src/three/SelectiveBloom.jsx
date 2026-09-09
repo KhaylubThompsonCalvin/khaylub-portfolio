@@ -8,7 +8,7 @@ import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPa
 import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass.js';
 
 // Selective bloom built on three's own postprocessing passes (no @react-three/postprocessing
-// dependency — three is already installed). Only objects opted in via BLOOM_LAYER glow; the
+// dependency - three is already installed). Only objects opted in via BLOOM_LAYER glow; the
 // light cream background and the matte Wanderer never bloom. PhoenixFlap enables this layer on
 // its emissive feather meshes, so the "Spark of the Summit" ember/fire gets a real halo.
 //
@@ -74,7 +74,7 @@ export default function SelectiveBloom({ strength = 1.0, radius = 0.5, threshold
 
     return { bloomComposer, finalComposer, bloomPass };
     // Rebuild composers only when the renderer/scene/camera identity changes. size and the bloom
-    // params are intentionally excluded — the resize and retune effects below keep them in sync,
+    // params are intentionally excluded - the resize and retune effects below keep them in sync,
     // so listing them here would needlessly tear down and rebuild the whole pipeline.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gl, scene, camera]);

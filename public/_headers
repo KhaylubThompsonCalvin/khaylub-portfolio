@@ -8,7 +8,7 @@
 # Cache tiers (2026-07-05 spec, Kt-approved). Measured before: EVERY response served
 # max-age=0, so returning visitors revalidated ~15 assets per visit. The Vite bundle is
 # content-hashed (safe to cache forever); the media files keep stable names, so they get a
-# week + the existing ETag as the safety net — graduate them to immutable only if a
+# week + the existing ETag as the safety net - graduate them to immutable only if a
 # rename-on-change convention is adopted (KT decision). The HTML shell keeps the platform
 # default (revalidate) on purpose: it is what picks up new deploys.
 /assets/index-*.js

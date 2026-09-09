@@ -14,13 +14,13 @@ _The core feature: story unfolds as users scroll, animation and content reveal t
 
 - Content unfolds dynamically as users scroll through a page
 - Each scroll movement triggers animations, transitions, and media reveals
-- Creates a reward-based feedback loop — the user controls the pace
+- Creates a reward-based feedback loop - the user controls the pace
 
 **Tools to implement:**
 
-- **GSAP** (GreenSock Animation Platform) — industry standard for scroll-triggered animations
-- **Intersection Observer API** — native browser API for scroll-based triggers
-- **Lottie** — for lightweight SVG animations
+- **GSAP** (GreenSock Animation Platform) - industry standard for scroll-triggered animations
+- **Intersection Observer API** - native browser API for scroll-based triggers
+- **Lottie** - for lightweight SVG animations
 
 **Applied to Khaylub.com:**
 
@@ -190,7 +190,7 @@ _Break up vertical scrolling with a horizontal scroll segment to avoid monotony.
 
 - Projects could be a horizontal carousel reveal
 - Timeline milestones could scroll sideways
-- Must be used carefully — accessibility and mobile UX can suffer
+- Must be used carefully - accessibility and mobile UX can suffer
 
 ---
 
@@ -225,7 +225,7 @@ _Your unique idea: navigation opens from a character backpack (future Wanderer f
 
 - A visual "portal" opens at scroll position or on click
 - Each menu item links to a different "leg" of the journey
-- Creates immersion — navigation _is_ part of the journey
+- Creates immersion - navigation _is_ part of the journey
 
 **Applied to Khaylub.com (Phase 4, with Blender):**
 
@@ -242,42 +242,42 @@ _Your unique idea: navigation opens from a character backpack (future Wanderer f
 
 ## Feature Priority for Launch Readiness
 
-### **Phase 1 (Static Only — Current)**
+### **Phase 1 (Static Only - Current)**
 
 - ✅ No changes needed; copy is locked.
 
-### **Phase 2 (Cinematic Foundation — Before Blender)**
+### **Phase 2 (Cinematic Foundation - Before Blender)**
 
 _Add these without Blender dependencies:_
 
-1. **Scrollytelling on Journey section** — GSAP ScrollTrigger pinning
+1. **Scrollytelling on Journey section** - GSAP ScrollTrigger pinning
    - Each Camp reveals in stages
    - Estimated effort: 3–4 hours
    - Impact: Makes the timeline feel more cinematic
 
-2. **Parallax in hero section** — Background/foreground layers
+2. **Parallax in hero section** - Background/foreground layers
    - Mountains shift at different speeds
    - Estimated effort: 2–3 hours
    - Impact: Immediate visual upgrade
 
-3. **Staggered project card reveals** — GSAP animation
+3. **Staggered project card reveals** - GSAP animation
    - Cards appear on scroll, not all at once
    - Estimated effort: 1–2 hours
    - Impact: Makes projects feel more intentional
 
-4. **Smooth color/typography transitions** — CSS custom props + scroll
+4. **Smooth color/typography transitions** - CSS custom props + scroll
    - Text size subtly changes, colors shift
    - Estimated effort: 2–3 hours
    - Impact: Reinforces "journey through seasons" theme
 
-5. **Microinteractions on cards** — Hover states, subtle animations
+5. **Microinteractions on cards** - Hover states, subtle animations
    - Project cards respond to interaction
    - Estimated effort: 1–2 hours
    - Impact: Site feels more responsive and alive
 
 **Total Phase 2 effort:** ~10–15 hours, spread across 2–3 weeks
 
-### **Phase 3 (Blender + Three.js — When Assets Exist)**
+### **Phase 3 (Blender + Three.js - When Assets Exist)**
 
 - Light 3D landscape (mountains, path)
 - Wanderer character in scene
@@ -309,9 +309,9 @@ _Add these without Blender dependencies:_
 
 All of these features must maintain **Core Web Vitals** to avoid SEO damage:
 
-- **LCP (Largest Contentful Paint):** < 2.5s — don't load heavy libraries upfront
-- **CLS (Cumulative Layout Shift):** < 0.1 — smooth animations, no janky reveals
-- **FID (First Input Delay):** < 100ms — scroll listeners must use `will-change` and `transform` only
+- **LCP (Largest Contentful Paint):** < 2.5s - don't load heavy libraries upfront
+- **CLS (Cumulative Layout Shift):** < 0.1 - smooth animations, no janky reveals
+- **FID (First Input Delay):** < 100ms - scroll listeners must use `will-change` and `transform` only
 
 **Guidelines:**
 
@@ -341,6 +341,6 @@ All of these features must maintain **Core Web Vitals** to avoid SEO damage:
 
 ## Next Step
 
-Once you choose features for Phase 2, create a separate **`FEATURE_BUILD_PLAN.md`** with user stories, wireframes, and sprint breakdown. This doc is reference only — pick what resonates, skip what doesn't.
+Once you choose features for Phase 2, create a separate **`FEATURE_BUILD_PLAN.md`** with user stories, wireframes, and sprint breakdown. This doc is reference only - pick what resonates, skip what doesn't.
 
 _No action needed yet. This is a resource for planning the cinematic upgrades before Blender launches._

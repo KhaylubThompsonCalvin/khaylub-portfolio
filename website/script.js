@@ -1,5 +1,5 @@
 /* ============================================================
-   Khaylub.com — Phase 1 JavaScript
+   Khaylub.com - Phase 1 JavaScript
    - Footer year
    - Scroll-reveal (IntersectionObserver)
    - Scene scaffold: a single scroll-progress source of truth +
@@ -44,10 +44,10 @@
   }
 
   /* ============================================================
-     SCENE SCAFFOLD — Phase 3 mount point (currently inert)
+     SCENE SCAFFOLD - Phase 3 mount point (currently inert)
      ------------------------------------------------------------
      The Wanderer is authored in Blender and exported as a
-     compressed GLB (see vault: "Three.js Prep — Blender Export
+     compressed GLB (see vault: "Three.js Prep - Blender Export
      Spec"). When that asset exists, set window.KHAYLUB_ENABLE_3D
      = true before this script and implement mountWandererScene().
      Already provided here:

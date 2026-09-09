@@ -34,7 +34,7 @@ const clamp01 = (t) => Math.min(1, Math.max(0, t));
 const smoothstep = (t) => t * t * (3 - 2 * t);
 const lerp = (a, b, t) => a + (b - a) * t;
 
-// The GLB's origin sits BELOW the bird's body — its visual centre is ~this many LOCAL units above
+// The GLB's origin sits BELOW the bird's body - its visual centre is ~this many LOCAL units above
 // the pivot (measured from the rendered world bbox: ~0.30 × scale). Published scaled as
 // phoenixPos.cy so the finale camera frames the bird centred on its body, not on the pivot under it.
 const PHOENIX_CENTER_LOCAL_Y = 0.3;
@@ -77,7 +77,7 @@ function samplePath(path, p, out) {
 // "Spark of the Summit": the phoenix is dormant until the midpoint, then an ember fades in
 // (~0.50), arcs through the far background behind the Wanderer along a Catmull-Rom path, and
 // its emission + wingbeat ramp ember -> fire across 0.50 -> 0.98, peaking at the summit close.
-// Path, ramps, and clip pick are scroll-driven via getState() (ADR-001 idiom — no per-frame
+// Path, ramps, and clip pick are scroll-driven via getState() (ADR-001 idiom - no per-frame
 // React re-render, no GSAP). Choreography lives in data/phoenix.js.
 export default function PhoenixFlap(props) {
   const group = useRef();
@@ -98,7 +98,7 @@ export default function PhoenixFlap(props) {
   const px = useRef(0); // pointer x, smoothed
   const py = useRef(0); // pointer y, smoothed
   const flair = useRef(0); // normalized |scroll velocity|, smoothed
-  const yaw = useRef(0); // smoothed heading — eased toward the path tangent so turns never snap
+  const yaw = useRef(0); // smoothed heading - eased toward the path tangent so turns never snap
   const yawInit = useRef(false); // snap to the first valid heading, then ease from there
 
   // The feather material(s) carry the baked ember emission; the body material is matte
@@ -117,10 +117,10 @@ export default function PhoenixFlap(props) {
         // and the bloom pass already renders fog-free. Keeps the form crisp at any distance.
         m.fog = false;
         if (m.emissive && (m.emissive.r || m.emissive.g || m.emissive.b)) {
-          feathers.add(m); // ember/fire feathers — bloom + full emission ramp
+          feathers.add(m); // ember/fire feathers - bloom + full emission ramp
           emissive = true;
         } else if (m.emissive) {
-          body.add(m); // matte body/head — warmed (no bloom) so the bird reads as fire-lit
+          body.add(m); // matte body/head - warmed (no bloom) so the bird reads as fire-lit
         }
       }
       // Opt only the ember/fire feather meshes into selective bloom, so the body stays solid.
@@ -160,7 +160,7 @@ export default function PhoenixFlap(props) {
     const p = store.scrollProgress;
 
     // Before the spark the phoenix is UNSEEN. Its presence in the philosophy beat is felt only as a
-    // shadow sweeping the Wanderer's back (three/ForeshadowShadow.jsx) — not a visible bird in the
+    // shadow sweeping the Wanderer's back (three/ForeshadowShadow.jsx) - not a visible bird in the
     // sky. Keep it hidden and bleed the interaction state back to rest so the main regime starts
     // clean, not snapped.
     if (p < PHOENIX.spark) {
@@ -195,7 +195,7 @@ export default function PhoenixFlap(props) {
     g.position.copy(pos);
     // Heading: face the travel direction, but EASED with shortest-angle interpolation so the bird
     // BANKS smoothly through the summit turn-back instead of snapping when the tangent swings (the
-    // old far-out-and-back path flipped the yaw ~180° — the unnatural twist). When the motion is
+    // old far-out-and-back path flipped the yaw ~180° - the unnatural twist). When the motion is
     // near-vertical (the climb), the horizontal tangent is tiny and noisy, so HOLD the last heading
     // rather than chasing jitter. Pointer yaw is still added on top below.
     samplePath(FLIGHT, Math.min(1, p + 0.02), ahead);
@@ -208,7 +208,7 @@ export default function PhoenixFlap(props) {
         yawInit.current = true;
       } else {
         let d = targetYaw - yaw.current;
-        d = Math.atan2(Math.sin(d), Math.cos(d)); // shortest angle — never wraps ±2π into a spin
+        d = Math.atan2(Math.sin(d), Math.cos(d)); // shortest angle - never wraps ±2π into a spin
         yaw.current += d * (1 - Math.exp(-2.6 * dt));
       }
     }
@@ -223,7 +223,7 @@ export default function PhoenixFlap(props) {
     g.rotation.y += px.current * (POINTER.yaw + SUMMIT_INTERACT.yaw * summit) * live;
     g.rotation.z = -px.current * (POINTER.bank + SUMMIT_INTERACT.bank * summit) * live;
     // The summit "presentation in the round" is now done by the CAMERA orbiting the bird (see
-    // CameraRig FINALE), so the model itself keeps FLYING along its heading — no turntable here.
+    // CameraRig FINALE), so the model itself keeps FLYING along its heading - no turntable here.
     // Cursor steering (applied above) still flies it within the held front shot.
     // Forward glide attitude so the talons trail rather than hang straight down; eased to 0 by the
     // summit (0.85→1.0) so the locked freeze pose keeps its upright presentation.
@@ -236,7 +236,7 @@ export default function PhoenixFlap(props) {
     g.scale.setScalar(scl);
 
     // Ember glow -> fire, plus the scroll-velocity flare AND the cursor fanning the fire: moving
-    // the mouse (away from centre, while engaged) lights the embers up brighter — the pointer
+    // the mouse (away from centre, while engaged) lights the embers up brighter - the pointer
     // controls both where it flies and how it glows.
     const pointerGlow =
       live *
@@ -265,7 +265,7 @@ export default function PhoenixFlap(props) {
     // scroll (Kt): the wings ease to a stop and the firebird holds its glowing front-on pose as the
     // camera lands head-on. At rest it stays frozen; moving the cursor WAKES the wings (fly-by-
     // command), so the held hero stirs to life when you interact. Scroll-anchored freeze → honours
-    // reduced motion (where `live` is 0, so there's no wake — it simply freezes).
+    // reduced motion (where `live` is 0, so there's no wake - it simply freezes).
     if (flapAction.current) {
       const a = flapAction.current;
       const base = reducedMotion
@@ -295,7 +295,7 @@ export default function PhoenixFlap(props) {
     if (!reducedMotion) {
       const t = state.clock.elapsedTime;
       g.position.y += Math.sin(t * 0.8) * 0.12 * emerge;
-      // Summit hover — a gentle autonomous drift so the held firebird reads as FLYING in the sky,
+      // Summit hover - a gentle autonomous drift so the held firebird reads as FLYING in the sky,
       // not parked. The finale camera re-centres on it each frame, so this parallaxes the sky
       // behind it. Gated by `summit`, so the flight path before the close is untouched.
       g.position.x += Math.sin(t * 0.5) * SUMMIT_INTERACT.hoverSwayX * summit;
@@ -307,10 +307,10 @@ export default function PhoenixFlap(props) {
     pp.x = g.position.x;
     pp.y = g.position.y;
     pp.z = g.position.z;
-    // visual-centre Y (the body sits ~PHOENIX_CENTER_LOCAL_Y × scale above the pivot) — the finale
+    // visual-centre Y (the body sits ~PHOENIX_CENTER_LOCAL_Y × scale above the pivot) - the finale
     // camera aims here so the firebird frames CENTRED, not its pivot (which is below the body).
     pp.cy = g.position.y + scl * PHOENIX_CENTER_LOCAL_Y;
-    // base facing (scroll heading WITHOUT the pointer yaw) — the finale camera builds its head-on
+    // base facing (scroll heading WITHOUT the pointer yaw) - the finale camera builds its head-on
     // FRONT view from this, so moving the mouse turns the bird WITHIN the shot instead of dragging
     // the camera around with it. local +Z is the beak, so forward = (sin yaw, 0, cos yaw).
     pp.fx = Math.sin(yaw.current);

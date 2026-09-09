@@ -5,7 +5,7 @@ import { useExperience } from '../store/useExperience.js';
 
 const clamp01 = (t) => Math.min(1, Math.max(0, t));
 
-// The far mountain vista (Higgsfield matte plate) on a large plane deep in the scene — NOT a flat
+// The far mountain vista (Higgsfield matte plate) on a large plane deep in the scene - NOT a flat
 // DOM overlay, so it parallaxes with the camera behind the procedural ridges (three/Mountains.jsx)
 // for true depth as the Wanderer crests. Fog-exempt (far past the scene fog), revealed by scroll on
 // the same approach window, then held through the summit.

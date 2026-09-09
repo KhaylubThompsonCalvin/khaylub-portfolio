@@ -44,7 +44,7 @@ These must be complete **before** initializing the Next.js project.
 | 5   | Updated README                   | `README.md`                            | Done            |
 | 6   | Hero Blender scene               | `assets/blender/hero/hero-scene.blend` | **Not started** |
 | 7   | Hero GLB export                  | `assets/models/hero/hero-scene.glb`    | **Not started** |
-| 8   | Export validation                | glTF viewer — zero errors              | **Not started** |
+| 8   | Export validation                | glTF viewer - zero errors              | **Not started** |
 | 9   | Export log                       | `assets/models/hero/export-log.md`     | **Not started** |
 
 ### Hero asset requirements
@@ -56,7 +56,7 @@ These must be complete **before** initializing the Next.js project.
 | Triangle count   | ≤ 100,000                                 |
 | Materials        | Principled BSDF with baked textures       |
 | Animation        | None                                      |
-| Lighting in file | None — lighting handled in code           |
+| Lighting in file | None - lighting handled in code           |
 | Naming           | `hero-scene.glb` in `assets/models/hero/` |
 
 ## Implementation Deliverables
@@ -70,7 +70,7 @@ These are built **after** pre-code items 6–9 are complete.
 | 3   | Hero model in public dir | `website/public/models/hero/hero-scene.glb`                     |
 | 4   | Canvas scene component   | Loads GLB via `useGLTF`, renders with lighting                  |
 | 5   | Landing page             | Full-viewport canvas + HTML overlay                             |
-| 6   | Orbit controls           | `OrbitControls` from drei — enable rotate and zoom, disable pan |
+| 6   | Orbit controls           | `OrbitControls` from drei - enable rotate and zoom, disable pan |
 | 7   | Responsive canvas        | Canvas fills viewport on 1920×1080 and 390×844                  |
 | 8   | Placeholder nav          | Links to `#` for Work, About, Contact                           |
 | 9   | `.gitignore`             | Excludes `node_modules/`, `.next/`, `.env*`                     |
@@ -118,7 +118,7 @@ All must pass before Phase 1 is considered complete.
 │              │              │                    │
 │              └──────────────┘                    │
 │                                                  │
-│  Creative portfolio — interactive 3D             │  ← Tagline overlay
+│  Creative portfolio - interactive 3D             │  ← Tagline overlay
 └──────────────────────────────────────────────────┘
 ```
 
@@ -140,8 +140,8 @@ Once pre-code deliverables are done:
 1. `npx create-next-app@latest website` with TypeScript, Tailwind, App Router
 2. Install `three @react-three/fiber @react-three/drei` and types
 3. Copy `assets/models/hero/hero-scene.glb` → `website/public/models/hero/`
-4. Create `src/components/canvas/HeroScene.tsx` — Canvas, lights, OrbitControls, useGLTF
-5. Create `src/app/page.tsx` — full-viewport layout with overlay UI
+4. Create `src/components/canvas/HeroScene.tsx` - Canvas, lights, OrbitControls, useGLTF
+5. Create `src/app/page.tsx` - full-viewport layout with overlay UI
 6. Verify locally, fix materials/lighting if model appears wrong
 7. Initialize git, commit, update README status
 
@@ -158,6 +158,6 @@ At that point, proceed to [Phase 2 in build-plan.md](build-plan.md).
 
 ## Related Documents
 
-- [architecture.md](architecture.md) — tech stack and folder layout
-- [blender-export-pipeline.md](blender-export-pipeline.md) — how to create the hero GLB
-- [build-plan.md](build-plan.md) — what comes after Phase 1
+- [architecture.md](architecture.md) - tech stack and folder layout
+- [blender-export-pipeline.md](blender-export-pipeline.md) - how to create the hero GLB
+- [build-plan.md](build-plan.md) - what comes after Phase 1

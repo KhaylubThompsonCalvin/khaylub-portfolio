@@ -1,7 +1,7 @@
-// Optional cinematic ambient score — layer 2. Synthesized in Web Audio (no asset, no dependency),
+// Optional cinematic ambient score - layer 2. Synthesized in Web Audio (no asset, no dependency),
 // because Higgsfield's audio is text-to-speech only and its music model is off-limits (game
 // pipeline). A slow, warm, consonant pad: an open A-minor voicing in lightly detuned pairs through
-// a soft low-pass, breathing on a slow LFO. No rhythm, no lyrics, no trailer swell — meant to
+// a soft low-pass, breathing on a slow LFO. No rhythm, no lyrics, no trailer swell - meant to
 // support reflection, not push. Opt-in only (the nav cycles Ambient → +Music → Off). A licensed
 // track can replace this later by loading a file here instead (see ./README.md).
 export function createScore(ctx, destination) {

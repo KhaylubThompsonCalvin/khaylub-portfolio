@@ -1,4 +1,4 @@
-// Story-beat audio (layer 3) — soft atmospheric swells tied to narrative moments (the phoenix
+// Story-beat audio (layer 3) - soft atmospheric swells tied to narrative moments (the phoenix
 // reveal, the summit), synthesized in Web Audio. Deliberately non-melodic (an airy band-passed
 // rise plus a faint high shimmer at the strongest swells), so it reads as story atmosphere rather
 // than the opt-in music. AudioManager drives setLevel() from scrollProgress, so each beat rises as
@@ -8,7 +8,7 @@ export function createStoryBeats(ctx, destination) {
   out.gain.value = 0;
   out.connect(destination);
 
-  // Airy rise — looped noise through a bandpass; the swell is in out.gain.
+  // Airy rise - looped noise through a bandpass; the swell is in out.gain.
   const seconds = 3;
   const buffer = ctx.createBuffer(1, ctx.sampleRate * seconds, ctx.sampleRate);
   const data = buffer.getChannelData(0);
@@ -27,7 +27,7 @@ export function createStoryBeats(ctx, destination) {
   airGain.connect(out);
   noise.start();
 
-  // Faint sustained high shimmer (an open fifth) that only joins at the biggest swell — the
+  // Faint sustained high shimmer (an open fifth) that only joins at the biggest swell - the
   // summit "emotional peak". Held under its own gain so it can be brought in independently.
   const shimmer = ctx.createGain();
   shimmer.gain.value = 0;

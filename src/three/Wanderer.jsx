@@ -11,8 +11,8 @@ useGLTF.preload(MODEL);
 const WALK_END = 0.66; // scroll fraction by which he has arrived and stops
 const CYCLES = 6; // stride cycles taken across the journey
 
-// System 1 — Hero Character. Uses drei's useAnimations binding (correct pose), but the
-// walk is PAUSED and we set action.time from scrollProgress each frame — so scroll
+// System 1 - Hero Character. Uses drei's useAnimations binding (correct pose), but the
+// walk is PAUSED and we set action.time from scrollProgress each frame - so scroll
 // drives his stride and he comes to rest at the work. Phase 3 keyframes the camera.
 export default function Wanderer(props) {
   const group = useRef();

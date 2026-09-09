@@ -34,10 +34,10 @@ function makeRidgeGeo(width, height, segs, peakAmp, seed) {
   return g;
 }
 
-// Layered distant mountains behind the summit — real geometry (not a flat plate), so the ranges
+// Layered distant mountains behind the summit - real geometry (not a flat plate), so the ranges
 // PARALLAX against each other and the sky as the camera cranes/tilts at the top: the vista of "more
 // mountains" opens up with depth as the Wanderer crests. Unlit + fog-exempt (they sit far past the
-// scene fog) with hand-tuned atmospheric tint — nearer ranges darker/cooler, far ranges hazing into
+// scene fog) with hand-tuned atmospheric tint - nearer ranges darker/cooler, far ranges hazing into
 // the sky. Revealed by scroll (~0.70→0.88) so they rise into view on the approach, then hold.
 const LAYERS = [
   { dist: 46, width: 150, height: 30, peakAmp: 12, segs: 120, color: '#73869e', maxOp: 0.92, seed: 0.4, y: 1 },

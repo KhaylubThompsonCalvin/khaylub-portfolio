@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Khaylub.com — The Climb</title>
+<title>Khaylub.com - The Climb</title>
 <style>
   *{margin:0;padding:0;box-sizing:border-box;}
   :root{--font-display:Georgia,'Times New Roman',serif;
@@ -81,7 +81,7 @@
     frameCount: 12,    // 12 real verification frames rendered from Blender (frames 1..820). Re-render denser later.
   };
   // ---- BEATS: keyed to scroll fraction (0..1), independent of frame count ----
-  // Text is Kt's own — from the approved quote bank (Letter to Time / Lock-In).
+  // Text is Kt's own - from the approved quote bank (Letter to Time / Lock-In).
   const BEATS = [
     {p:0.00, w:0.09, who:'Khaylub.com', text:'This site documents the climb, not the arrival.'},
     {p:0.11, w:0.09, text:'Growth follows its own timeline.'},
@@ -202,7 +202,7 @@
       const img=nearestLoaded(idx); if(img){ctx.clearRect(0,0,cv.width,cv.height);coverDraw(img);} }
     else drawFallback(p);
 
-    // fog seams (crossfade) — rides on top in both modes
+    // fog seams (crossfade) - rides on top in both modes
     let f=0; SEAMS.forEach(s=>{f=Math.max(f,1-Math.min(1,Math.abs(p-s)/0.045));});
     fog.style.background=`radial-gradient(130% 80% at 50% 58%, rgba(248,247,244,${0.9*f}), rgba(248,247,244,0) 72%)`;
 

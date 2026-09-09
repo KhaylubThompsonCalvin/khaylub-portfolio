@@ -1,11 +1,11 @@
 # Wanderer Production Roadmap
 
 > Blender-only work extracted from `FUTURE_VISION.md`, ordered by dependency and paced for a student learning Blender at **~1 hour per day**.
-> Scope is Blender deliverables: the character, its gear, rig, animation, and the four seasonal scenes. Website integration (renders, GLB export, React Three Fiber) is out of scope here — it begins only after these assets exist.
+> Scope is Blender deliverables: the character, its gear, rig, animation, and the four seasonal scenes. Website integration (renders, GLB export, React Three Fiber) is out of scope here - it begins only after these assets exist.
 
 ## How to read this
 
-Stages are strictly dependency-ordered: each one needs the previous one finished. Don't jump ahead — a rig built on unfinished geometry, or a scene built around an unanimated character, creates rework that costs far more than the hour it seemed to save.
+Stages are strictly dependency-ordered: each one needs the previous one finished. Don't jump ahead - a rig built on unfinished geometry, or a scene built around an unanimated character, creates rework that costs far more than the hour it seemed to save.
 
 Time is given as **focused hours** and a **calendar estimate at 1 hr/day**. Real days off, school load, and learning detours will stretch these. That's expected. The order matters more than the dates.
 
@@ -33,7 +33,7 @@ Stages 1→5 build the character. Stages 6→9 reuse that finished, animated cha
 
 ---
 
-## Stage 1 — Character completion
+## Stage 1 - Character completion
 
 **Goal:** a finished, clean Wanderer body mesh you're willing to build everything else on.
 
@@ -46,7 +46,7 @@ Stages 1→5 build the character. Stages 6→9 reuse that finished, animated cha
 - Confirm the mesh is watertight; remove doubles, stray verts, hidden faces.
 - Apply all transforms (scale 1.0, rotation 0).
 - Shade smooth; fix any shading artifacts.
-- Block in base materials (Principled BSDF only — keeps every future option open).
+- Block in base materials (Principled BSDF only - keeps every future option open).
 - Save as a clean `wanderer-body-final.blend`.
 
 **Focused hours:** 12–18 · **At 1 hr/day:** ~3 weeks
@@ -55,7 +55,7 @@ Stages 1→5 build the character. Stages 6→9 reuse that finished, animated cha
 
 ---
 
-## Stage 2 — Clothing completion
+## Stage 2 - Clothing completion
 
 **Goal:** jacket, boots, glasses fitted to the finished body.
 
@@ -76,11 +76,11 @@ Stages 1→5 build the character. Stages 6→9 reuse that finished, animated cha
 
 ---
 
-## Stage 3 — Backpack completion
+## Stage 3 - Backpack completion
 
 **Goal:** the backpack modeled and seated against the back.
 
-**Depends on:** Stages 1–2 (sits on the body, over the jacket). Called out separately because it is the asset the **Backpack portal concept** in `FUTURE_VISION.md` depends on — it deserves more care than a generic prop.
+**Depends on:** Stages 1–2 (sits on the body, over the jacket). Called out separately because it is the asset the **Backpack portal concept** in `FUTURE_VISION.md` depends on - it deserves more care than a generic prop.
 
 **Tasks:**
 
@@ -95,11 +95,11 @@ Stages 1→5 build the character. Stages 6→9 reuse that finished, animated cha
 
 ---
 
-## Stage 4 — Rigging
+## Stage 4 - Rigging
 
 **Goal:** a working deform rig for body and limbs.
 
-**Depends on:** Stages 1–3 — rig the **finished, dressed** character so weights are painted once against final geometry.
+**Depends on:** Stages 1–3 - rig the **finished, dressed** character so weights are painted once against final geometry.
 
 **Tasks:**
 
@@ -107,7 +107,7 @@ Stages 1→5 build the character. Stages 6→9 reuse that finished, animated cha
 - Parent body with automatic weights, then **weight-paint the joints by hand**: shoulders, elbows, hips, knees, ankles.
 - Decide how clothing follows the body (parent to bones, or its own weights).
 - Test extreme poses for each joint; fix pinching and collapse.
-- Keep it simple: body + limbs first. **Face and finger rigs are optional and lowest priority** — skip them for the first pass.
+- Keep it simple: body + limbs first. **Face and finger rigs are optional and lowest priority** - skip them for the first pass.
 
 **Focused hours:** 15–20 · **At 1 hr/day:** ~3–4 weeks
 
@@ -115,11 +115,11 @@ Stages 1→5 build the character. Stages 6→9 reuse that finished, animated cha
 
 ---
 
-## Stage 5 — Animation (idle → walk)
+## Stage 5 - Animation (idle → walk)
 
-**Goal:** two clips — a subtle idle and a believable walk cycle.
+**Goal:** two clips - a subtle idle and a believable walk cycle.
 
-**Depends on:** Stage 4 — you can only animate what deforms correctly.
+**Depends on:** Stage 4 - you can only animate what deforms correctly.
 
 **Tasks:**
 
@@ -134,15 +134,15 @@ Stages 1→5 build the character. Stages 6→9 reuse that finished, animated cha
 
 ---
 
-## Stage 6 — Spring scene
+## Stage 6 - Spring scene
 
 **Goal:** the first complete environment with the animated Wanderer placed in it.
 
-**Depends on:** Stages 1–5 — the scene showcases the finished, animated character. **First of the four seasons** because the Spring prototype is already underway, so it surfaces scene/lighting/render problems once, before the other three repeat the pattern.
+**Depends on:** Stages 1–5 - the scene showcases the finished, animated character. **First of the four seasons** because the Spring prototype is already underway, so it surfaces scene/lighting/render problems once, before the other three repeat the pattern.
 
 **Tasks:**
 
-- Assemble environment: dirt path, grass, a tree, distant mountain silhouette — matching the site's mountain-journey theme.
+- Assemble environment: dirt path, grass, a tree, distant mountain silhouette - matching the site's mountain-journey theme.
 - Use real geometry where it must read across lighting setups.
 - Light for warm, contemplative mood (golden, low sun).
 - Place the Wanderer on the path; set a hero camera angle.
@@ -155,21 +155,21 @@ Stages 1→5 build the character. Stages 6→9 reuse that finished, animated cha
 
 ---
 
-## Stage 7 — Summer scene
+## Stage 7 - Summer scene
 
 **Goal:** Summer variant of the environment.
 
-**Depends on:** Stage 6 — reuse the Spring scene as a template; change season, not pipeline.
+**Depends on:** Stage 6 - reuse the Spring scene as a template; change season, not pipeline.
 
 **Tasks:** fuller foliage; warmer, higher light; lusher palette. Reuse camera and character setup; adjust vegetation, materials, lighting.
 
-**Focused hours:** 6–10 · **At 1 hr/day:** ~1.5–2 weeks (faster — the template exists)
+**Focused hours:** 6–10 · **At 1 hr/day:** ~1.5–2 weeks (faster - the template exists)
 
 **Done when:** Summer reads clearly distinct from Spring and renders with the same character/camera setup.
 
 ---
 
-## Stage 8 — Fall scene
+## Stage 8 - Fall scene
 
 **Goal:** Fall variant.
 
@@ -183,11 +183,11 @@ Stages 1→5 build the character. Stages 6→9 reuse that finished, animated cha
 
 ---
 
-## Stage 9 — Winter scene
+## Stage 9 - Winter scene
 
-**Goal:** Winter variant — the summit approach.
+**Goal:** Winter variant - the summit approach.
 
-**Depends on:** Stage 6 template. Placed last because snow, bare trees, and cold light are the biggest material/lighting departure from the template — best attempted once you've repeated the process three times.
+**Depends on:** Stage 6 template. Placed last because snow, bare trees, and cold light are the biggest material/lighting departure from the template - best attempted once you've repeated the process three times.
 
 **Tasks:** snow on ground and surfaces, bare trees, cold blue light, the summit-approach framing that closes the journey.
 
@@ -219,6 +219,6 @@ Treat the calendar as a horizon, not a deadline. The dependency order is the par
 - **One finished thing per session** beats three half-done things. Pick a task that fits an hour.
 - **Version every session** (`-v02`, `-v03`). Cheap insurance.
 - **Don't start the rig until the body and gear are genuinely final.** Re-weighting after a geometry change is the most common time sink.
-- **Animation is the hardest stage** — budget patience there, and lean on the idle clip to learn the tools before the walk cycle.
-- **A render is a valid milestone.** After Stage 6 you have an image you can put on the live site immediately, with no framework change — an early, motivating payoff well before any of the React Three Fiber work in `FUTURE_VISION.md`.
-- **Stages 7–9 get faster**, not slower — the Spring scene is the template the rest reuse.
+- **Animation is the hardest stage** - budget patience there, and lean on the idle clip to learn the tools before the walk cycle.
+- **A render is a valid milestone.** After Stage 6 you have an image you can put on the live site immediately, with no framework change - an early, motivating payoff well before any of the React Three Fiber work in `FUTURE_VISION.md`.
+- **Stages 7–9 get faster**, not slower - the Spring scene is the template the rest reuse.

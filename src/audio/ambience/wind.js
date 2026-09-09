@@ -1,4 +1,4 @@
-// Wind-through-grass ambience, synthesized with the Web Audio API — no asset to load. Looped
+// Wind-through-grass ambience, synthesized with the Web Audio API - no asset to load. Looped
 // low-passed noise with a slow LFO "gust" on the filter reads as wind over an open landscape.
 // The AudioManager maps scrollProgress to setIntensity() so it breathes louder in the open beats.
 // (Layer 1 of the audio system; distant birds / footsteps / ember crackle slot in beside it as
@@ -21,7 +21,7 @@ export function createWind(ctx, destination) {
 
   const lowpass = ctx.createBiquadFilter();
   lowpass.type = 'lowpass';
-  lowpass.frequency.value = 420; // warmer/softer — less hiss, more low wind
+  lowpass.frequency.value = 420; // warmer/softer - less hiss, more low wind
 
   const band = ctx.createBiquadFilter();
   band.type = 'bandpass';

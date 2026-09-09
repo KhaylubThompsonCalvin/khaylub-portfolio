@@ -30,7 +30,7 @@ export default [
       '@react-three': r3f,
     },
     rules: {
-      // Accessibility (recommended set) — operationalizes the WCAG AA guardrail.
+      // Accessibility (recommended set) - operationalizes the WCAG AA guardrail.
       ...jsxA11y.flatConfigs.recommended.rules,
 
       // React, new JSX transform (no React import needed).
@@ -41,7 +41,7 @@ export default [
       'react/prop-types': 'off', // no PropTypes in this codebase
       'react/no-unknown-property': 'off', // three.js JSX props (args, attach, position, intensity…)
 
-      // Hooks — highest-value rules for this codebase's effects/frame loops.
+      // Hooks - highest-value rules for this codebase's effects/frame loops.
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
 
@@ -56,6 +56,6 @@ export default [
     },
   },
 
-  // MUST stay last — disables formatting rules that conflict with Prettier.
+  // MUST stay last - disables formatting rules that conflict with Prettier.
   prettier,
 ];

@@ -2,13 +2,13 @@ import { useEffect, useMemo, useRef } from 'react';
 import { useExperience } from '../store/useExperience.js';
 import { STAGES, localProgress } from '../data/stages.js';
 
-// Cinematic per-word scroll reveal — each word sharpens (blur + fade + lift) in sequence as you
+// Cinematic per-word scroll reveal - each word sharpens (blur + fade + lift) in sequence as you
 // scroll through its section, the "motion-blur text reveal" the reference leans on. Adapted from
 // a 21st.dev pattern but rebuilt on our own scroll spine: no framer-motion, no Tailwind. It reads
-// scroll via the store's subscribe() (a side-effect listener — fires on each Lenis tick WITHOUT
+// scroll via the store's subscribe() (a side-effect listener - fires on each Lenis tick WITHOUT
 // re-rendering React) and writes word styles imperatively through refs, honouring the
 // getState()-in-the-loop performance idiom. The reveal finishes early in the beat (default by
-// ~45% through) so the copy is fully legible for most of the section — recruiter clarity first.
+// ~45% through) so the copy is fully legible for most of the section - recruiter clarity first.
 // prefers-reduced-motion renders every word solid with no scroll coupling.
 export default function RevealText({
   text,
@@ -18,7 +18,7 @@ export default function RevealText({
   className,
   as: Tag = 'p',
   intensity = 1, // scales the blur + lift; >1 reads weightier/more cinematic (e.g. the summit)
-  warm = false, // each word lands from ember-warm to ink — ties the summit copy to the fire
+  warm = false, // each word lands from ember-warm to ink - ties the summit copy to the fire
 }) {
   const ref = useRef(null);
   const reducedMotion = useExperience((s) => s.reducedMotion);
@@ -50,7 +50,7 @@ export default function RevealText({
         const start = (i / spans.length) * 0.6; // last word starts at 60% of the window
         const t = Math.min(1, Math.max(0, (r - start) / 0.4));
         // ease-out cubic (2026-07-05 motion spec): words SETTLE into place rather than easing
-        // in-and-out — fast arrival, soft landing, matching the site's settle curve.
+        // in-and-out - fast arrival, soft landing, matching the site's settle curve.
         const e = 1 - (1 - t) ** 3;
         const el = spans[i];
         el.style.opacity = (0.08 + 0.92 * e).toFixed(3);

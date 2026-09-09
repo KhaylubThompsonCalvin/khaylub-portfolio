@@ -15,7 +15,7 @@ function bump(p, a, peak, b) {
   return smoothstep(clamp01(t));
 }
 
-// The philosophy foreshadow: the phoenix is UNSEEN here — you feel it as a soft shadow sweeping
+// The philosophy foreshadow: the phoenix is UNSEEN here - you feel it as a soft shadow sweeping
 // across the lit grass, over the Wanderer and on past, as if something just crested overhead (the
 // spark felt before it's seen). A flat ground pool swept by scroll across the philosophy window;
 // it falls on the bright grass where it reads (a shadow on his dark silhouette back wouldn't).

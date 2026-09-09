@@ -8,7 +8,7 @@ import { TRAIL } from '../data/phoenix.js';
 const clamp01 = (t) => Math.min(1, Math.max(0, t));
 const smoothstep = (t) => t * t * (3 - 2 * t);
 
-// Soft round ember sprite — warm core fading to transparent, so additive + bloom turn it into a
+// Soft round ember sprite - warm core fading to transparent, so additive + bloom turn it into a
 // drifting spark of light (same maker idea as Feathers/FinaleReveal).
 function makeEmberTexture() {
   const c = document.createElement('canvas');
@@ -27,12 +27,12 @@ function makeEmberTexture() {
   return t;
 }
 
-// EmberTrail — glowing sparks shed behind the firebird along its flight, drawing the arc of the
+// EmberTrail - glowing sparks shed behind the firebird along its flight, drawing the arc of the
 // overhead sweep + climb in light. Keeps a short time-throttled history of the bird's LIVE position
 // (store.phoenixPos, which already carries the summit pointer offset), placing pool sprites at
 // recent points and fading/shrinking them toward the tail. Same idioms as Feathers: bloom-layer
 // canvas sprites, additive + toneMapped off, scrollProgress via getState() in useFrame (ADR-001),
-// reduced-motion gated. Preallocated history vectors — no per-frame allocation.
+// reduced-motion gated. Preallocated history vectors - no per-frame allocation.
 export default function EmberTrail() {
   const group = useRef();
   const reducedMotion = useExperience((s) => s.reducedMotion);
@@ -71,7 +71,7 @@ export default function EmberTrail() {
       filled.current = Math.min(hist.length, filled.current + 1);
     }
 
-    // Place sprites along the history — head bright/large, tail faint/small. Billboarded to camera.
+    // Place sprites along the history - head bright/large, tail faint/small. Billboarded to camera.
     const denom = hist.length - 1 || 1;
     for (let i = 0; i < grp.children.length; i++) {
       const m = grp.children[i];

@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { useExperience } from '../store/useExperience.js';
 
-// A reusable Higgsfield atmosphere PLATE — a video loop washed over the live scene, its opacity
-// driven by scroll so it fades in/out with its beat (store.subscribe — no React re-render). Per
+// A reusable Higgsfield atmosphere PLATE - a video loop washed over the live scene, its opacity
+// driven by scroll so it fades in/out with its beat (store.subscribe - no React re-render). Per
 // the vault's rule, this composites over the 3D, never replacing it or the character. Instances
 // drive the cinematic: a soft-light dawn-grass wash over the open early beats, a screen-blended
 // ember layer that glows through the phoenix → summit window (its black drops out), summit clouds,
@@ -28,7 +28,7 @@ export default function VideoAtmosphere({
   const ref = useRef(null);
   const reducedMotion = useExperience((s) => s.reducedMotion);
   // Deferred loading (2026-07-05 load spec): a plate whose beat is deep in the scroll doesn't
-  // fetch its video at first paint — it arms (gets its src) once scroll crosses `deferUntil`,
+  // fetch its video at first paint - it arms (gets its src) once scroll crosses `deferUntil`,
   // the plate analog of the cards' rootMargin (~56vh of warning before its fadeIn begins).
   // One-way latch; undefined means load eagerly as before (the gate + trailhead plates).
   const [armed, setArmed] = useState(deferUntil == null);
@@ -59,7 +59,7 @@ export default function VideoAtmosphere({
       if (fadeOut) o *= 1 - ramp(p, fadeOut[0], fadeOut[1]);
       v.style.opacity = (o * max).toFixed(3);
       // Scrub mode: drive the video's frame from scroll instead of autoplay-looping, so the plate
-      // moves only as you scroll and FREEZES on its last frame when you stop — a still backdrop
+      // moves only as you scroll and FREEZES on its last frame when you stop - a still backdrop
       // frame-matched to the Wanderer at the summit hold, not looping motion behind a static beat.
       if (scrub && v.duration) {
         v.currentTime = ramp(p, scrub[0], scrub[1]) * (v.duration - 0.05);

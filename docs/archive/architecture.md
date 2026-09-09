@@ -1,4 +1,4 @@
-# Khaylub.com — Architecture
+# Khaylub.com - Architecture
 
 > Status: Pre-development planning document. No code exists yet.
 
@@ -21,11 +21,11 @@ Khaylub.com is an interactive portfolio website where the primary experience is 
 
 ## Design Principles
 
-1. **Blender is the source of truth** — all hero and project 3D content originates in `.blend` files; the web only consumes exported GLBs.
-2. **3D where it matters** — heavy WebGL on the landing hero and selected case studies; static images elsewhere for performance.
-3. **Content-driven growth** — new projects are added via data files (JSON/MDX), not by editing scene code.
-4. **Mobile-aware** — every 3D experience has a static image or lighter-model fallback.
-5. **Document before code** — each phase has written requirements and acceptance criteria before implementation begins.
+1. **Blender is the source of truth** - all hero and project 3D content originates in `.blend` files; the web only consumes exported GLBs.
+2. **3D where it matters** - heavy WebGL on the landing hero and selected case studies; static images elsewhere for performance.
+3. **Content-driven growth** - new projects are added via data files (JSON/MDX), not by editing scene code.
+4. **Mobile-aware** - every 3D experience has a static image or lighter-model fallback.
+5. **Document before code** - each phase has written requirements and acceptance criteria before implementation begins.
 
 ## Tech Stack
 
@@ -36,11 +36,11 @@ Khaylub.com is an interactive portfolio website where the primary experience is 
 | 3D runtime   | React Three Fiber                       | 8.x              | React renderer for Three.js               |
 | 3D helpers   | @react-three/drei                       | latest           | OrbitControls, Environment, useGLTF, etc. |
 | 3D engine    | Three.js                                | via R3F          | WebGL rendering                           |
-| Model format | glTF 2.0 / GLB                          | —                | Blender export target                     |
-| Compression  | Draco (gltf-pipeline or Blender plugin) | —                | Reduce transfer size                      |
+| Model format | glTF 2.0 / GLB                          | -                | Blender export target                     |
+| Compression  | Draco (gltf-pipeline or Blender plugin) | -                | Reduce transfer size                      |
 | Styling      | Tailwind CSS                            | 4.x              | Layout, typography, responsive UI         |
-| Content      | JSON + optional MDX                     | —                | Project metadata and case study copy      |
-| Deploy       | Vercel                                  | —                | CDN, preview deploys, domain binding      |
+| Content      | JSON + optional MDX                     | -                | Project metadata and case study copy      |
+| Deploy       | Vercel                                  | -                | CDN, preview deploys, domain binding      |
 
 ## Repository Layout (target)
 
@@ -62,7 +62,7 @@ Khaylub.com/
     └── src/
         ├── app/              # Next.js App Router pages
         │   ├── layout.tsx
-        │   ├── page.tsx              # Landing — hero 3D scene
+        │   ├── page.tsx              # Landing - hero 3D scene
         │   ├── work/
         │   │   ├── page.tsx          # Project grid
         │   │   └── [slug]/page.tsx   # Case study
@@ -117,7 +117,7 @@ Each project entry in `content/projects.json`:
 }
 ```
 
-The `model` field is optional — only featured or case-study projects need an embedded 3D viewer.
+The `model` field is optional - only featured or case-study projects need an embedded 3D viewer.
 
 ## Page Architecture
 
@@ -203,6 +203,6 @@ No backend is required for Phase 1–3. A contact form (if added) can use a serv
 
 ## Related Documents
 
-- [build-plan.md](build-plan.md) — phased delivery timeline
-- [blender-export-pipeline.md](blender-export-pipeline.md) — export settings and naming
-- [phase-1-requirements.md](phase-1-requirements.md) — first deliverable acceptance criteria
+- [build-plan.md](build-plan.md) - phased delivery timeline
+- [blender-export-pipeline.md](blender-export-pipeline.md) - export settings and naming
+- [phase-1-requirements.md](phase-1-requirements.md) - first deliverable acceptance criteria

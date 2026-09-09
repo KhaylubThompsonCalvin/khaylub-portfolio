@@ -2,7 +2,7 @@ import { contact, closingPrinciple } from '../data/copy.js';
 import RevealText from './RevealText.jsx';
 
 // The Summit (contact & closing), the phoenix-fire beat. The closing principle reveals
-// word by word as the firebird blazes — a weightier (intensity) reveal that lands warm→ink,
+// word by word as the firebird blazes - a weightier (intensity) reveal that lands warm→ink,
 // tying the copy to the fire. Drives its own reveal, so the inner opts out of the block
 // reveal-and-stay; the links stay solid and reachable.
 export default function Contact() {
@@ -20,7 +20,7 @@ export default function Contact() {
           warm
         />
         <p className="body">{contact.intro}</p>
-        {/* Availability — one honest line for recruiters; answers the first question without a
+        {/* Availability - one honest line for recruiters; answers the first question without a
             form. Sits between the intro and the links so it reads as context, not a header. */}
         <p className="availability">{contact.availability}</p>
         {/* The links carry the fire: they brighten with --fire (summit) and flare an ember on hover

@@ -1,7 +1,7 @@
 import { philosophy, footholds, areasOfFocus, spark } from '../data/copy.js';
 import RevealText from './RevealText.jsx';
 
-// The First Ember (philosophy) + Footholds (focus) + The Spark Wakes (spark) — the DOM
+// The First Ember (philosophy) + Footholds (focus) + The Spark Wakes (spark) - the DOM
 // text beats between the hero and the camps. Kept together for now; split into separate
 // files if they grow.
 export function Philosophy() {
@@ -11,8 +11,8 @@ export function Philosophy() {
   return (
     <section className="section" id="philosophy">
       <div className="inner inner--reveal">
-        {/* Reveal windows are LOCAL to the philosophy stage (global 0.12–0.30). They finish early —
-            lead by local 0.28 (≈ global 0.17), body by local 0.42 (≈ global 0.20) — so the full
+        {/* Reveal windows are LOCAL to the philosophy stage (global 0.12–0.30). They finish early  - 
+            lead by local 0.28 (≈ global 0.17), body by local 0.42 (≈ global 0.20) - so the full
             statement is written and legible while the block is still centred, with reading room
             before it scrolls up into the nav-fade (top<130px ≈ global 0.223). Previously the body
             didn't finish until local 0.62 (≈ global 0.23), i.e. AFTER it had already begun fading,
@@ -47,7 +47,7 @@ export function AreasOfFocus() {
   );
 }
 
-// The Spark Wakes — the phoenix's acknowledgment beat. One short line, alone and centred,
+// The Spark Wakes - the phoenix's acknowledgment beat. One short line, alone and centred,
 // timed to the ignition at scrollProgress 0.5 (stage 0.48–0.58): the firebird ignites into
 // the upper frame while the Letter-to-Time question writes itself in below. The reveal
 // finishes by local 0.4 (≈ global 0.52) so the words hold, legible, through the ignition

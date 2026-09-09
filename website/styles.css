@@ -1,5 +1,5 @@
 /* ============================================================
-   Khaylub.com — Phase 1
+   Khaylub.com - Phase 1
    Color progression: Dawn -> Alpine -> Summit
    Type: serif display + geometric sans
    Tone: cinematic, reflective, restrained (not motivational)
@@ -98,7 +98,7 @@ body.webgl-active .hero__scene { opacity:0; transition:opacity 1s ease; }
 /* ---------- Hero ---------- */
 .section--hero { position:relative; }
 
-/* Hero scene — the Blender render (assets/wanderer-hero.png).
+/* Hero scene - the Blender render (assets/wanderer-hero.png).
    Falls back to the dawn color if the image is ever missing, so the hero never looks broken. */
 .hero__scene {
   position:absolute; inset:0; z-index:0;

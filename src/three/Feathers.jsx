@@ -8,7 +8,7 @@ import { FEATHERS } from '../data/phoenix.js';
 const clamp01 = (t) => Math.min(1, Math.max(0, t));
 const smoothstep = (t) => t * t * (3 - 2 * t);
 
-// A soft, elongated glowing-feather sprite (canvas) — warm core fading to a transparent edge, so
+// A soft, elongated glowing-feather sprite (canvas) - warm core fading to a transparent edge, so
 // additive blending + the bloom pass turn it into a drifting ember of light.
 function makeFeatherTexture() {
   const c = document.createElement('canvas');
@@ -38,7 +38,7 @@ export default function Feathers() {
   const tex = useMemo(() => makeFeatherTexture(), []);
   const color = useMemo(() => new THREE.Color(FEATHERS.color), []);
 
-  // Per-feather drift state — deterministic offsets (no Math.random in the frame loop), seeded by
+  // Per-feather drift state - deterministic offsets (no Math.random in the frame loop), seeded by
   // index so each feather falls on its own phase/spread without per-frame allocation.
   const seeds = useMemo(
     () =>

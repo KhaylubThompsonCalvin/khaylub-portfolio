@@ -1,9 +1,9 @@
-// Ember crackle (layer 1 / environmental SFX) — sparse short noise grains through a random
+// Ember crackle (layer 1 / environmental SFX) - sparse short noise grains through a random
 // bandpass read as the soft crackle of fire. Synthesized (no sample): a light scheduler spawns
 // decaying noise bursts whose density and loudness scale with setLevel(), which AudioManager
 // drives from scroll so the crackle only lives in the phoenix fire window. Feeds the master gain.
 //
-// (Birds and footsteps want real recordings rather than synthesis to avoid sounding fake — they
+// (Birds and footsteps want real recordings rather than synthesis to avoid sounding fake - they
 // slot in here as samples per ../effects/README.md; crackle is the one that synthesizes honestly.)
 export function createEmberCrackle(ctx, destination) {
   const out = ctx.createGain();

@@ -1,7 +1,7 @@
 # docs/archive
 
 Superseded documentation, kept for history. Nothing here describes the current
-project — see `docs/CURRENT_STATE.md` for what's true today.
+project - see `docs/CURRENT_STATE.md` for what's true today.
 
 | File                         | Why archived                                                                                                                        |
 | ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |

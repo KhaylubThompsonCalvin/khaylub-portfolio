@@ -1,0 +1,50 @@
+// The Summit's behaviour checks (2026-10-09 baseline). Usage: node scripts/tests/summit-behaviour.mjs [base]
+// base may carry a path when the Summit lives under one, e.g. http://127.0.0.1:5190/summit (the combined deploy)
+import { chromium } from 'playwright';
+const base = (process.argv[2] || 'http://127.0.0.1:5173').replace(/\/$/, '');
+const prefix = new URL(base).pathname.replace(/\/$/, '');   // '' or '/summit'
+const browser = await chromium.launch({ channel: 'msedge', headless: false, args: ['--disable-backgrounding-occluded-windows', '--disable-renderer-backgrounding', '--disable-background-timer-throttling'] });
+const out = []; let failed = 0;
+const ok = (name, cond, extra = '') => { if (!cond) failed++; out.push(`${cond ? 'PASS' : 'FAIL'}  ${name}${extra ? '  (' + extra + ')' : ''}`); };
+const errs = [];
+const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+page.on('pageerror', (e) => errs.push(e.message)); page.on('console', (m) => { if (m.type() === 'error') errs.push(m.text()); });
+await page.goto(base + '/'); await page.waitForTimeout(500);
+const early = await page.evaluate(() => getComputedStyle(document.getElementById('world')).opacity);
+await page.waitForTimeout(5000);
+const late = await page.evaluate(() => getComputedStyle(document.getElementById('world')).opacity);
+ok('scene starts dark and fades up', Number(early) < 0.5 && Number(late) === 1, `opacity ${early} then ${late}`);
+const bandsBefore = await page.evaluate(() => [...document.querySelectorAll('.band')].map((b) => b.classList.contains('in')));
+await page.mouse.move(700, 400);
+for (let i = 0; i < 12; i++) { await page.mouse.wheel(0, 200); await page.waitForTimeout(150); }
+await page.waitForTimeout(900);
+const st = await page.evaluate(() => ({ away: document.querySelector('.site-header').classList.contains('away'), solid: document.querySelector('.site-header').classList.contains('solid'), bands: [...document.querySelectorAll('.band')].map((b) => b.classList.contains('in')) }));
+ok('bands wait below the fold, then rise in', bandsBefore.every((x) => !x) && st.bands[0]);
+ok('header slides away while reading down', st.away && st.solid);
+await page.mouse.wheel(0, -120); await page.waitForTimeout(600);
+const back = await page.evaluate(() => ({ away: document.querySelector('.site-header').classList.contains('away'), top: Math.round(document.querySelector('.site-header').getBoundingClientRect().top) }));
+ok('header returns on scroll up', !back.away && back.top === 0);
+await page.evaluate(() => scrollTo(0, 0)); await page.waitForTimeout(400);
+await page.evaluate((h) => [...document.querySelectorAll(`a[href="${h}"]`)].find((a) => a.offsetParent).click(), prefix + '/builds/');
+await page.waitForTimeout(1500);
+ok('page change swaps text in place', (await page.textContent('h1')) === 'Things I build');
+await page.evaluate(() => document.querySelector('.motion-toggle').click()); await page.waitForTimeout(300);
+const paused = await page.evaluate(() => ({ still: document.documentElement.classList.contains('still-motion'), bandsIn: [...document.querySelectorAll('.band')].every((b) => b.classList.contains('in')) }));
+ok('Pause motion stills CSS motion and shows every band', paused.still && paused.bandsIn);
+await page.evaluate(() => document.querySelector('.motion-toggle').click());
+await page.close();
+const ctx = await browser.newContext({ reducedMotion: 'reduce', viewport: { width: 1440, height: 900 } });
+const rp = await ctx.newPage(); await rp.goto(base + '/'); await rp.waitForTimeout(1500);
+ok('reduced motion: content simply there', await rp.evaluate(() => document.documentElement.classList.contains('still-motion') && [...document.querySelectorAll('.band')].every((b) => b.classList.contains('in'))));
+const np = await ctx.newPage(); await np.goto(base + '/404.html'); await np.waitForTimeout(1200);
+ok('404 page renders with a way back', (await np.textContent('h1')) === 'This trail does not go anywhere');
+await ctx.close();
+const ap = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+await ap.goto(base + '/?arrive=1&fps'); await ap.waitForTimeout(800);
+ok('arriving from the climb: settled at Home, flag removed, other params kept', await ap.evaluate(() => location.search === '?fps' && window.__summitArrived === true));
+const aerr = []; ap.on('pageerror', (e) => aerr.push(e.message));
+await ap.goto(base + '/?arrive=1&%E0=1'); await ap.waitForTimeout(800);
+ok('arriving with a malformed escape: the Summit still starts, the odd param kept', aerr.length === 0 && await ap.evaluate(() => location.search === '?%E0=1' && window.__summitArrived === true), JSON.stringify(aerr));
+await ap.close();
+ok('no console errors', errs.length === 0, JSON.stringify(errs));
+console.log(out.join('\n')); await browser.close(); process.exit(failed ? 1 : 0);

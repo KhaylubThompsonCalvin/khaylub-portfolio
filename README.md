@@ -1,54 +1,52 @@
-# Khaylub.com - The Wanderer Experience
+# Khaylub Thompson-Calvin: the Climb and the Summit
 
-A scroll-driven 3D portfolio. One hero character (the Wanderer) stays constant while
-everything transforms around him across a single continuous timeline. Built for recruiter
-clarity first, cinematic feel second.
+The June 2026 V1 is preserved at tag v1.0.0-3d-experiment and branch legacy/v1-3d-experiment.
 
-Governed by three docs in the Obsidian vault: `CLAUDE.md` (vault rules), the Engineering
-Constitution (code rules), and the **Experience Architect Master Prompt** (experience rules).
+This is the site at v1.khaylub.com: two pages on one small three.js engine, built as one static site with plain HTML, CSS and JavaScript and bundled by Vite.
 
-## Stack
+| Address | What |
+|---|---|
+| `/` | **The Climb**: one long scroll that walks the Wanderer through six scenes, from a desert night under the stars, through a pine forest at blue hour, a misty river at dawn, a rain-swept ridge and a snowfield at dusk, to a golden wheat field at golden hour. |
+| `/summit/` | **The Summit**: Home, Films (`/summit/films/`), Questions (`/summit/questions/`) and Builds (`/summit/builds/`), each with its own station on a summit ledge above a sea of clouds. |
+| `/404.html` | Any missing address, with a way back to the Climb and to the Summit. |
 
-- **React + Vite** - app shell and build
-- **React Three Fiber + Three.js** - the 3D stage (the Wanderer, camera, effects)
-- **Zustand** - single source of truth (`scrollProgress` 0\u21921, current stage)
-- **Lenis** - smooth scroll (feeds the store). GSAP ScrollTrigger layers on in Phase 3.
+## Design reasoning
+- **Familiar first (Jakob's Law):** one header, one footer and the same plain labels on every page, so nothing has to be learned twice. The Summit's pages match the channel's playlists.
+- **Scroll as the story:** the Climb's camera rests on each scene while its caption is on screen and rises over a sea of cloud between scenes, so each change of scene happens out of sight. A rail jumps straight to any scene.
+- **Text first:** every page is plain HTML that reads in order with no JavaScript and no WebGL. The 3D is a backdrop that loads after the words, and each Climb scene downloads only when the journey nears it.
+- **Accessibility:** a skip link, visible keyboard focus, touch targets of at least 44 px, captions checked for contrast, and `prefers-reduced-motion` honoured. A **Pause motion** button shows each scene as a still picture and is remembered per browser.
+- **Real scale:** every model is sized in metres to its real-world size, so the scenes read as places.
 
-## Run
-
-```bash
-npm install
-npm run dev      # http://localhost:5173
-npm run build    # -> dist/
-npm run preview
+## Run, test, build
+Node 22 (see `.node-version`).
+```
+npm ci
+npm run dev           # the Summit: http://127.0.0.1:5173
+npm run dev:climb     # the Climb:  http://127.0.0.1:5174
+npm test              # unit tests (vitest)
+npm run build         # the combined site into dist/
 ```
 
-On first run, open the browser console: the Wanderer loader prints the GLB's animation
-clips (e.g. `[Wanderer] GLB animation clips: [...]`). That confirms whether Walk/Idle made
-it into the export - our deferred Blender check.
-
-## Structure
-
+Browser checks drive Microsoft Edge through Playwright, which is not a project dependency: install it once outside the project and point `NODE_PATH` at that `node_modules`.
 ```
-index.html                 entry
-public/assets/models/       wanderer-web.glb (desktop hero asset)
-src/
-  main.jsx · App.jsx        mount + composition
-  index.css                 global styles
-  store/useExperience.js    Zustand: scrollProgress + stage (single source of truth)
-  scroll/useScrollSetup.js  Lenis -> store (GSAP timeline added Phase 3)
-  data/                     copy.js · projects.js · stages.js  (content, edit here)
-  three/                    Scene · Wanderer · CameraRig · Atmosphere
-  ui/                       LoadGate · Nav · Hero · Sections · ProjectCards · Contact · SkipToWork
+node scripts/tests/deploy-check.mjs dist 5191                  # the whole built site: Climb, Summit, links, 404, console
+node scripts/tests/climb-behaviour.mjs http://127.0.0.1:5174   # the Climb's behaviour, against its dev server
+node scripts/tests/climb-scroll.mjs http://127.0.0.1:5174      # whole-journey scroll: no frame over 50 ms
+npm run regression                                             # the Summit's behaviour and page-switch checks (dev server on 5173)
+node scripts/tests/serve-static.mjs dist 5191                  # serve a build with real 404s, to look around
 ```
 
-## Phase status
+## Where things are
+| What | Where |
+|---|---|
+| Shared engine (render loop, sky, clouds, peaks, phoenix) | `src/engine/` |
+| The Summit: pages, scene, stations | `index.html`, `films/`, `questions/`, `builds/`, `src/main.js`, `src/world/` |
+| The Climb: page, journey, camera path, the Wanderer, the six scenes | `climb/index.html`, `src/climb/`, `src/climb/stages/` |
+| Models, fonts, link previews, thumbnails | `public/` |
+| Build settings | `vite.config.js` (the Summit), `vite.climb.config.js` (the Climb), `.env`, `.env.deploy` |
 
-- [x] **Phase 0 - Skeleton**: structure, store, data, scroll wiring, GLB loads + self-verifies.
-- [ ] Phase 1 - frame the Wanderer, replace OrbitControls with the camera rig.
-- [ ] Phase 2 - scrub the walk by scrollProgress; stage-driven character state.
-- [ ] Phase 3 - GSAP ScrollTrigger master timeline (camera keys, reveals).
-- [ ] Phase 4 - Higgsfield atmosphere plates; dynamic project cards.
-- [ ] Phase 5 - polish, reduced-motion + no-WebGL fallback, deploy.
-
-The static site in `website/` is retained as the no-WebGL fallback.
+## Deploy (Render, static site)
+- **Build command:** `npm run build` (it runs `npm run build:deploy`, then moves `dist-deploy/` to `dist/`).
+- **Publish directory:** `dist`.
+- **Node:** 22 (from `.node-version`; set `NODE_VERSION=22` if the service pins an older one).
+- No rewrite rule that sends every path to `/index.html`: the site has real pages under `/summit/` and its own `/404.html`.

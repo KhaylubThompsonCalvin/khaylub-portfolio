@@ -1,39 +1,26 @@
 {
-  "name": "khaylub-com",
+  "name": "summit",
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "Khaylub.com - the Wanderer experience. One hero character, one continuous scroll-driven 3D timeline.",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "npm run build:deploy && node -e \"const f=require('fs');f.rmSync('dist',{recursive:true,force:true});f.renameSync('dist-deploy','dist')\"",
+    "build:summit": "vite build",
     "preview": "vite preview",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "test": "vitest run",
+    "dev:climb": "vite --config vite.climb.config.js",
+    "build:climb": "vite build --config vite.climb.config.js",
+    "build:deploy": "vite build --config vite.climb.config.js --mode deploy && vite build --mode deploy",
+    "regression": "node scripts/tests/run-summit-regression.mjs",
+    "check:deploy": "npm run build:deploy && node scripts/tests/deploy-check.mjs dist-deploy"
   },
   "dependencies": {
-    "@react-three/drei": "^9.114.0",
-    "@react-three/fiber": "^8.17.10",
-    "lenis": "^1.1.14",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "three": "^0.160.1",
-    "zustand": "^4.5.5"
+    "three": "^0.186.1"
   },
   "devDependencies": {
-    "@eslint/js": "^9.39.4",
-    "@react-three/eslint-plugin": "^0.1.2",
-    "@vitejs/plugin-react": "^4.3.2",
-    "eslint": "^9.39.4",
-    "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-jsx-a11y": "^6.10.2",
-    "eslint-plugin-react": "^7.37.5",
-    "eslint-plugin-react-hooks": "^7.1.1",
-    "eslint-plugin-react-refresh": "^0.5.3",
-    "globals": "^17.6.0",
-    "prettier": "^3.8.4",
-    "vite": "^5.4.21"
+    "@gltf-transform/cli": "^4.5.1",
+    "vite": "^8.3.4",
+    "vitest": "^3.2.4"
   }
 }

@@ -1,0 +1,34 @@
+@import '../style.css';
+/* each stage is a tall chapter of page; its caption sits lower-left like the Summit's landing */
+.stage { position: relative; min-height: 160svh; max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); display: flex; align-items: flex-end; }
+.stage .caption { position: sticky; bottom: 9vh; margin-bottom: 9vh; max-width: 27rem; }
+.stage .caption::before { content: ''; position: absolute; inset: -90px -110px -90px calc(-1 * var(--gutter) - 90px); z-index: -1; background: radial-gradient(ellipse closest-side at 50% 50%, rgba(21,18,13,.82) 0%, rgba(21,18,13,.66) 40%, rgba(21,18,13,.3) 72%, rgba(21,18,13,0) 100%); pointer-events: none; }
+.stage h2 { margin: 0; font: 600 clamp(1.9rem, 2.6vw, 2.65rem)/1.08 var(--display); text-shadow: 0 2px 24px rgba(21,18,13,.7); }
+/* the chapter rail: six marks on the right edge; a horizontal strip on phones */
+.rail { position: fixed; right: 18px; top: 50%; transform: translateY(-50%); z-index: 6; }
+.rail ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.rail a { display: flex; align-items: center; justify-content: flex-end; gap: 10px; min-height: 44px; min-width: 44px; text-decoration: none; color: var(--muted); }
+.rail a::after { content: ''; width: 10px; height: 10px; border-radius: 50%; border: 1.5px solid currentColor; transition: background var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease); }
+.rail a span { opacity: 0; font-size: .8rem; transition: opacity var(--dur-fast) var(--ease); text-shadow: 0 1px 8px rgba(21,18,13,.9); }
+.rail a:hover span, .rail a:focus-visible span, .rail a[aria-current="step"] span { opacity: 1; }
+.rail a[aria-current="step"] { color: var(--amber); }
+.rail a[aria-current="step"]::after { background: currentColor; transform: scale(1.2); }
+/* the June link meets the 44 px target rule */
+.colophon a { display: inline-block; padding: 12px 0; }
+@media (max-width: 640px) {
+  .rail { top: auto; bottom: 0; right: 0; left: 0; transform: none; background: rgba(21,18,13,.85); }
+  .rail ol { flex-direction: row; justify-content: center; }
+  .rail a span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; opacity: 0; }
+  .site-footer { padding-bottom: 52px; }
+  .stage .caption { bottom: 64px; }
+}
+
+/* without JavaScript the motion switch cannot work, so it is not shown */
+html:not(.js) .motion-toggle { display: none; }
+
+/* The Harvest: the brightest stage. At the bottom of the page the caption rides up toward the low sun, so instead of the
+   wide ellipse (a dark halo on the bright sky) it gets a text-sized soft backdrop: a warm umber rounded block a little
+   outside the caption, blurred so it has no edge, plus stacked soft shadows on the heading and the line */
+#the-harvest .caption::before { inset: -32px -40px -32px -36px; border-radius: 36px; background: rgba(30,16,6,.72); filter: blur(28px); }
+#the-harvest .caption h2 { text-shadow: 0 1px 2px rgba(30,16,6,.6), 0 2px 12px rgba(30,16,6,.75), 0 4px 30px rgba(30,16,6,.6); }
+#the-harvest .caption .lead { text-shadow: 0 1px 2px rgba(30,16,6,.7), 0 1px 10px rgba(30,16,6,.8), 0 2px 22px rgba(30,16,6,.6); }

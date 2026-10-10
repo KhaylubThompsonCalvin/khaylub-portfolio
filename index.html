@@ -1,81 +1,67 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Khaylub Thompson-Calvin - Builder, Lifelong Learner</title>
-    <meta
-      name="description"
-      content="Khaylub Thompson-Calvin - Computer Information Systems student, builder, and lifelong learner. Web development, interactive 3D, and digital experiences that combine technology, storytelling, and continuous growth."
-    />
-
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="theme-color" content="#e9e1d6" />
-    <link rel="canonical" href="https://khaylub.com/" />
-
-    <!-- Open Graph (link previews on LinkedIn, iMessage, Discord, etc.) -->
-    <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Khaylub Thompson-Calvin" />
-    <meta property="og:url" content="https://khaylub.com/" />
-    <meta property="og:title" content="Khaylub Thompson-Calvin - Builder, Lifelong Learner" />
-    <meta
-      property="og:description"
-      content="Toward the Summit - an interactive 3D portfolio. CIS student and builder working in web development, real-time 3D, and digital experiences that combine technology, storytelling, and continuous growth."
-    />
-    <meta property="og:image" content="https://khaylub.com/assets/images/mountains-vista.png" />
-    <meta
-      property="og:image:alt"
-      content="A lone wanderer on a mountain trail - Toward the Summit."
-    />
-
-    <!-- Twitter / X -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Khaylub Thompson-Calvin - Builder, Lifelong Learner" />
-    <meta
-      name="twitter:description"
-      content="Toward the Summit - an interactive 3D portfolio in web development, real-time 3D, and storytelling."
-    />
-    <meta name="twitter:image" content="https://khaylub.com/assets/images/mountains-vista.png" />
-
-    <!-- Structured data so search engines attach an identity to the site -->
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "Person",
-        "name": "Khaylub Thompson-Calvin",
-        "url": "https://khaylub.com/",
-        "jobTitle": "Computer Information Systems Student · Web Developer",
-        "description": "Builder and lifelong learner working in web development, interactive 3D, and creative technology.",
-        "sameAs": [
-          "https://github.com/KhaylubThompsonCalvin",
-          "https://www.linkedin.com/in/khaylub-thompson-calvan-40543b294/"
-        ]
-      }
-    </script>
-  </head>
-  <body>
-    <div id="root"></div>
-    <!-- The stylesheet arrives through the JS bundle, so without JS the page was blank.
-         Inline-styled on purpose: identity + real contact routes, nothing faked. -->
-    <noscript>
-      <main style="max-width: 60ch; margin: 15vh auto 0; padding: 0 8vw; color: #241c12">
-        <h1 style="font-family: Georgia, 'Times New Roman', serif">Khaylub Thompson-Calvin</h1>
-        <p>Computer Information Systems Student · Builder · Lifelong Learner</p>
-        <p>
-          I build for a better future, so the next generation starts further ahead than I did. I’m
-          a CIS student making interactive 3D and tools for the web. This is a record of the climb,
-          not the arrival.
-        </p>
-        <p>The interactive journey needs JavaScript. In the meantime:</p>
-        <p>
-          <a href="https://github.com/KhaylubThompsonCalvin" rel="noreferrer">GitHub</a> ·
-          <a href="https://www.linkedin.com/in/khaylub-thompson-calvin-40543b294/" rel="noreferrer"
-            >LinkedIn</a
-          >
-          · <a href="mailto:khaylubthompsoncalvin@gmail.com">Email</a>
-        </p>
-      </main>
-    </noscript>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Khaylub Thompson-Calvin: Films, Questions, Builds</title>
+  <meta name="description" content="Khaylub Thompson-Calvin makes short films, thinks out loud about big questions, and builds things for the web." />
+  <!-- link previews (Discord, LinkedIn, iMessage, X): a render of this page's station; the address comes from .env -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Khaylub Thompson-Calvin" />
+  <meta property="og:title" content="Khaylub Thompson-Calvin: Films, Questions, Builds" />
+  <meta property="og:description" content="Khaylub Thompson-Calvin makes short films, thinks out loud about big questions, and builds things for the web." />
+  <meta property="og:url" content="%VITE_SITE_URL%%BASE_URL%" />
+  <meta property="og:image" content="%VITE_SITE_URL%/og/home.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="A summit above a sea of clouds: the home station." />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="preload" href="/fonts/fraunces-core.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/fonts/kt-sans-core.woff2" as="font" type="font/woff2" crossorigin />
+</head>
+<body data-page="home">
+  <canvas id="world" aria-hidden="true"></canvas>
+  <div class="scrim" aria-hidden="true"></div>
+  <a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+  <a class="brand" href="%BASE_URL%" aria-current="page"><svg class="emblem" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="20" fill="#241c12"/><path d="M8 29 L17 15 L22 22 L25 18 L32 29 Z" fill="#e9e1d6"/><circle cx="27" cy="12" r="3.2" fill="#caa46f"/></svg><span>Khaylub Thompson-Calvin</span></a>
+  <nav aria-label="Main">
+    <ul><li><a href="%BASE_URL%films/">Films</a></li><li><a href="%BASE_URL%questions/">Questions</a></li><li><a href="%BASE_URL%builds/">Builds</a></li><li class="ext"><a href="https://www.youtube.com/@KhaylubThompson-Calvin" rel="noopener">YouTube</a></li><li class="ext"><a href="https://khaylub.com" rel="noopener">khaylub.com</a></li></ul>
+  </nav>
+</header>
+  <main id="main">
+    <section class="landing" aria-labelledby="landing-title">
+    <p class="kicker">Films · Questions · Builds</p>
+    <h1 id="landing-title">Khaylub Thompson-Calvin</h1>
+    <p class="lead">I make short films, think out loud about big questions, and build things for the web.</p>
+    <p class="actions"><a class="btn primary" href="%BASE_URL%builds/">See the builds</a><a class="btn" href="https://www.youtube.com/@KhaylubThompson-Calvin" rel="noopener">Watch on YouTube</a></p>
+    <a class="cue" href="#more">Three ways in</a>
+  </section>
+    <div class="flight-space" aria-hidden="true"></div>
+    <section id="more" class="band" aria-labelledby="ways">
+      <h2 id="ways">Three ways in</h2>
+      <div class="grid three">
+        <a href="%BASE_URL%films/" class="card"><span class="meta">Playlist: Films</span><h3>Films</h3><p>Short films, and the work that goes into them.</p></a>
+        <a href="%BASE_URL%questions/" class="card"><span class="meta">Playlist: Questions Worth Keeping</span><h3>Questions</h3><p>One big question at a time, thought through out loud.</p></a>
+        <a href="%BASE_URL%builds/" class="card"><span class="meta">Playlist: Builds</span><h3>Builds</h3><p>Websites, data projects, and the tools behind them.</p></a>
+      </div>
+    </section>
+    <section class="band" aria-labelledby="featured">
+      <h2 id="featured">Featured builds</h2>
+      <div class="grid three">
+        <a href="https://github.com/KhaylubThompsonCalvin/fuel-economy-analysis" rel="noopener" class="card"><img class="thumb" src="/thumbs/fuel-economy.jpg" alt="Scatter chart: heavier cars deliver lower fuel economy, coloured by origin" width="640" height="400" loading="lazy" decoding="async" /><span class="meta">Python</span><h3>Fuel Economy Regression Case Study</h3><p>Analyzed 398 vehicles to find what predicts fuel economy; the regression model explains 79% of the variation in unseen test data, and its limits are documented.</p></a>
+        <a href="https://github.com/KhaylubThompsonCalvin/sql-python-analytics-pipeline" rel="noopener" class="card"><img class="thumb" src="/thumbs/names-pipeline.jpg" alt="Line chart: U.S. male births named Marc and Mark by year, 1880 to 2025" width="640" height="400" loading="lazy" decoding="async" /><span class="meta">Python, SQL</span><h3>SQL to Python Analytics Pipeline</h3><p>A reproducible analysis of 146 years of public Social Security name data (1880 to 2025), from download to charts, runnable without database access.</p></a>
+        <a href="https://khaylub.com" rel="noopener" class="card"><img class="thumb" src="/thumbs/khaylub-com.jpg" alt="The Khaylub.com home page: the name, a portrait, and the entry to the climb" width="640" height="400" loading="lazy" decoding="async" /><span class="meta">Live site</span><h3>Khaylub.com</h3><p>My portfolio: the work, the writing, and the record of what I have learned.</p></a>
+      </div>
+      <p class="more-link"><a href="%BASE_URL%builds/">All builds</a></p>
+    </section>
+  </main>
+  <footer class="site-footer">
+  <p class="footer-links"><a href="%BASE_URL%films/">Films</a> · <a href="%BASE_URL%questions/">Questions</a> · <a href="%BASE_URL%builds/">Builds</a> · <a href="https://www.youtube.com/@KhaylubThompson-Calvin" rel="noopener">YouTube</a> · <a href="https://khaylub.com" rel="noopener">khaylub.com</a></p>
+  <p class="colophon">Built with three.js. The sky, the sea of clouds, and the far peaks are drawn in code.</p>
+  <p class="colophon"><button class="motion-toggle" type="button" aria-pressed="false">Pause motion</button></p>
+</footer>
+  <script type="module" src="/src/main.js"></script>
+</body>
 </html>

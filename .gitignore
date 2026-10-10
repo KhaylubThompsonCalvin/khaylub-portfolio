@@ -1,31 +1,4 @@
-# secrets / env (never commit; .env.example is the tracked template)
-.env
-.env.*
-!.env.example
-
-# dependencies
-node_modules/
-.pnp/
-.pnp.js
-
-# build output
-dist/
-dist-ssr/
-*.local
-
-# editor / os
-.vscode/*
-!.vscode/extensions.json
-.DS_Store
-Thumbs.db
-
-# logs
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# claude code tooling (local skill cache)
-.claude/
-
-# playwright mcp session artifacts (screenshots, snapshots, console logs)
-.playwright-mcp/
+dist
+dist-climb
+dist-deploy
+node_modules
